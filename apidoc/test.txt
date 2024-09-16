@@ -1,2 +1,1 @@
-test rule 
-check push request
+test rule branch develop
