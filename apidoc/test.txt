@@ -1,2 +1,2 @@
 test rule 
-push from leedo to develop check rules
+check push request
