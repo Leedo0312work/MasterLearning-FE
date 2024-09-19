@@ -18,7 +18,7 @@ function Class() {
     const { mutateJoin } = useManageJoinClasses();
 
     const { activeClass, mutate, handleSearch } = useManageMyClass();
-
+ 
     const createClasses = (data: CreateClassForm) => {
         mutate(data);
     };

@@ -17,7 +17,8 @@ export default function useManageMyClass() {
     const { data } = useQuery(
         'classes',
         async () => {
-            const response = await API.get('/v1/classes');
+            const response = await API.get('/classes');
+            console.log('API Response:', response);
             return response.data;
         },
         {
@@ -38,7 +39,7 @@ export default function useManageMyClass() {
         async (classes) => getCreate(classes),
         {
             async onSuccess(classes) {
-                setListData((prev) => [classes.data, ...prev]);
+                setListData((prev) => [classes.result, ...prev]);
                 toast.success('Thêm lớp học thành công');
             },
             onError(err) {
