@@ -45,8 +45,8 @@ export default function SignInSide() {
         formState: { errors },
     } = useForm<LoginForm>({
         defaultValues: {
-            email: 'tuannguyensn2001a@gmail.com',
-            password: 'java2001',
+            email: 'datminiphi@gmail.com',
+            password: '12345678',
         },
     });
 
@@ -59,10 +59,16 @@ export default function SignInSide() {
         async (data) => getLogin(data),
         {
             onSuccess(data) {
-                localStorage.setItem('accessToken', data.data.accessToken);
-                setUser(data.data.user);
-                navigate('/class');
-                toast.success('Chào mừng bạn trở lại');
+                    localStorage.setItem('accessToken', data.result.accessToken);
+                    console.log('data: ',data);
+                    setUser(data.result.user);  //undefined
+                    // navigate('/class');
+                    window.location.href = '/class';
+                    toast.success('Chào mừng bạn trở lại');
+            },
+            onError(error) {
+                console.error('Lỗi khi đăng nhập:', error);
+                toast.error('Đăng nhập không thành công. Vui lòng thử lại sau.');
             },
         },
     );

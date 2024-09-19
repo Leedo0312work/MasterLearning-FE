@@ -1,8 +1,8 @@
 import { IProfile } from '~/models/IProfile';
 
 export declare interface IUser {
-    id: number;
-    username: string;
+    _id: number;
+    name: string;
     email: string;
     createdAt: string;
     updatedAt: string;

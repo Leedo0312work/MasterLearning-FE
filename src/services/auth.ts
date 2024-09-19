@@ -2,9 +2,20 @@ import { LoginForm } from '~/types/login';
 import API from '~/network/API';
 import { RegisterForm } from '~/types/register';
 
-export const fetchLogin = (data: LoginForm) => {
-    return API.post('/v1/auth/login', data);
+export const fetchLogin = async (data: LoginForm) => {
+    try {
+        const response = await API.post('/users/login', data);
+        return response; 
+    } catch (error) {
+        throw error;
+    }
 };
-export const fetchRegister = (data: RegisterForm) => {
-    return API.post('/v1/auth/register', data);
+
+export const fetchRegister = async (data: RegisterForm) => {
+    try {
+        const response = await API.post('/users/register', data);
+        return response;
+    } catch (error) {
+        throw error; 
+    }
 };

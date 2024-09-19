@@ -42,9 +42,9 @@ const useAuthStore = create<AuthStore>()(
                 });
 
                 try {
-                    const response = await API.get('/v1/auth/me');
+                    const response = await API.get('/users/get-me');
                     set((state) => {
-                        state.user = response.data.data;
+                        state.user = response.data.result;
                     });
                 } catch (e) {
                     localStorage.removeItem('accessToken');
