@@ -54,7 +54,7 @@ const checkToken = async () => {
 };
 
 class Axios {
-    async post(url: string, data: any, callback: (res: any) => void) {
+    async post(url: string, data: any, callback?: (res: any) => void) {
         const response = await axiosN
             .post(url, data)
             .then((res) => {
@@ -72,7 +72,7 @@ class Axios {
         return response;
     }
 
-    async postAuth(url: string, data: any, callback: (res: any) => void) {
+    async postAuth(url: string, data: any, callback?: (res: any) => void) {
         await checkToken();
         const response = await axiosN
             .post(url, data)
@@ -91,7 +91,7 @@ class Axios {
         return response;
     }
 
-    async get(url: string, callback: (res: any) => void) {
+    async get(url: string, callback?: (res: any) => void) {
         const response = await axiosN
             .get(url)
             .then((res) => {
@@ -109,7 +109,7 @@ class Axios {
         return response;
     }
 
-    async getAuth(url: string, callback: (res: any) => void) {
+    async getAuth(url: string, callback?: (res: any) => void) {
         await checkToken();
         const response = await axiosN
             .get(url)
