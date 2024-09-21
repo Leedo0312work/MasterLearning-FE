@@ -5,6 +5,8 @@ export interface RegisterForm {
     password: string;
     password_repeat: string;
     username: string;
+    date_of_birth: Date;
+    role: number;
 }
 export interface RegisterResponse {
     data: object;
