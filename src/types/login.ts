@@ -7,5 +7,6 @@ export interface LoginForm {
 
 export interface LoginResponse {
     accessToken: string;
-    user: IUser;
+    refreshToken: string;
+    user: IUser; 
 }

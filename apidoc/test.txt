@@ -1,1 +1,6 @@
+<<<<<<< HEAD
 test rule branch develop
+=======
+test rule 
+push from leedo to develop last check approve
+>>>>>>> 072a403782117d4c021a647c9c3c3b364f917c30

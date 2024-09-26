@@ -2,7 +2,7 @@ import { CreateClassForm } from '~/types/class';
 import API from '~/network/API';
 
 export const fetchCreateClass = (classes: CreateClassForm) => {
-    return API.post('/v1/classes', classes);
+    return API.post('/classes/create', classes);
 };
 
 export const fetchRoles = () => {
