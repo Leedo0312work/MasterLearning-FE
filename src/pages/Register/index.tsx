@@ -134,21 +134,21 @@ export default function Register() {
                                 required
                                 fullWidth
                                 label="Họ tên"
-                                type="username"
-                                id="username"
-                                {...register('username', {
+                                type="name"
+                                id="name"
+                                {...register('name', {
                                     required: 'Please enter your username.',
                                 })}
                             />
-                            {errors.username && (
-                                <p style={{ color: 'red', margin: 3 }}>{errors.username.message}</p>
+                            {errors.name && (
+                                <p style={{ color: 'red', margin: 3 }}>{errors.name.message}</p>
                             )}
                             <TextField
                                 margin="normal"
                                 required
                                 fullWidth
-                                label="Ngày sinh"
-                                type="birthday"
+                                label=""
+                                type="date"
                                 id="date_of_birth"
                                 {...register('date_of_birth', {
                                     required: 'Please enter your birthday.',
@@ -197,7 +197,7 @@ export default function Register() {
 
                             <TextField
                                 margin="normal"
-                                {...register('password_repeat', {
+                                {...register('confirmPassword', {
                                     required: 'Please enter your repeat password.',
                                     validate: (value) =>
                                         value === password.current || 'The passwords do not match',
@@ -208,9 +208,9 @@ export default function Register() {
                                 type="password"
                                 autoComplete="current-password"
                             />
-                            {errors.password_repeat && (
+                            {errors.confirmPassword && (
                                 <p style={{ color: 'red', margin: 1 }}>
-                                    {errors.password_repeat.message}
+                                    {errors.confirmPassword.message}
                                 </p>
                             )}
 

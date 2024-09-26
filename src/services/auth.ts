@@ -1,75 +1,48 @@
+
+
 import { LoginForm } from '~/types/login';
 import API from '~/network/API';
-import { RegisterForm } from '~/types/register';
-import axiosIns from "./axios";
+import axiosIns from '~/services/axios';
+import { RegisterForm, VerifyEmailRequest } from '~/types/register';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import UserServices from "~/services/user";
+import { useEffect } from 'react';
 
 export const fetchLogin = async (data: LoginForm) => {
-    const response = await axiosIns.post("/users/login", data);
-
-        if (response && response.data) {
-            const { accessToken, refreshToken } = response.data.result;
-            localStorage.setItem("accessToken", accessToken);
-            localStorage.setItem("refreshToken", refreshToken);
-
-            // await userServices.getMe();
-
-            return response;
-}
+    try {
+      const response = await axiosIns.post('/users/login', data);
+      if (response && response.data && response.data.result) {
+        const { accessToken, refreshToken } = response.data.result;
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
+        await UserServices.getMe();
+        return response; 
+      }
+    } catch (error) {
+        throw error;
+    }
 };
 
 export const fetchRegister = async (data: RegisterForm) => {
     try {
-        const response = axiosIns.post("/users/register", data);
-         return response;
+        const response = await API.post('/users/register', data);
+        return response;
     } catch (error) {
         throw error; 
     }
 };
+export const logout = async() =>  {
+  await axiosIns.post("/users/logout", {
+      refreshToken: localStorage.getItem("refreshToken"),
+  });
+  localStorage.setItem("accessToken", "");
+  localStorage.setItem("refreshToken", "");
+  localStorage.setItem("user", "");
+}
+
+export const forgotPassword = async(email:string) => {
+  const response = axiosIns.post("/users/forgot-password", { email });
+  return response;
+}
 
 
-
-
-// import axiosIns from "./axios";
-// import Cookies from "js-cookie";
-// import { ToastContainer, toast } from "react-toastify";
-// import { RegisterForm } from '~/types/register';
-// import { LoginForm } from '~/types/login';
-
-// // import userServices from "./userServices";
-
-// class AuthServices {
-//     async login(data: LoginForm) {
-//         const response = await axiosIns.post("/users/login", data);
-
-//         if (response && response.data) {
-//             const { accessToken, refreshToken } = response.data.result;
-//             localStorage.setItem("accessToken", accessToken);
-//             localStorage.setItem("refreshToken", refreshToken);
-    
-//             // await userServices.getMe();
-    
-//             return response;
-//         }
-//     }
-
-//     async register(data: RegisterForm) {
-//         const response = axiosIns.post("/users/register", data);
-//         return response;
-//     }
-//     async logout() {
-//         await axiosIns.post("/users/logout", {
-//             refreshToken: localStorage.getItem("refreshToken"),
-//         });
-//         localStorage.setItem("accessToken", "");
-//         localStorage.setItem("refreshToken", "");
-//         localStorage.setItem("user", "");
-//     }
-
-//     async forgotPassword(email:string) {
-//         const response = axiosIns.post("/users/forgot-password", { email });
-//         return response;
-//     }
-// }
-
-// const authServices = new AuthServices();
-// export default authServices;

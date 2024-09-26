@@ -1,14 +1,25 @@
 import { IUser } from '~/models/IUser';
+import { JwtPayload } from 'jsonwebtoken';
+
 
 export interface RegisterForm {
+    name: string;
     email: string;
+    avatar?: string;
     password: string;
-    password_repeat: string;
-    username: string;
-    date_of_birth: Date;
     role: number;
+    confirmPassword: string;
+    date_of_birth: string;
 }
 export interface RegisterResponse {
     data: object;
     message: string;
+}
+export interface VerifyEmailRequest {
+    emailVerifyToken: string;
+    decodeEmailVerifyToken: JwtPayload;
+}
+  
+export interface ResendVerifyEmailRequest {
+    decodeAuthorization: JwtPayload;
 }
