@@ -23,6 +23,8 @@ import { getLogin, getRegister } from '~/repositories/auth';
 import { ResponseAPI } from '~/app/response';
 import { AxiosError } from 'axios';
 import { useRef } from 'react';
+import { FormControl,InputLabel, Select, MenuItem,FormHelperText } from '@mui/material';
+import { Controller} from 'react-hook-form';
 
 function Copyright(props: any) {
     return (
@@ -43,6 +45,7 @@ export default function Register() {
     const {
         register,
         formState: { errors },
+        control,
         handleSubmit,
         watch,
     } = useForm<RegisterForm>();
@@ -130,16 +133,52 @@ export default function Register() {
                                 margin="normal"
                                 required
                                 fullWidth
-                                label="Tên đăng nhập"
-                                type="username"
-                                id="username"
-                                {...register('username', {
+                                label="Họ tên"
+                                type="name"
+                                id="name"
+                                {...register('name', {
                                     required: 'Please enter your username.',
                                 })}
                             />
-                            {errors.username && (
-                                <p style={{ color: 'red', margin: 3 }}>{errors.username.message}</p>
+                            {errors.name && (
+                                <p style={{ color: 'red', margin: 3 }}>{errors.name.message}</p>
                             )}
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                label=""
+                                type="date"
+                                id="date_of_birth"
+                                {...register('date_of_birth', {
+                                    required: 'Please enter your birthday.',
+                                })}
+                            />
+                            {errors.date_of_birth && (
+                                <p style={{ color: 'red', margin: 3 }}>{errors.date_of_birth.message}</p>
+                            )}
+
+                        <FormControl fullWidth margin="normal" error={!!errors.role}>
+                                <InputLabel id="role-label">Role</InputLabel>
+                                <Controller
+                                name="role"
+                                control={control}
+                                defaultValue={1}
+                                rules={{ required: 'Please select a role.' }}
+                                render={({ field }) => (
+                                    <Select
+                                    labelId="role-label"
+                                    id="role"
+                                    label="Role"
+                                    {...field}
+                                    >
+                                    <MenuItem value={1}>Student</MenuItem>
+                                    <MenuItem value={2}>Teacher</MenuItem>
+                                    </Select>
+                                )}
+                                />
+                                {errors.role && <FormHelperText>{errors.role.message}</FormHelperText>}
+                            </FormControl>
                             <TextField
                                 margin="normal"
                                 required
@@ -158,7 +197,7 @@ export default function Register() {
 
                             <TextField
                                 margin="normal"
-                                {...register('password_repeat', {
+                                {...register('confirmPassword', {
                                     required: 'Please enter your repeat password.',
                                     validate: (value) =>
                                         value === password.current || 'The passwords do not match',
@@ -169,9 +208,9 @@ export default function Register() {
                                 type="password"
                                 autoComplete="current-password"
                             />
-                            {errors.password_repeat && (
+                            {errors.confirmPassword && (
                                 <p style={{ color: 'red', margin: 1 }}>
-                                    {errors.password_repeat.message}
+                                    {errors.confirmPassword.message}
                                 </p>
                             )}
 
