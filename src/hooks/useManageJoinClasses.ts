@@ -7,7 +7,7 @@ export default function useManageJoinClasses() {
     const { mutate: mutateJoin } = useMutation(
         'joinClass',
         async (data) => {
-            const res = await API.post('/v1/members', data);
+            const res = await API.post('/classes/join-class', data);
             return res.data;
         },
         {
