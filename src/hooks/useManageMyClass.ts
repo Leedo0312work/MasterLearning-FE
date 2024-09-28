@@ -13,6 +13,7 @@ import { CreateClassForm } from '~/types/class';
 
 export default function useManageMyClass() {
     const [listData, setListData] = useState<IClass[]>([]);
+    
     const originData = useRef<IClass[]>([]);
     const { data } = useQuery(
         'classes',
@@ -23,7 +24,10 @@ export default function useManageMyClass() {
         },
         {
             onSuccess(response) {
-                setListData(response.data);
+                const validData = Array.isArray(response.data) ? response : [response];
+                setListData(validData);
+                // setListData(response.data);
+                console.log("ở đây là 1", response) //console
                 originData.current = response.data;
             },
         },
@@ -33,13 +37,18 @@ export default function useManageMyClass() {
         if (!Boolean(listData) || !Array.isArray(listData)) return [];
         return listData.filter((item) => item?.statusClass === STATUS.ACTIVE);
     }, [listData]);
+    console.log("ở đây là 2", listData) //console
 
     const { mutate } = useMutation<ResponseAPI, AxiosError<ResponseAPI>, CreateClassForm>(
         'submit',
         async (classes) => getCreate(classes),
         {
             async onSuccess(classes) {
-                setListData((prev) => [classes.result, ...prev]);
+                console.log('Lớp học được thêm:'+ classes); //console
+                setListData((prev) => {
+                    console.log('Giá trị của prev:', prev);  //console
+                    return [classes.result, ...prev];
+                });
                 toast.success('Thêm lớp học thành công');
             },
             onError(err) {
@@ -51,7 +60,10 @@ export default function useManageMyClass() {
                 }
             },
         },
+        
     );
+
+    
 
     const handleSearch = useDebounceFunction(({ search, sort }: { search: string; sort: string }) => {
         const origin = structuredClone(originData.current);
