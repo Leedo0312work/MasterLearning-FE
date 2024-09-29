@@ -1,5 +1,12 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
+// @ts-ignore
+import googleIcon from '~/assets/images/gg.png';
+// @ts-ignore
+import register1 from '~/assets/images/register.png';
+// @ts-ignore
+import appleIcon from '~/assets/images/apple.png';
+// @ts-ignore
+import facebookIcon from '~/assets/images/fb.png';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -60,9 +67,16 @@ export default function Register() {
         RegisterForm
     >('submit', async (data) => getRegister(data), {
         onSuccess(data) {
-            navigate('/login');
-            toast.success('Mời bạn đăng nhập lại ');
+            toast.success('Đăng ký thành công! Vui lòng kiểm tra email để xác thực tài khoản.');
+            navigate('/verify-email');
         },
+        onError(error) {
+            if (error.response?.status === 422) {
+                toast.error('Email đã tồn tại, vui lòng sử dụng email khác.');
+            } else {
+                toast.error('Đăng ký thất bại. Vui lòng thử lại sau.');
+            }
+        }
     });
 
     const submit = (data: RegisterForm) => {
@@ -71,53 +85,49 @@ export default function Register() {
 
     return (
         <ThemeProvider theme={theme}>
-            <Grid container component="main" sx={{ height: '100vh' }}>
+            <Grid container component="main" sx={{ height: '100vh', backgroundColor: '#F9FAFC' }}>
                 <CssBaseline />
-                <Grid
-                    item
-                    xs={false}
-                    sm={4}
-                    md={7}
-                    sx={{
-                        backgroundImage: 'url(https://source.unsplash.com/random)',
-                        backgroundRepeat: 'no-repeat',
-                        backgroundColor: (t) =>
-                            t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                    }}
-                />
-                <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+
+                {/* Left side - Illustration */}
+                <Grid  item xs={12} sm={7} md={7} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#f5f5f5' }}>
+                    <Box sx={{ textAlign: 'center' }}>
+                        <img src={register1} alt="Register Illustration" style={{ maxWidth: '300px' }} />
+                        <Typography variant="h5" fontWeight="bold" sx={{ mt: 2, mb: 1 }}>
+                            Bạn đã có tài khoản?
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
+                            Chúng tôi rất vui khi được chào đón bạn trở lại
+                        </Typography>
+                        <Button href="/login" variant="outlined" sx={{ px: 4, borderColor: '#1A237E', color: '#1A237E' }}>
+                            Đăng nhập
+                        </Button>
+                    </Box>
+                </Grid>
+
+                {/* Right side - Register Form */}
+                <Grid item xs={false} sm={5} md={5} component={Paper} elevation={6} square>
                     <Box
                         sx={{
-                            my: 8,
-                            mx: 4,
+                            my: 4,
+                            mx: 3,
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
                         }}
                     >
-                        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                            <LockOutlinedIcon />
-                        </Avatar>
-                        <Typography component="h1" variant="h5">
-                            Đăng ký tài khoản
+                        <Typography component="h1" variant="h5" fontWeight="bold" gutterBottom>
+                            Tạo tài khoản
                         </Typography>
-                        <Box
-                            component="form"
-                            noValidate
-                            onSubmit={handleSubmit(submit)}
-                            sx={{ mt: 1, width: '100%' }}
-                        >
+                        <Typography variant="body2" color="textSecondary" gutterBottom>
+                            Bắt đầu bằng cách tạo tài khoản mới của bạn
+                        </Typography>
+                        <Box component="form" noValidate onSubmit={handleSubmit(submit)} sx={{ mt: 1, width: '100%' }}>
                             <TextField
                                 margin="normal"
                                 required
                                 fullWidth
                                 id="email"
-                                type="email"
-                                label="Email "
-                                autoComplete="email"
-                                autoFocus
+                                label="Email Address"
                                 {...register('email', {
                                     required: 'Vui lòng nhập địa chỉ email',
                                     pattern: {
@@ -129,6 +139,7 @@ export default function Register() {
                             {errors.email && (
                                 <p style={{ color: 'red', margin: 3 }}>{errors.email.message}</p>
                             )}
+
                             <TextField
                                 margin="normal"
                                 required
@@ -143,6 +154,7 @@ export default function Register() {
                             {errors.name && (
                                 <p style={{ color: 'red', margin: 3 }}>{errors.name.message}</p>
                             )}
+
                             <TextField
                                 margin="normal"
                                 required
@@ -158,7 +170,7 @@ export default function Register() {
                                 <p style={{ color: 'red', margin: 3 }}>{errors.date_of_birth.message}</p>
                             )}
 
-                        <FormControl fullWidth margin="normal" error={!!errors.role}>
+                            <FormControl fullWidth margin="normal" error={!!errors.role}>
                                 <InputLabel id="role-label">Role</InputLabel>
                                 <Controller
                                 name="role"
@@ -179,6 +191,19 @@ export default function Register() {
                                 />
                                 {errors.role && <FormHelperText>{errors.role.message}</FormHelperText>}
                             </FormControl>
+
+                            {/* <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="phone"
+                                label="Phone Number"
+                                {...register('phone', { required: 'Please enter your phone number' })}
+                            />
+                            {errors.phone && (
+                                <p style={{ color: 'red', margin: 3 }}>{errors.phone.message}</p>
+                            )} */}
+
                             <TextField
                                 margin="normal"
                                 required
@@ -214,14 +239,39 @@ export default function Register() {
                                 </p>
                             )}
 
+
                             <Button
                                 type="submit"
                                 fullWidth
                                 variant="contained"
-                                sx={{ mt: 3, mb: 2 }}
+                                sx={{ mt: 3, mb: 1, backgroundColor: '#1A237E', color: '#fff', borderRadius:'20px' }}
                             >
-                                Đăng ký ngay
+                                Đăng ký
                             </Button>
+
+                            <Grid container justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
+                                <Typography variant="body2" color="textSecondary" sx={{ mx: 1 }}>
+                                    Or
+                                </Typography>
+                            </Grid>
+
+                            <Grid container spacing={2} sx={{ mt: 1 }}>
+                                <Grid item xs={4}>
+                                    <Button fullWidth sx={{ borderColor: '#ddd' }}>
+                                        <img src={googleIcon} alt="Google" width="24" />
+                                    </Button>
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <Button fullWidth sx={{ borderColor: '#ddd' }}>
+                                        <img src={appleIcon} alt="Apple" width="24" />
+                                    </Button>
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <Button fullWidth sx={{ borderColor: '#ddd' }}>
+                                        <img src={facebookIcon} alt="Facebook" width="24" />
+                                    </Button>
+                                </Grid>
+                            </Grid>
                         </Box>
                     </Box>
                 </Grid>

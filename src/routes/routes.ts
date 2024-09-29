@@ -23,6 +23,9 @@ const TestHomework = lazy(() => import('~/pages/TestHomework/index'));
 const DoHomework = lazy(() => import('~/pages/DoHomework/index'));
 const VerifyEmail = lazy(() => import('~/pages/VerifyEmail/index'));
 const ForgotPassword = lazy(() => import('~/pages/ForgotPassword'));
+const ResetPassword = lazy(() => import('~/pages/ResetPassword')); 
+const CheckEmailNoti = lazy(() => import('~/pages/CheckEmailNoti'));
+
 
 
 
@@ -58,6 +61,14 @@ const routes: Route[] = [
         component: ForgotPassword,
     },
     {
+        path: '/check-email-noti',
+        component: CheckEmailNoti,
+    },
+    {
+        path: '/reset-password',
+        component: ResetPassword,
+    },
+    {
         path: '/class',
         component: Class,
         layout: DefaultLayout,
@@ -78,7 +89,6 @@ const routes: Route[] = [
     {
         path: '/verify-email',
         component: VerifyEmail,
-        
     },
     {
         path: '/class/:id',
