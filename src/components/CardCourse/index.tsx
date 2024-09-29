@@ -40,16 +40,16 @@
 // @ts-ignore
 import styles from './style.module.scss';
 // @ts-ignore
-import images from '~/assets/images/default_classes.jpg';
+import images from '~/assets/images/default_classes2.jpg';
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { IClass } from '~/models/IClass';
 
-type Prop = Pick<IClass, 'name' | 'id'>;
+type Prop = Pick<IClass, 'name' | '_id' | 'code'>;
 
-function CardCourse({ name, id }: Prop) {
+function CardCourse({ name, _id, code }: Prop) {
     return (
-        <Link to={`/class/${id}/newsfeed`} className={styles.cover}>
+        <Link to={`/class/${_id}/newsfeed`} className={styles.cover}>
             <div className={styles.course}>
                 <div className={styles.img_wrap}>
                     <img className={styles.img} src={images} alt="" />
@@ -57,7 +57,7 @@ function CardCourse({ name, id }: Prop) {
                 <div className={styles.contant}>
                     <div className={styles.text_wrap}>
                         <p className={styles.name}>{name}</p>
-                        <p className={styles.code}>JSLPA</p>
+                        <p className={styles.code}>{code}</p>
                     </div>
                     <div>
                         <img

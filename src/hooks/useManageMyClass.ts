@@ -20,14 +20,12 @@ export default function useManageMyClass() {
         async () => {
             const response = await API.get('/classes');
             console.log('API Response:', response);
-            return response.data;
+            return response.data.result;
         },
         {
             onSuccess(response) {
-                const validData = Array.isArray(response.data) ? response : [response];
+                const validData = Array.isArray(response.data) ? response.data : [response];
                 setListData(validData);
-                // setListData(response.data);
-                console.log("ở đây là 1", response) //console
                 originData.current = response.data;
             },
         },
@@ -35,19 +33,19 @@ export default function useManageMyClass() {
 
     const activeClass = useMemo(() => {
         if (!Boolean(listData) || !Array.isArray(listData)) return [];
-        return listData.filter((item) => item?.statusClass === STATUS.ACTIVE);
+            return Array.isArray(listData[0]) ? listData[0] : [];
     }, [listData]);
-    console.log("ở đây là 2", listData) //console
 
     const { mutate } = useMutation<ResponseAPI, AxiosError<ResponseAPI>, CreateClassForm>(
         'submit',
         async (classes) => getCreate(classes),
         {
-            async onSuccess(classes) {
-                console.log('Lớp học được thêm:'+ classes); //console
+            onMutate: async (newClass) => {
                 setListData((prev) => {
-                    console.log('Giá trị của prev:', prev);  //console
-                    return [classes.result, ...prev];
+                    if (Array.isArray(prev) && Array.isArray(prev[0])) {
+                        return [[newClass, ...prev[0]], ...prev.slice(1)];
+                    }
+                    return prev;
                 });
                 toast.success('Thêm lớp học thành công');
             },
@@ -59,11 +57,10 @@ export default function useManageMyClass() {
                     toast.error('Thêm lớp học thất bại');
                 }
             },
-        },
-        
+        }
     );
-
     
+
 
     const handleSearch = useDebounceFunction(({ search, sort }: { search: string; sort: string }) => {
         const origin = structuredClone(originData.current);

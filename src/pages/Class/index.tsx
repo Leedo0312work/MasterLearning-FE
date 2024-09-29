@@ -49,10 +49,14 @@ function Class() {
                 <FormProvider {...methods}>
                     <ClassContentHeader handleOpenAddModal={handleOpenAddModal} />
                 </FormProvider>
+
+                {/* <ClassListHeading /> */}
+
+                {/* <MyClass />  */}
             </div>
             <div className={styles.listClasses}>
                 {activeClass.map((item, index) => (
-                    <CardCourse key={item?.id} id={item?.id} name={item?.name} />
+                    <CardCourse key={item?._id} _id={item?._id} name={item?.name} code = {item?.code}/>
                 ))}
             </div>
             <ClassModalAddEdit

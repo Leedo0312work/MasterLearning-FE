@@ -136,7 +136,7 @@ function ClassModalAddEdit({ openAddModal = false, title, handleCloseAddModal = 
                                 type="password"
                                 className={styles.input}
                                 id="outlined-password"
-                                label="Password"
+                                label="Mật khẩu"
                                 variant="outlined"
                             />
                         )}

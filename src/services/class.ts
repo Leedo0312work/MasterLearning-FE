@@ -1,6 +1,10 @@
 import { CreateClassForm } from '~/types/class';
 import API from '~/network/API';
 
+export const fetchGetClassList = () => {
+    return API.get('/classes')
+}
+
 export const fetchCreateClass = (classes: CreateClassForm) => {
     return API.post('/classes/create', classes);
 };

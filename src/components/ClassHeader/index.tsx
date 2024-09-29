@@ -10,7 +10,7 @@ function ClassHeader({ handleOpenJoinModal }) {
         <div className={styles.wrap}>
             <div className={styles.left}>
                 <button className={clsx(styles.button, styles.active)}>Lớp của bạn</button>
-                <button className={styles.button}>Lớp đã ẩn</button>
+                {/* <button className={styles.button}>Lớp đã ẩn</button> */}
                 <button onClick={handleOpenJoinModal} className={clsx(styles.button, styles.primary)}>
                     Tham gia lớp học
                 </button>

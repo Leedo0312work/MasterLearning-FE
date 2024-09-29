@@ -1,8 +1,14 @@
 import { ResponseAPI } from '~/app/response';
-import { fetchCreateClass, fetchDetailClass, fetchRole, fetchRoles } from '~/services/class';
+import { fetchCreateClass, fetchDetailClass, fetchGetClassList, fetchRole, fetchRoles } from '~/services/class';
 import { CreateClassForm, GetRoleResponse } from '~/types/class';
 import { IClass } from '~/models/IClass';
 import { Role } from '~/enums/role';
+
+export const getClassList = async () => {
+    const response = await fetchGetClassList()
+    console.log("Danh sách lớp:" , response)
+    return response.data.result
+}
 
 export const getCreate = async (data: CreateClassForm): Promise<ResponseAPI> => {
     const response = await fetchCreateClass(data);
