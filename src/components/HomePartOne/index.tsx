@@ -2,8 +2,11 @@ import { Button } from '@mui/material';
 import HomePartOneItem from '~/components/HomePartOneItem';
 import clsx from 'clsx';
 import styles from './styles.module.css';
+import { useNavigate } from 'react-router-dom';
 
 function HomePartOne() {
+    const navigate = useNavigate();
+
     return (
         <div className={styles.wrap}>
             <div className={styles.left}>
@@ -16,7 +19,11 @@ function HomePartOne() {
                         <p className={styles.logoTitle}>Shub classroom</p>
                     </div>
                     <h2 className={styles.header}>Một cách hiệu quả để quản lý lớp học</h2>
-                    <Button className={styles.button} variant="contained">
+                    <Button 
+                        className={styles.button} 
+                        variant="contained"
+                        onClick={() => navigate('/login')}
+                    >
                         Tham gia ngay
                     </Button>
                     <div className={styles.list}>

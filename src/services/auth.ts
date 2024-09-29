@@ -7,6 +7,7 @@ import { RegisterForm, VerifyEmailRequest } from '~/types/register';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import UserServices from "~/services/user";
 import { useEffect } from 'react';
+import { ResetForm } from '~/types/reset';
 
 export const fetchLogin = async (data: LoginForm) => {
     try {
@@ -31,6 +32,16 @@ export const fetchRegister = async (data: RegisterForm) => {
         throw error; 
     }
 };
+
+export const fetchResertPassword = async (data: ResetForm) => {
+  try {
+      const response = await API.post('/users/reset-password', data);
+      return response;
+  } catch (error) {
+      throw error; 
+  }
+};
+
 export const logout = async() =>  {
   await axiosIns.post("/users/logout", {
       refreshToken: localStorage.getItem("refreshToken"),
