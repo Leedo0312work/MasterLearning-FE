@@ -7,7 +7,6 @@ import { ConfirmProvider } from 'material-ui-confirm';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
-// @ts-ignore
 ReactDOM.createRoot(document?.getElementById('root')).render(
     <React.StrictMode>
         <QueryClientProvider

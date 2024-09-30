@@ -1,4 +1,3 @@
-// @ts-ignore
 import styles from './styles.module.css';
 import ModalAddNotification from '~/components/ModalAddNotification';
 import useModal from '~/hooks/useModal';
@@ -52,7 +51,11 @@ function NewsfeedSiderBarRight() {
             </div>
             <div className={styles.content}>
                 {data?.map((item) => (
-                    <NewFeedNotification createdAt={item.createdAt} content={item.content} key={item.id} />
+                    <NewFeedNotification
+                        createdAt={item.createdAt}
+                        content={item.content}
+                        key={item.id}
+                    />
                 ))}
                 {/* <div className={styles.noNotify}>
                     <span className={styles.dark}>Lớp học chưa có thông báo</span> Nội dung thông báo của giáo viên sẽ

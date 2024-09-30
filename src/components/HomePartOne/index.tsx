@@ -1,6 +1,7 @@
 import { Button } from '@mui/material';
 import HomePartOneItem from '~/components/HomePartOneItem';
 import clsx from 'clsx';
+
 import styles from './styles.module.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -19,8 +20,8 @@ function HomePartOne() {
                         <p className={styles.logoTitle}>Shub classroom</p>
                     </div>
                     <h2 className={styles.header}>Một cách hiệu quả để quản lý lớp học</h2>
-                    <Button 
-                        className={styles.button} 
+                    <Button
+                        className={styles.button}
                         variant="contained"
                         onClick={() => navigate('/login')}
                     >

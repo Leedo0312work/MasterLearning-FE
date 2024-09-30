@@ -1,4 +1,3 @@
-// @ts-ignore
 import styles from './styles.module.css';
 
 import * as React from 'react';
@@ -18,8 +17,15 @@ interface Prop {
     subMitForm: (data: CreateClassForm) => void;
 }
 
-function ClassModalAddEdit({ openAddModal = false, title, handleCloseAddModal = () => {}, subMitForm }: Prop) {
-    const { register, handleSubmit, reset } = useForm<CreateClassForm>({ shouldUseNativeValidation: true });
+function ClassModalAddEdit({
+    openAddModal = false,
+    title,
+    handleCloseAddModal = () => {},
+    subMitForm,
+}: Prop) {
+    const { register, handleSubmit, reset } = useForm<CreateClassForm>({
+        shouldUseNativeValidation: true,
+    });
     const style = {
         position: 'absolute',
         top: '50%',
@@ -54,7 +60,13 @@ function ClassModalAddEdit({ openAddModal = false, title, handleCloseAddModal = 
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style} className={styles.box} component="form" noValidate onSubmit={handleSubmit(submit)}>
+                <Box
+                    sx={style}
+                    className={styles.box}
+                    component="form"
+                    noValidate
+                    onSubmit={handleSubmit(submit)}
+                >
                     <div className={styles.header}>
                         <div className={styles.header_text}>{title}</div>
                         <div className={styles.close}>
@@ -83,7 +95,10 @@ function ClassModalAddEdit({ openAddModal = false, title, handleCloseAddModal = 
                         />
                     </div>
                     <div className={styles.footer}>
-                        <Button type="submit" className={clsx(styles.submit, { [styles.active]: true })}>
+                        <Button
+                            type="submit"
+                            className={clsx(styles.submit, { [styles.active]: true })}
+                        >
                             Thêm
                         </Button>
                     </div>

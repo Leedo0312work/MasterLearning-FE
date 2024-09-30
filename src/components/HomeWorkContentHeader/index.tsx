@@ -3,7 +3,6 @@ import TextField from '@mui/material/TextField';
 import { Link } from 'react-router-dom';
 import SelectMaterial from '~/components/SelectMaterial/index';
 
-// @ts-ignore
 import styles from './styles.module.css';
 
 function HomeWorkContentHeader() {

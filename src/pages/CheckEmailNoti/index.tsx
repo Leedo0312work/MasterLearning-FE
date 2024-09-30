@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Typography, Paper, Button } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
-// @ts-ignore
+
 import CheckNoti from '~/assets/images/check.jpg';
 
 function CheckEmailNoti() {
@@ -10,12 +10,31 @@ function CheckEmailNoti() {
     const navigate = useNavigate();
 
     return (
-        <div style={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', background: 'linear-gradient(135deg, #e0f7fa, #0066ff)' }}>
-            <Paper elevation={6} style={{ padding: '2rem', borderRadius: '12px', maxWidth: '600px', textAlign: 'center' }}>
-                
+        <div
+            style={{
+                height: '100vh',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                background: 'linear-gradient(135deg, #e0f7fa, #0066ff)',
+            }}
+        >
+            <Paper
+                elevation={6}
+                style={{
+                    padding: '2rem',
+                    borderRadius: '12px',
+                    maxWidth: '600px',
+                    textAlign: 'center',
+                }}
+            >
                 {/* Illustration */}
-                <img src={CheckNoti} alt="Check Email Illustration" style={{ width: '200px', marginBottom: '20px' }} />
-                
+                <img
+                    src={CheckNoti}
+                    alt="Check Email Illustration"
+                    style={{ width: '200px', marginBottom: '20px' }}
+                />
+
                 {/* Title */}
                 <Typography variant="h5" fontWeight="bold" gutterBottom>
                     Kiểm tra email của bạn
@@ -31,7 +50,9 @@ function CheckEmailNoti() {
                 </Typography>
 
                 <Typography variant="body2" color="textSecondary">
-                    Vui lòng kiểm tra hộp thư đến hoặc thư mục thư rác và nhấp vào nút để xác minh email của bạn.                </Typography>
+                    Vui lòng kiểm tra hộp thư đến hoặc thư mục thư rác và nhấp vào nút để xác minh
+                    email của bạn.{' '}
+                </Typography>
                 <Button
                     variant="contained"
                     style={{
@@ -40,7 +61,7 @@ function CheckEmailNoti() {
                         padding: '10px 0',
                         width: '100%',
                         textTransform: 'none',
-                        marginTop:'10px'
+                        marginTop: '10px',
                     }}
                     onClick={() => navigate(`/login`)}
                 >

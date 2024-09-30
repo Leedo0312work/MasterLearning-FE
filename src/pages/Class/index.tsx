@@ -1,5 +1,5 @@
 import CardCourse from '~/components/CardCourse';
-// @ts-ignore
+
 import styles from './styles.module.css';
 import ClassModalAddEdit from '~/components/ClassModalAddEdit';
 import useModal from '~/hooks/useModal';
@@ -13,12 +13,20 @@ import useManageJoinClasses from '~/hooks/useManageJoinClasses';
 import ClassModalJoin from '~/components/ClassModalJoin';
 
 function Class() {
-    const { isOpen: openAddModal, open: handleOpenAddModal, close: handleCloseAddModal } = useModal();
-    const { isOpen: openJoinModal, open: handleOpenJoinModal, close: handleCloseJoinModal } = useModal();
+    const {
+        isOpen: openAddModal,
+        open: handleOpenAddModal,
+        close: handleCloseAddModal,
+    } = useModal();
+    const {
+        isOpen: openJoinModal,
+        open: handleOpenJoinModal,
+        close: handleCloseJoinModal,
+    } = useModal();
     const { mutateJoin } = useManageJoinClasses();
 
     const { activeClass, mutate, handleSearch } = useManageMyClass();
- 
+
     const createClasses = (data: CreateClassForm) => {
         mutate(data);
     };

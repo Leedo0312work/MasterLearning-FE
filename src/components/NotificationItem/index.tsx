@@ -1,8 +1,7 @@
-// @ts-ignore
 import defaulAvatar from '~/assets/images/avatar_default.png';
-// @ts-ignore
+
 import defaulAvatar2 from '~/assets/images/avatar_default2.png';
-// @ts-ignore
+
 import styles from './styles.module.css';
 import clsx from 'clsx';
 import dayjs from '~/packages/dayjs';
@@ -21,7 +20,15 @@ interface Prop {
     handleClick: (id: string) => void;
 }
 
-function NotificationItem({ htmlContent, createdAt, ownerAvatar, type, seen, id, handleClick }: Prop) {
+function NotificationItem({
+    htmlContent,
+    createdAt,
+    ownerAvatar,
+    type,
+    seen,
+    id,
+    handleClick,
+}: Prop) {
     const navigate = useNavigate();
 
     const onClick = () => {
@@ -44,7 +51,10 @@ function NotificationItem({ htmlContent, createdAt, ownerAvatar, type, seen, id,
                 </div>
             </div>
             <div className={styles.content}>
-                <h5 className={styles.header} dangerouslySetInnerHTML={{ __html: htmlContent }}></h5>
+                <h5
+                    className={styles.header}
+                    dangerouslySetInnerHTML={{ __html: htmlContent }}
+                ></h5>
                 <p className={styles.time}>Vào {dayjs(createdAt).format('HH:mm DD/MM/YYYY')} </p>
             </div>
         </div>

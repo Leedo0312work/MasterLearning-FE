@@ -1,11 +1,7 @@
 import * as React from 'react';
-// @ts-ignore
 import googleIcon from '~/assets/images/gg.png';
-// @ts-ignore
 import login from '~/assets/images/Login.png';
-// @ts-ignore
 import appleIcon from '~/assets/images/apple.png';
-// @ts-ignore
 import facebookIcon from '~/assets/images/fb.png';
 
 import Button from '@mui/material/Button';
@@ -67,15 +63,15 @@ export default function SignInSide() {
         async (data) => getLogin(data),
         {
             onSuccess(data) {
-                    localStorage.setItem('accessToken', data.result.accessToken);
-                    console.log('data: ',data);
-                    setUser(data.result.user);  
-                    window.location.href = '/class';
-                    toast.success('Chào mừng bạn trở lại');
+                localStorage.setItem('accessToken', data.result.accessToken);
+                console.log('data: ', data);
+                setUser(data.result.user);
+                window.location.href = '/class';
+                toast.success('Chào mừng bạn trở lại');
             },
             onError(error) {
                 console.error('Lỗi khi đăng nhập:', error);
-                toast.error('Đăng nhập không thành công. Vui lòng thử lại sau.');
+                //toast.error('Đăng nhập không thành công. Vui lòng thử lại sau.');
             },
         },
     );
@@ -180,7 +176,7 @@ export default function SignInSide() {
     //                                 </Link>
     //                             </Grid>
     //                             <Grid item>
-    //                             Chưa có tài khoản? 
+    //                             Chưa có tài khoản?
     //                                 <Link href="/register" variant="body2">
     //                                     {' Đăng ký ngay'}
     //                                 </Link>
@@ -198,18 +194,31 @@ export default function SignInSide() {
             <Grid container component="main" sx={{ height: '100vh', backgroundColor: '#F9FAFC' }}>
                 <CssBaseline />
                 {/* Left side - Login Form */}
-                <Grid item xs={12} sm={6} md={5} container alignItems="center" justifyContent="center">
+                <Grid
+                    item
+                    xs={12}
+                    sm={6}
+                    md={5}
+                    container
+                    alignItems="center"
+                    justifyContent="center"
+                >
                     <Box sx={{ px: 4, width: '100%', maxWidth: '400px' }}>
                         {/* Title */}
                         <Typography variant="h4" fontWeight="bold" gutterBottom>
                             Chào mừng !
                         </Typography>
-                        <Typography variant="body1" color="textSecondary" >
+                        <Typography variant="body1" color="textSecondary">
                             Chúng tôi rất vui khi có bạn trở lại
                         </Typography>
 
                         {/* Login Form */}
-                        <Box component="form" onSubmit={handleSubmit(submit)} noValidate sx={{ mt: 3 }}>
+                        <Box
+                            component="form"
+                            onSubmit={handleSubmit(submit)}
+                            noValidate
+                            sx={{ mt: 3 }}
+                        >
                             <TextField
                                 margin="normal"
                                 required
@@ -254,7 +263,11 @@ export default function SignInSide() {
                                     />
                                 </Grid>
                                 <Grid item>
-                                    <Link href="/forgot-password" variant="body2" color="textSecondary">
+                                    <Link
+                                        href="/forgot-password"
+                                        variant="body2"
+                                        color="textSecondary"
+                                    >
                                         Quên mật khẩu ?
                                     </Link>
                                 </Grid>
@@ -265,7 +278,14 @@ export default function SignInSide() {
                                 fullWidth
                                 variant="contained"
                                 color="primary"
-                                sx={{ mt: 3, mb: 2, padding: '10px 0', backgroundColor: '#1A237E', color: '#fff' , borderRadius:'20px'}}
+                                sx={{
+                                    mt: 3,
+                                    mb: 2,
+                                    padding: '10px 0',
+                                    backgroundColor: '#1A237E',
+                                    color: '#fff',
+                                    borderRadius: '20px',
+                                }}
                             >
                                 Đăng nhập
                             </Button>
@@ -273,13 +293,24 @@ export default function SignInSide() {
                                 fullWidth
                                 variant="contained"
                                 color="primary"
-                                sx={{  mb: 1, padding: '10px 0', backgroundColor: '#1A237E', color: '#fff' , borderRadius:'20px'}}
+                                sx={{
+                                    mb: 1,
+                                    padding: '10px 0',
+                                    backgroundColor: '#1A237E',
+                                    color: '#fff',
+                                    borderRadius: '20px',
+                                }}
                                 onClick={() => navigate('/')}
                             >
                                 Trang chủ
                             </Button>
 
-                            <Grid container justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
+                            <Grid
+                                container
+                                justifyContent="center"
+                                alignItems="center"
+                                sx={{ mt: 2 }}
+                            >
                                 <Typography variant="body2" color="textSecondary" sx={{ mx: 1 }}>
                                     Or
                                 </Typography>
@@ -307,16 +338,40 @@ export default function SignInSide() {
                 </Grid>
 
                 {/* Right side - Illustration and Register Link */}
-                <Grid item xs={false} sm={6} md={7} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#f5f5f5' }}>
+                <Grid
+                    item
+                    xs={false}
+                    sm={6}
+                    md={7}
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: '#f5f5f5',
+                    }}
+                >
                     <Box sx={{ textAlign: 'center' }}>
-                        <img src={login} alt="Login" style={{ maxWidth: '500px', borderRadius:'20px', width:'350px', height:'300px' }} />
-                        <Typography variant="h5" fontWeight="bold" sx={{ mt: 2, mb:1 }}>
+                        <img
+                            src={login}
+                            alt="Login"
+                            style={{
+                                maxWidth: '500px',
+                                borderRadius: '20px',
+                                width: '350px',
+                                height: '300px',
+                            }}
+                        />
+                        <Typography variant="h5" fontWeight="bold" sx={{ mt: 2, mb: 1 }}>
                             Không có tài khoản?
                         </Typography>
                         <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
                             Bắt đầu bằng cách tạo tài khoản mới của bạn
                         </Typography>
-                        <Button href="/register" variant="outlined" sx={{ px: 4, borderColor: '#1A237E', color: '#1A237E' }}>
+                        <Button
+                            href="/register"
+                            variant="outlined"
+                            sx={{ px: 4, borderColor: '#1A237E', color: '#1A237E' }}
+                        >
                             Đăng ký
                         </Button>
                     </Box>

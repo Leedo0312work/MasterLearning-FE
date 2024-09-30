@@ -3,7 +3,6 @@ import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
 import { Link } from 'react-router-dom';
 
-// @ts-ignore
 import styles from './styles.module.css';
 
 function LesssonContentHeader() {
