@@ -4,7 +4,7 @@ import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import MouseIcon from '@mui/icons-material/Mouse';
 import { useParams } from 'react-router-dom';
-// @ts-ignore
+
 import styles from './styles.module.css';
 import React, { useMemo } from 'react';
 import SiderbarRightHomeWorkTitleItem from '~/components/SiderbarRightHomeWorkTitleItem';

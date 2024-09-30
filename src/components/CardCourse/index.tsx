@@ -37,9 +37,8 @@
 
 // export default CardCourse;
 
-// @ts-ignore
 import styles from './style.module.scss';
-// @ts-ignore
+
 import images from '~/assets/images/default_classes.jpg';
 import { memo } from 'react';
 import { Link } from 'react-router-dom';

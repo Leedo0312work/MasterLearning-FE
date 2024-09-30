@@ -1,4 +1,3 @@
-// @ts-ignore
 import resetImage from '~/assets/images/reset.jpg';
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
@@ -42,27 +41,33 @@ export default function ResetPassword() {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const forgotPasswordToken = decodeURIComponent(new URLSearchParams(location.search).get('token') || '');
+    const forgotPasswordToken = decodeURIComponent(
+        new URLSearchParams(location.search).get('token') || '',
+    );
 
     if (!forgotPasswordToken) {
         toast.error('Token không hợp lệ. Vui lòng yêu cầu lại liên kết đặt lại mật khẩu.');
         navigate('/forgot-password');
         return;
-      }
+    }
 
     const { mutate } = useMutation<
         ResponseAPI<any>, // Đổi kiểu dữ liệu nếu cần
         AxiosError<ResponseAPI>,
         ResetPasswordRequest
-    >('submit', async (data) => resetPassword({ ...data, forgotPasswordToken: forgotPasswordToken }), {
-        onSuccess(data) {
-            toast.success('Đặt lại mật khẩu thành công! Vui lòng đăng nhập lại tài khoản.');
-            navigate('/login');
+    >(
+        'submit',
+        async (data) => resetPassword({ ...data, forgotPasswordToken: forgotPasswordToken }),
+        {
+            onSuccess(data) {
+                toast.success('Đặt lại mật khẩu thành công! Vui lòng đăng nhập lại tài khoản.');
+                navigate('/login');
+            },
+            onError(error) {
+                toast.error('Đặt lại mật khẩu thất bại. Vui lòng thử lại sau.');
+            },
         },
-        onError(error) {
-            toast.error('Đặt lại mật khẩu thất bại. Vui lòng thử lại sau.');
-        }
-    });
+    );
 
     const submit = (data: ResetPasswordRequest) => {
         if (!forgotPasswordToken) {
@@ -70,14 +75,25 @@ export default function ResetPassword() {
             return;
         }
         setIsSubmitting(true);
-        mutate({ ...data, forgotPasswordToken }, {
-            onSettled: () => setIsSubmitting(false)  
-        });
+        mutate(
+            { ...data, forgotPasswordToken },
+            {
+                onSettled: () => setIsSubmitting(false),
+            },
+        );
     };
 
     return (
         <ThemeProvider theme={theme}>
-            <Grid container justifyContent="center" alignItems="center" sx={{ minHeight: '100vh', background: 'linear-gradient(to right, #e0f7fa, #3f51b5)' }}>
+            <Grid
+                container
+                justifyContent="center"
+                alignItems="center"
+                sx={{
+                    minHeight: '100vh',
+                    background: 'linear-gradient(to right, #e0f7fa, #3f51b5)',
+                }}
+            >
                 <Grid item xs={10} md={4}>
                     <Paper elevation={3} sx={{ p: 5, borderRadius: '16px', textAlign: 'center' }}>
                         <img
@@ -85,7 +101,11 @@ export default function ResetPassword() {
                             alt="Reset password illustration"
                             style={{ width: '200px', marginBottom: '20px' }}
                         />
-                        <Typography component="h1" variant="h5" sx={{ fontWeight: 'bold', marginBottom: 3 }}>
+                        <Typography
+                            component="h1"
+                            variant="h5"
+                            sx={{ fontWeight: 'bold', marginBottom: 3 }}
+                        >
                             Reset Password
                         </Typography>
                         <Box component="form" onSubmit={handleSubmit(submit)} sx={{ mt: 1 }}>
@@ -100,7 +120,13 @@ export default function ResetPassword() {
                                 {...register('password', {
                                     required: 'Please enter your new password',
                                 })}
-                                sx={{ mb: 2, '& .MuiOutlinedInput-root': { borderRadius: '8px', borderColor: '#3f51b5' }}}
+                                sx={{
+                                    mb: 2,
+                                    '& .MuiOutlinedInput-root': {
+                                        borderRadius: '8px',
+                                        borderColor: '#3f51b5',
+                                    },
+                                }}
                                 InputProps={{
                                     style: { borderColor: '#3f51b5' }, // blue outline for input
                                 }}
@@ -122,9 +148,15 @@ export default function ResetPassword() {
                                     validate: (value) =>
                                         value === password.current || 'Passwords do not match',
                                 })}
-                                sx={{ mb: 2, '& .MuiOutlinedInput-root': { borderRadius: '8px', borderColor: '#3f51b5' }}}
+                                sx={{
+                                    mb: 2,
+                                    '& .MuiOutlinedInput-root': {
+                                        borderRadius: '8px',
+                                        borderColor: '#3f51b5',
+                                    },
+                                }}
                                 InputProps={{
-                                    style: { borderColor: '#3f51b5' }, 
+                                    style: { borderColor: '#3f51b5' },
                                 }}
                             />
                             {errors.confirmPassword && (
@@ -137,7 +169,14 @@ export default function ResetPassword() {
                                 type="submit"
                                 fullWidth
                                 variant="contained"
-                                sx={{ mt: 3, mb: 2, backgroundColor: '#3f51b5', color: 'white', borderRadius: '8px', '&:hover': { backgroundColor: '#303f9f' } }}
+                                sx={{
+                                    mt: 3,
+                                    mb: 2,
+                                    backgroundColor: '#3f51b5',
+                                    color: 'white',
+                                    borderRadius: '8px',
+                                    '&:hover': { backgroundColor: '#303f9f' },
+                                }}
                             >
                                 {isSubmitting ? 'Processing...' : 'Submit'}
                             </Button>

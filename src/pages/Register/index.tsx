@@ -1,11 +1,11 @@
-import * as React from 'react';
-// @ts-ignore
+import React, { useState } from 'react';
+
 import googleIcon from '~/assets/images/gg.png';
-// @ts-ignore
+
 import register1 from '~/assets/images/register.png';
-// @ts-ignore
+
 import appleIcon from '~/assets/images/apple.png';
-// @ts-ignore
+
 import facebookIcon from '~/assets/images/fb.png';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -30,8 +30,8 @@ import { getLogin, getRegister } from '~/repositories/auth';
 import { ResponseAPI } from '~/app/response';
 import { AxiosError } from 'axios';
 import { useRef } from 'react';
-import { FormControl,InputLabel, Select, MenuItem,FormHelperText } from '@mui/material';
-import { Controller} from 'react-hook-form';
+import { FormControl, InputLabel, Select, MenuItem, FormHelperText } from '@mui/material';
+import { Controller } from 'react-hook-form';
 
 function Copyright(props: any) {
     return (
@@ -49,6 +49,7 @@ function Copyright(props: any) {
 const theme = createTheme();
 
 export default function Register() {
+    const [email, setEmail] = useState<string>('');
     const {
         register,
         formState: { errors },
@@ -68,15 +69,16 @@ export default function Register() {
     >('submit', async (data) => getRegister(data), {
         onSuccess(data) {
             toast.success('Đăng ký thành công! Vui lòng kiểm tra email để xác thực tài khoản.');
-            navigate('/verify-email');
+
+            navigate(`/check-email-noti?email=${encodeURIComponent(email)}`);
         },
         onError(error) {
             if (error.response?.status === 422) {
-                toast.error('Email đã tồn tại, vui lòng sử dụng email khác.');
+                toast.error('Dữ liệu nhập không hợp lệ hoặc Email đã tồn tại.');
             } else {
                 toast.error('Đăng ký thất bại. Vui lòng thử lại sau.');
             }
-        }
+        },
     });
 
     const submit = (data: RegisterForm) => {
@@ -88,23 +90,40 @@ export default function Register() {
             <Grid container component="main" sx={{ height: '100vh', backgroundColor: '#F9FAFC' }}>
                 <CssBaseline />
 
-                {/* Left side - Illustration */}
-                <Grid  item xs={12} sm={7} md={7} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#f5f5f5' }}>
+                <Grid
+                    item
+                    xs={12}
+                    sm={7}
+                    md={7}
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: '#f5f5f5',
+                    }}
+                >
                     <Box sx={{ textAlign: 'center' }}>
-                        <img src={register1} alt="Register Illustration" style={{ maxWidth: '300px' }} />
+                        <img
+                            src={register1}
+                            alt="Register Illustration"
+                            style={{ maxWidth: '300px' }}
+                        />
                         <Typography variant="h5" fontWeight="bold" sx={{ mt: 2, mb: 1 }}>
                             Bạn đã có tài khoản?
                         </Typography>
                         <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
                             Chúng tôi rất vui khi được chào đón bạn trở lại
                         </Typography>
-                        <Button href="/login" variant="outlined" sx={{ px: 4, borderColor: '#1A237E', color: '#1A237E' }}>
+                        <Button
+                            href="/login"
+                            variant="outlined"
+                            sx={{ px: 4, borderColor: '#1A237E', color: '#1A237E' }}
+                        >
                             Đăng nhập
                         </Button>
                     </Box>
                 </Grid>
 
-                {/* Right side - Register Form */}
                 <Grid item xs={false} sm={5} md={5} component={Paper} elevation={6} square>
                     <Box
                         sx={{
@@ -121,15 +140,22 @@ export default function Register() {
                         <Typography variant="body2" color="textSecondary" gutterBottom>
                             Bắt đầu bằng cách tạo tài khoản mới của bạn
                         </Typography>
-                        <Box component="form" noValidate onSubmit={handleSubmit(submit)} sx={{ mt: 1, width: '100%' }}>
+                        <Box
+                            component="form"
+                            noValidate
+                            onSubmit={handleSubmit(submit)}
+                            sx={{ mt: 1, width: '100%' }}
+                        >
                             <TextField
                                 margin="normal"
                                 required
                                 fullWidth
                                 id="email"
                                 label="Email Address"
+                                value={email}
                                 {...register('email', {
                                     required: 'Vui lòng nhập địa chỉ email',
+                                    onChange: (e) => setEmail(e.target.value),
                                     pattern: {
                                         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                                         message: 'Email không hợp lệ',
@@ -167,42 +193,34 @@ export default function Register() {
                                 })}
                             />
                             {errors.date_of_birth && (
-                                <p style={{ color: 'red', margin: 3 }}>{errors.date_of_birth.message}</p>
+                                <p style={{ color: 'red', margin: 3 }}>
+                                    {errors.date_of_birth.message}
+                                </p>
                             )}
 
                             <FormControl fullWidth margin="normal" error={!!errors.role}>
                                 <InputLabel id="role-label">Role</InputLabel>
                                 <Controller
-                                name="role"
-                                control={control}
-                                defaultValue={1}
-                                rules={{ required: 'Please select a role.' }}
-                                render={({ field }) => (
-                                    <Select
-                                    labelId="role-label"
-                                    id="role"
-                                    label="Role"
-                                    {...field}
-                                    >
-                                    <MenuItem value={1}>Student</MenuItem>
-                                    <MenuItem value={2}>Teacher</MenuItem>
-                                    </Select>
-                                )}
+                                    name="role"
+                                    control={control}
+                                    defaultValue={1}
+                                    rules={{ required: 'Please select a role.' }}
+                                    render={({ field }) => (
+                                        <Select
+                                            labelId="role-label"
+                                            id="role"
+                                            label="Role"
+                                            {...field}
+                                        >
+                                            <MenuItem value={1}>Student</MenuItem>
+                                            <MenuItem value={2}>Teacher</MenuItem>
+                                        </Select>
+                                    )}
                                 />
-                                {errors.role && <FormHelperText>{errors.role.message}</FormHelperText>}
+                                {errors.role && (
+                                    <FormHelperText>{errors.role.message}</FormHelperText>
+                                )}
                             </FormControl>
-
-                            {/* <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="phone"
-                                label="Phone Number"
-                                {...register('phone', { required: 'Please enter your phone number' })}
-                            />
-                            {errors.phone && (
-                                <p style={{ color: 'red', margin: 3 }}>{errors.phone.message}</p>
-                            )} */}
 
                             <TextField
                                 margin="normal"
@@ -214,6 +232,7 @@ export default function Register() {
                                 autoComplete="current-password"
                                 {...register('password', {
                                     required: 'Please enter your password.',
+                                    minLength: 6,
                                 })}
                             />
                             {errors.password && (
@@ -238,18 +257,27 @@ export default function Register() {
                                     {errors.confirmPassword.message}
                                 </p>
                             )}
-
-
                             <Button
                                 type="submit"
                                 fullWidth
                                 variant="contained"
-                                sx={{ mt: 3, mb: 1, backgroundColor: '#1A237E', color: '#fff', borderRadius:'20px' }}
+                                sx={{
+                                    mt: 3,
+                                    mb: 1,
+                                    backgroundColor: '#1A237E',
+                                    color: '#fff',
+                                    borderRadius: '20px',
+                                }}
                             >
                                 Đăng ký
                             </Button>
 
-                            <Grid container justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
+                            <Grid
+                                container
+                                justifyContent="center"
+                                alignItems="center"
+                                sx={{ mt: 2 }}
+                            >
                                 <Typography variant="body2" color="textSecondary" sx={{ mx: 1 }}>
                                     Or
                                 </Typography>

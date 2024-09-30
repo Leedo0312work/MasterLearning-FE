@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-// @ts-ignore
+
 import styles from './styles.module.css';
 import clsx from 'clsx';
 import React from 'react';

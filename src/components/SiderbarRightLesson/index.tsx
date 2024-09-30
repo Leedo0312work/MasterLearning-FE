@@ -3,7 +3,7 @@ import BorderColorIcon from '@mui/icons-material/BorderColor';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { Link } from 'react-router-dom';
-// @ts-ignore
+
 import styles from './styles.module.css';
 import useFolderStore from '~/store/useFolderStore';
 import { useQuery } from 'react-query';

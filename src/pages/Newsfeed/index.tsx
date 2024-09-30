@@ -1,4 +1,3 @@
-// @ts-ignore
 import styles from './style.module.css';
 import NewsfeedHeader from '~/components/NewsfeedHeader';
 import NewsfeedSiderBarRight from '~/components/NewsfeedSiderBarRight';
@@ -11,7 +10,8 @@ import { IComment } from '~/models/IComment';
 import useNewsfeedStore from '~/store/useNewsfeedStore';
 
 function Newsfeed() {
-    const { listPost, setListPost, mutateAddPost, mutateAddComment, classId } = useManageMyNewFeeds();
+    const { listPost, setListPost, mutateAddPost, mutateAddComment, classId } =
+        useManageMyNewFeeds();
 
     const handleCreatePost = useCallback((data: Pick<IPost, 'content'>) => {
         mutateAddPost({
