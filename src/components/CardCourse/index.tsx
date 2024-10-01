@@ -49,14 +49,14 @@ type Prop = Pick<IClass, 'name' | '_id' | 'code'>;
 
 function CardCourse({ name, _id, code }: Prop) {
     return (
-        <Link to={`/class/${_id}/newsfeed`} className={styles.cover}>
+        <div  className={styles.cover}>
             <div className={styles.course}>
                 <div className={styles.img_wrap}>
                     <img className={styles.img} src={images} alt="" />
                 </div>
                 <div className={styles.contant}>
                     <div className={styles.text_wrap}>
-                        <p className={styles.name}>{name}</p>
+                        <Link to={`/class/${_id}/newsfeed`} className={styles.link}><p className={styles.name}>{name}</p></Link>                     
                         <p className={styles.code}>{code}</p>
                     </div>
                     <div>
@@ -68,7 +68,8 @@ function CardCourse({ name, _id, code }: Prop) {
                     </div>
                 </div>
             </div>
-        </Link>
+        </div>
+            
     );
 }
 

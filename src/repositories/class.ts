@@ -1,5 +1,5 @@
 import { ResponseAPI } from '~/app/response';
-import { fetchCreateClass, fetchDetailClass, fetchGetClassList, fetchRole, fetchRoles } from '~/services/class';
+import { fetchCreateClass, fetchDetailClass, fetchGetClassList, fetchRole, fetchRoles, fetchSearchClass } from '~/services/class';
 import { CreateClassForm, GetRoleResponse } from '~/types/class';
 import { IClass } from '~/models/IClass';
 import { Role } from '~/enums/role';
@@ -29,3 +29,8 @@ export const getRole = async (classId: number): Promise<Role> => {
     const response = await fetchRole(classId);
     return response.data.data;
 };
+
+export const getSearch = async (code: string) => {
+    const response = await fetchSearchClass(code)
+    return response.data
+}

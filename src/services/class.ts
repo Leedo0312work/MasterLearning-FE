@@ -20,3 +20,7 @@ export const fetchDetailClass = (classId: number) => {
 export const fetchRole = (classId: number) => {
     return API.get(`/v1/classes/${classId}/role`);
 };
+
+export const fetchSearchClass = (code: string) => {
+    return API.post("classes/search", code)
+}
