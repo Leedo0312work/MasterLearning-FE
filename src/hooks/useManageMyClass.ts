@@ -13,7 +13,7 @@ import { CreateClassForm } from '~/types/class';
 
 export default function useManageMyClass() {
     const [listData, setListData] = useState<IClass[]>([]);
-    
+
     const originData = useRef<IClass[]>([]);
     const { data } = useQuery(
         'classes',
@@ -28,27 +28,24 @@ export default function useManageMyClass() {
                 setListData(validData);
                 originData.current = validData;
 
-                console.log("dữ liệu:" ,originData)
+                console.log('dữ liệu:', originData);
             },
         },
     );
-
-    
 
     // const activeClass = useMemo(() => { if (!Boolean(listData) || !Array.isArray(listData)) return []; return listData.filter((item) => item?.statusClass === STATUS.ACTIVE); }, [listData]);
 
     const activeClass = useMemo(() => {
         if (!Boolean(listData) || !Array.isArray(listData)) return [];
-            return Array.isArray(listData[0]) ? listData[0] : [];
+        return Array.isArray(listData[0]) ? listData[0] : [];
     }, [listData]);
-    
 
     const { mutate } = useMutation<ResponseAPI, AxiosError<ResponseAPI>, CreateClassForm>(
         'submit',
         async (classes) => getCreate(classes),
         {
             onMutate: async (newClass) => {
-                setListData((prev) => {
+                setListData((prev: any) => {
                     if (Array.isArray(prev) && Array.isArray(prev[0])) {
                         return [[newClass, ...prev[0]], ...prev.slice(1)];
                     }
@@ -64,10 +61,8 @@ export default function useManageMyClass() {
                     toast.error('Thêm lớp học thất bại');
                 }
             },
-        }
+        },
     );
-    
-
 
     // const handleSearch = useDebounceFunction(({ search, sort }: { search: string; sort: string }) => {
     //     const origin1 = structuredClone(originData.current);
@@ -92,7 +87,7 @@ export default function useManageMyClass() {
     //     }
 
     //     setListData(filter);
-        
+
     // }, 500);
 
     return {

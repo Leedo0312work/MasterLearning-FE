@@ -2,6 +2,7 @@ import { toast } from 'react-toastify';
 
 import API from '~/network/API';
 import { useMutation, useQuery } from 'react-query';
+import axiosIns from '~/services/axios';
 
 export default function useManageJoinClasses() {
     const { mutate: mutateJoin } = useMutation(
@@ -14,7 +15,7 @@ export default function useManageJoinClasses() {
             onSuccess(data) {
                 toast.success('Gửi yêu cầu tham gia lớp học thành công vui lòng chờ xét duyệt');
             },
-            onError(err) {
+            onError(err: any) {
                 console.log(err);
                 if (err.response.data.statusCode === 409) {
                     toast.error('Bạn đã gửi yêu câù vào lớp này rồi');

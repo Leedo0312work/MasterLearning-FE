@@ -15,42 +15,43 @@ import useDebounceFunction from '~/hooks/useDebounceFunction';
 import dayjs from 'dayjs';
 
 function Class() {
-    const { isOpen: openAddModal, open: handleOpenAddModal, close: handleCloseAddModal } = useModal();
-    const { isOpen: openJoinModal, open: handleOpenJoinModal, close: handleCloseJoinModal } = useModal();
+    const {
+        isOpen: openAddModal,
+        open: handleOpenAddModal,
+        close: handleCloseAddModal,
+    } = useModal();
+    const {
+        isOpen: openJoinModal,
+        open: handleOpenJoinModal,
+        close: handleCloseJoinModal,
+    } = useModal();
     const { mutateJoin } = useManageJoinClasses();
-
     const { activeClass, mutate } = useManageMyClass();
+    const [filteredClass, setFilteredClass] = useState<any>(activeClass);
 
-    const [filteredClass, setFilteredClass] = useState(activeClass)
-
-    const [reRender, setReRender] = useState(false);
-
-    const handleSearch = useDebounceFunction(({ search, sort }: { search: string; sort: string }) => {
-
-        const filter = activeClass.filter((item) => item.name.toLowerCase().includes(search.trim().toLowerCase()));
-
-        console.log("mảng 3", filter)
-
-        if (sort === 'A-Z') {
-            filter.sort((a, b) => a?.name?.localeCompare(b?.name));
-        } else if (sort === 'Z-A') {
-            filter.sort((a, b) => b?.name?.localeCompare(a?.name));
-        } else if (sort === 'time_asc') {
-            filter.sort((a, b) => dayjs(b.updatedAt).diff(dayjs(a.updatedAt)));
-        } else if (sort === 'time_desc') {
-            filter.sort((a, b) => dayjs(a?.updatedAt).diff(dayjs(b?.updatedAt)));
+    const handleSearch = ({ search, sort }: { search: string; sort: string }) => {
+        if (!!!search) {
+            console.log('search', search);
+            setFilteredClass(activeClass);
+        } else {
+            const filter = activeClass.filter((item) =>
+                item.name.toLowerCase().includes(search.trim().toLowerCase()),
+            );
+            if (sort === 'A-Z') {
+                filter.sort((a, b) => a?.name?.localeCompare(b?.name));
+            } else if (sort === 'Z-A') {
+                filter.sort((a, b) => b?.name?.localeCompare(a?.name));
+            } else if (sort === 'time_asc') {
+                filter.sort((a, b) => dayjs(b.updatedAt).diff(dayjs(a.updatedAt)));
+            } else if (sort === 'time_desc') {
+                filter.sort((a, b) => dayjs(a?.updatedAt).diff(dayjs(b?.updatedAt)));
+            }
+            setFilteredClass(filter);
         }
+    };
 
-        setFilteredClass(filter);
+    console.log('Active class', activeClass);
 
-        setReRender(!reRender)
-
-        console.log("fileter", filter)
-        
-    }, 500);
-
-    console.log("Active class", activeClass)
- 
     const createClasses = (data: CreateClassForm) => {
         mutate(data);
     };
@@ -69,13 +70,13 @@ function Class() {
         });
     }, [methods.watch('search'), methods.watch('sort')]);
 
-
-
     // moi
     const handleJoinClass = (data: any) => {
         console.log(data);
         mutateJoin(data);
     };
+
+    console.log('filteredClass', filteredClass);
 
     return (
         <div className={styles.wrap}>
@@ -90,8 +91,13 @@ function Class() {
                 {/* <MyClass />  */}
             </div>
             <div className={styles.listClasses}>
-                {filteredClass.map((item, index) => (
-                    <CardCourse key={item?._id} _id={item?._id} name={item?.name} code = {item?.code}/>
+                {filteredClass.map((item: any, index: any) => (
+                    <CardCourse
+                        key={item?._id}
+                        _id={item?._id}
+                        name={item?.name}
+                        code={item?.code}
+                    />
                 ))}
             </div>
             <ClassModalAddEdit
