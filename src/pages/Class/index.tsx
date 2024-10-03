@@ -7,10 +7,12 @@ import ClassHeader from '~/components/ClassHeader';
 import ClassContentHeader from '~/components/ClassContentHeader';
 import useManageMyClass from '~/hooks/useManageMyClass';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { CreateClassForm, SearchClassForm } from '~/types/class';
 import useManageJoinClasses from '~/hooks/useManageJoinClasses';
 import ClassModalJoin from '~/components/ClassModalJoin';
+import useDebounceFunction from '~/hooks/useDebounceFunction';
+import dayjs from 'dayjs';
 
 function Class() {
     const {
@@ -44,11 +46,14 @@ function Class() {
             sort: methods.watch('sort'),
         });
     }, [methods.watch('search'), methods.watch('sort')]);
+
     // moi
     const handleJoinClass = (data: any) => {
         console.log(data);
         mutateJoin(data);
     };
+
+    console.log('filteredClass', filteredClass);
 
     return (
         <div className={styles.wrap}>
@@ -57,10 +62,19 @@ function Class() {
                 <FormProvider {...methods}>
                     <ClassContentHeader handleOpenAddModal={handleOpenAddModal} />
                 </FormProvider>
+
+                {/* <ClassListHeading /> */}
+
+                {/* <MyClass />  */}
             </div>
             <div className={styles.listClasses}>
-                {activeClass.map((item, index) => (
-                    <CardCourse key={item?.id} id={item?.id} name={item?.name} />
+                {filteredClass.map((item: any, index: any) => (
+                    <CardCourse
+                        key={item?._id}
+                        _id={item?._id}
+                        name={item?.name}
+                        code={item?.code}
+                    />
                 ))}
             </div>
             <ClassModalAddEdit

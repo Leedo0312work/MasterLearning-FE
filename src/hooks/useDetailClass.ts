@@ -11,9 +11,9 @@ export default function useDetailClass(classId: number): IClass | undefined {
         onSuccess(response) {
             console.log(response);
         },
-        onError() {
-            navigate('/class');
-        },
+        // onError() {
+        //     navigate('/class');
+        // },
     });
 
     useEffect(() => {

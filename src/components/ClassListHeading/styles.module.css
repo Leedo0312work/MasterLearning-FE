@@ -1,0 +1,21 @@
+.heading {
+    display: flex;
+    background: #EFEFF5;
+    margin-left: -32px;
+    margin-right: -32px;
+    padding: 8px 32px;
+    margin-top: 16px;
+    font-weight: 500;
+    font-size: 13px;
+    align-items: center;
+}
+
+.left {
+    width: 50%;
+}
+
+.right {
+    display: flex;
+    justify-content: space-around; 
+    width: 50%;
+}

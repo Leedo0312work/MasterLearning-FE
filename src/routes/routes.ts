@@ -73,6 +73,16 @@ const routes: Route[] = [
         component: Class,
         layout: DefaultLayout,
         private: true,
+        // children: [
+        //     {
+        //         path: 'myclass',
+        //         component: MyClass,
+        //     },
+        //     {
+        //         path: 'hiddenclass',
+        //         component: HiddenClass,
+        //     },
+        // ],
     },
 
     {
