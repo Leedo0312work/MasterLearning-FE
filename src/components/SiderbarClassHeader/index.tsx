@@ -1,6 +1,5 @@
 import InsertLinkIcon from '@mui/icons-material/InsertLink';
 
-// @ts-ignore
 import styles from './styles.module.css';
 import { useParams } from 'react-router-dom';
 import useDetailClass from '~/hooks/useDetailClass';

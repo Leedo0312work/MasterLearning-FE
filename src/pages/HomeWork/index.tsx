@@ -3,7 +3,6 @@ import HomeWorkContent from '~/components/HomeWorkContent';
 import SiderbarRightHomeWork from '~/components/SiderbarRightHomeWork';
 import LessonHeader from '~/components/LessonHeader';
 
-// @ts-ignore
 import styles from './styles.module.css';
 import SidebarLeftLesson from '~/components/SidebarLeftLesson';
 import UseFolder from '~/hooks/useFolder';

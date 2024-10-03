@@ -1,5 +1,12 @@
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
+import React, { useState } from 'react';
+
+import googleIcon from '~/assets/images/gg.png';
+
+import register1 from '~/assets/images/register.png';
+
+import appleIcon from '~/assets/images/apple.png';
+
+import facebookIcon from '~/assets/images/fb.png';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -23,6 +30,8 @@ import { getLogin, getRegister } from '~/repositories/auth';
 import { ResponseAPI } from '~/app/response';
 import { AxiosError } from 'axios';
 import { useRef } from 'react';
+import { FormControl, InputLabel, Select, MenuItem, FormHelperText } from '@mui/material';
+import { Controller } from 'react-hook-form';
 
 function Copyright(props: any) {
     return (
@@ -40,9 +49,11 @@ function Copyright(props: any) {
 const theme = createTheme();
 
 export default function Register() {
+    const [email, setEmail] = useState<string>('');
     const {
         register,
         formState: { errors },
+        control,
         handleSubmit,
         watch,
     } = useForm<RegisterForm>();
@@ -57,8 +68,16 @@ export default function Register() {
         RegisterForm
     >('submit', async (data) => getRegister(data), {
         onSuccess(data) {
-            navigate('/login');
-            toast.success('Mời bạn đăng nhập lại ');
+            toast.success('Đăng ký thành công! Vui lòng kiểm tra email để xác thực tài khoản.');
+
+            navigate(`/check-email-noti?email=${encodeURIComponent(email)}`);
+        },
+        onError(error) {
+            if (error.response?.status === 422) {
+                toast.error('Dữ liệu nhập không hợp lệ hoặc Email đã tồn tại.');
+            } else {
+                toast.error('Đăng ký thất bại. Vui lòng thử lại sau.');
+            }
         },
     });
 
@@ -68,37 +87,58 @@ export default function Register() {
 
     return (
         <ThemeProvider theme={theme}>
-            <Grid container component="main" sx={{ height: '100vh' }}>
+            <Grid container component="main" sx={{ height: '100vh', backgroundColor: '#F9FAFC' }}>
                 <CssBaseline />
+
                 <Grid
                     item
-                    xs={false}
-                    sm={4}
+                    xs={12}
+                    sm={7}
                     md={7}
                     sx={{
-                        backgroundImage: 'url(https://source.unsplash.com/random)',
-                        backgroundRepeat: 'no-repeat',
-                        backgroundColor: (t) =>
-                            t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: '#f5f5f5',
                     }}
-                />
-                <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+                >
+                    <Box sx={{ textAlign: 'center' }}>
+                        <img
+                            src={register1}
+                            alt="Register Illustration"
+                            style={{ maxWidth: '300px' }}
+                        />
+                        <Typography variant="h5" fontWeight="bold" sx={{ mt: 2, mb: 1 }}>
+                            Bạn đã có tài khoản?
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
+                            Chúng tôi rất vui khi được chào đón bạn trở lại
+                        </Typography>
+                        <Button
+                            href="/login"
+                            variant="outlined"
+                            sx={{ px: 4, borderColor: '#1A237E', color: '#1A237E' }}
+                        >
+                            Đăng nhập
+                        </Button>
+                    </Box>
+                </Grid>
+
+                <Grid item xs={false} sm={5} md={5} component={Paper} elevation={6} square>
                     <Box
                         sx={{
-                            my: 8,
-                            mx: 4,
+                            my: 4,
+                            mx: 3,
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
                         }}
                     >
-                        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                            <LockOutlinedIcon />
-                        </Avatar>
-                        <Typography component="h1" variant="h5">
-                            Đăng ký tài khoản
+                        <Typography component="h1" variant="h5" fontWeight="bold" gutterBottom>
+                            Tạo tài khoản
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary" gutterBottom>
+                            Bắt đầu bằng cách tạo tài khoản mới của bạn
                         </Typography>
                         <Box
                             component="form"
@@ -111,12 +151,11 @@ export default function Register() {
                                 required
                                 fullWidth
                                 id="email"
-                                type="email"
-                                label="Email "
-                                autoComplete="email"
-                                autoFocus
+                                label="Email Address"
+                                value={email}
                                 {...register('email', {
                                     required: 'Vui lòng nhập địa chỉ email',
+                                    onChange: (e) => setEmail(e.target.value),
                                     pattern: {
                                         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                                         message: 'Email không hợp lệ',
@@ -126,20 +165,63 @@ export default function Register() {
                             {errors.email && (
                                 <p style={{ color: 'red', margin: 3 }}>{errors.email.message}</p>
                             )}
+
                             <TextField
                                 margin="normal"
                                 required
                                 fullWidth
-                                label="Tên đăng nhập"
-                                type="username"
-                                id="username"
-                                {...register('username', {
+                                label="Họ tên"
+                                type="name"
+                                id="name"
+                                {...register('name', {
                                     required: 'Please enter your username.',
                                 })}
                             />
-                            {errors.username && (
-                                <p style={{ color: 'red', margin: 3 }}>{errors.username.message}</p>
+                            {errors.name && (
+                                <p style={{ color: 'red', margin: 3 }}>{errors.name.message}</p>
                             )}
+
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                label=""
+                                type="date"
+                                id="date_of_birth"
+                                {...register('date_of_birth', {
+                                    required: 'Please enter your birthday.',
+                                })}
+                            />
+                            {errors.date_of_birth && (
+                                <p style={{ color: 'red', margin: 3 }}>
+                                    {errors.date_of_birth.message}
+                                </p>
+                            )}
+
+                            <FormControl fullWidth margin="normal" error={!!errors.role}>
+                                <InputLabel id="role-label">Role</InputLabel>
+                                <Controller
+                                    name="role"
+                                    control={control}
+                                    defaultValue={1}
+                                    rules={{ required: 'Please select a role.' }}
+                                    render={({ field }) => (
+                                        <Select
+                                            labelId="role-label"
+                                            id="role"
+                                            label="Role"
+                                            {...field}
+                                        >
+                                            <MenuItem value={1}>Student</MenuItem>
+                                            <MenuItem value={2}>Teacher</MenuItem>
+                                        </Select>
+                                    )}
+                                />
+                                {errors.role && (
+                                    <FormHelperText>{errors.role.message}</FormHelperText>
+                                )}
+                            </FormControl>
+
                             <TextField
                                 margin="normal"
                                 required
@@ -150,6 +232,7 @@ export default function Register() {
                                 autoComplete="current-password"
                                 {...register('password', {
                                     required: 'Please enter your password.',
+                                    minLength: 6,
                                 })}
                             />
                             {errors.password && (
@@ -158,7 +241,7 @@ export default function Register() {
 
                             <TextField
                                 margin="normal"
-                                {...register('password_repeat', {
+                                {...register('confirmPassword', {
                                     required: 'Please enter your repeat password.',
                                     validate: (value) =>
                                         value === password.current || 'The passwords do not match',
@@ -169,20 +252,54 @@ export default function Register() {
                                 type="password"
                                 autoComplete="current-password"
                             />
-                            {errors.password_repeat && (
+                            {errors.confirmPassword && (
                                 <p style={{ color: 'red', margin: 1 }}>
-                                    {errors.password_repeat.message}
+                                    {errors.confirmPassword.message}
                                 </p>
                             )}
-
                             <Button
                                 type="submit"
                                 fullWidth
                                 variant="contained"
-                                sx={{ mt: 3, mb: 2 }}
+                                sx={{
+                                    mt: 3,
+                                    mb: 1,
+                                    backgroundColor: '#1A237E',
+                                    color: '#fff',
+                                    borderRadius: '20px',
+                                }}
                             >
-                                Đăng ký ngay
+                                Đăng ký
                             </Button>
+
+                            <Grid
+                                container
+                                justifyContent="center"
+                                alignItems="center"
+                                sx={{ mt: 2 }}
+                            >
+                                <Typography variant="body2" color="textSecondary" sx={{ mx: 1 }}>
+                                    Or
+                                </Typography>
+                            </Grid>
+
+                            <Grid container spacing={2} sx={{ mt: 1 }}>
+                                <Grid item xs={4}>
+                                    <Button fullWidth sx={{ borderColor: '#ddd' }}>
+                                        <img src={googleIcon} alt="Google" width="24" />
+                                    </Button>
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <Button fullWidth sx={{ borderColor: '#ddd' }}>
+                                        <img src={appleIcon} alt="Apple" width="24" />
+                                    </Button>
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <Button fullWidth sx={{ borderColor: '#ddd' }}>
+                                        <img src={facebookIcon} alt="Facebook" width="24" />
+                                    </Button>
+                                </Grid>
+                            </Grid>
                         </Box>
                     </Box>
                 </Grid>

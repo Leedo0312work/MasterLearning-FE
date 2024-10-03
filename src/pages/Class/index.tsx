@@ -1,5 +1,5 @@
 import CardCourse from '~/components/CardCourse';
-// @ts-ignore
+
 import styles from './styles.module.css';
 import ClassModalAddEdit from '~/components/ClassModalAddEdit';
 import useModal from '~/hooks/useModal';
@@ -26,31 +26,8 @@ function Class() {
         close: handleCloseJoinModal,
     } = useModal();
     const { mutateJoin } = useManageJoinClasses();
-    const { activeClass, mutate } = useManageMyClass();
-    const [filteredClass, setFilteredClass] = useState<any>(activeClass);
 
-    const handleSearch = ({ search, sort }: { search: string; sort: string }) => {
-        if (!!!search) {
-            console.log('search', search);
-            setFilteredClass(activeClass);
-        } else {
-            const filter = activeClass.filter((item) =>
-                item.name.toLowerCase().includes(search.trim().toLowerCase()),
-            );
-            if (sort === 'A-Z') {
-                filter.sort((a, b) => a?.name?.localeCompare(b?.name));
-            } else if (sort === 'Z-A') {
-                filter.sort((a, b) => b?.name?.localeCompare(a?.name));
-            } else if (sort === 'time_asc') {
-                filter.sort((a, b) => dayjs(b.updatedAt).diff(dayjs(a.updatedAt)));
-            } else if (sort === 'time_desc') {
-                filter.sort((a, b) => dayjs(a?.updatedAt).diff(dayjs(b?.updatedAt)));
-            }
-            setFilteredClass(filter);
-        }
-    };
-
-    console.log('Active class', activeClass);
+    const { activeClass, mutate, handleSearch } = useManageMyClass();
 
     const createClasses = (data: CreateClassForm) => {
         mutate(data);

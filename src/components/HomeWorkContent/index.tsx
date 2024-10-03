@@ -1,5 +1,5 @@
 import HomeWorkContentHeader from '~/components/HomeWorkContentHeader';
-// @ts-ignore
+
 import styles from './styles.module.css';
 import HomeWorkItem from '~/components/HomeWorkItem';
 import useGetExerciseInClass from '~/hooks/useGetExercisesInClass';

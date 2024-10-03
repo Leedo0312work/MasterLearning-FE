@@ -1,5 +1,5 @@
 import { Button, TextareaAutosize, TextField } from '@mui/material';
-// @ts-ignore
+
 import styles from './styles.module.css';
 import FindInPageIcon from '@mui/icons-material/FindInPage';
 import { useFormContext } from 'react-hook-form';

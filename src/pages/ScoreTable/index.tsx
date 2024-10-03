@@ -1,4 +1,3 @@
-// @ts-ignore
 import styles from './styles.module.css';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import Paper from '@mui/material/Paper';

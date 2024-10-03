@@ -1,5 +1,7 @@
 import React, { ExoticComponent, Fragment, lazy, ReactNode } from 'react';
 
+import DefaultLayout from '~/layout/Default';
+
 const Home = lazy(() => import('~/pages/Home'));
 const Login = lazy(() => import('~/pages/Login'));
 const Register = lazy(() => import('~/pages/Register'));
@@ -19,8 +21,13 @@ const ScoreTable = lazy(() => import('~/pages/ScoreTable'));
 const EditHomework = lazy(() => import('~/pages/EditHomework/index'));
 const TestHomework = lazy(() => import('~/pages/TestHomework/index'));
 const DoHomework = lazy(() => import('~/pages/DoHomework/index'));
+const VerifyEmail = lazy(() => import('~/pages/VerifyEmail/index'));
+const ForgotPassword = lazy(() => import('~/pages/ForgotPassword'));
+const ResetPassword = lazy(() => import('~/pages/ResetPassword')); 
+const CheckEmailNoti = lazy(() => import('~/pages/CheckEmailNoti'));
 
-import DefaultLayout from '~/layout/Default';
+
+
 
 interface Route {
     path: string;
@@ -50,6 +57,18 @@ const routes: Route[] = [
         component: Register,
     },
     {
+        path: '/forgot-password',
+        component: ForgotPassword,
+    },
+    {
+        path: '/check-email-noti',
+        component: CheckEmailNoti,
+    },
+    {
+        path: '/reset-password',
+        component: ResetPassword,
+    },
+    {
         path: '/class',
         component: Class,
         layout: DefaultLayout,
@@ -76,6 +95,10 @@ const routes: Route[] = [
         path: '/resource',
         component: Resource,
         layout: DefaultLayout,
+    },
+    {
+        path: '/verify-email',
+        component: VerifyEmail,
     },
     {
         path: '/class/:id',

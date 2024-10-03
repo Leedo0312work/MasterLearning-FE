@@ -1,4 +1,3 @@
-// @ts-ignore
 import styles from './styles.module.css';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
@@ -13,7 +12,13 @@ interface Prop {
     to: string;
 }
 
-function SiderbarClassitem({ active = false, footer = false, Icon = Fragment, text = '', to = '' }: Prop) {
+function SiderbarClassitem({
+    active = false,
+    footer = false,
+    Icon = Fragment,
+    text = '',
+    to = '',
+}: Prop) {
     return (
         <Link
             to={to}

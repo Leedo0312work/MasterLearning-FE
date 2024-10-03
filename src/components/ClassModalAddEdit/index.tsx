@@ -1,4 +1,3 @@
-// @ts-ignore
 import styles from './styles.module.css';
 
 import * as React from 'react';
@@ -20,17 +19,15 @@ interface Prop {
     subMitForm: (data: CreateClassForm) => void;
 }
 
-function ClassModalAddEdit({ openAddModal = false, title, handleCloseAddModal = () => {}, subMitForm }: Prop) {
-
-    const [classType, setClassType] = useState('')
-
+function ClassModalAddEdit({
+    openAddModal = false,
+    title,
+    handleCloseAddModal = () => {},
+    subMitForm,
+}: Prop) {
     const { register, handleSubmit, reset } = useForm<CreateClassForm>({
-        defaultValues: {
-            type: '',
-        },
         shouldUseNativeValidation: true,
     });
-
     const style = {
         position: 'absolute',
         top: '50%',
@@ -51,11 +48,11 @@ function ClassModalAddEdit({ openAddModal = false, title, handleCloseAddModal = 
         const password = data.password?.trim() || '';
 
         reset({
-            type: '', 
+            type: '',
             name: '',
             description: '',
             topic: '',
-            password: ''
+            password: '',
         });
 
         handleCloseAddModal();
@@ -64,10 +61,10 @@ function ClassModalAddEdit({ openAddModal = false, title, handleCloseAddModal = 
             name,
             description,
             topic,
-            password
+            password,
         });
 
-        console.log(data)
+        console.log(data);
     };
 
     return (
@@ -78,7 +75,13 @@ function ClassModalAddEdit({ openAddModal = false, title, handleCloseAddModal = 
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style} className={styles.box} component="form" noValidate onSubmit={handleSubmit(submit)}>
+                <Box
+                    sx={style}
+                    className={styles.box}
+                    component="form"
+                    noValidate
+                    onSubmit={handleSubmit(submit)}
+                >
                     <div className={styles.header}>
                         <div className={styles.header_text}>{title}</div>
                         <div className={styles.close}>
@@ -142,7 +145,10 @@ function ClassModalAddEdit({ openAddModal = false, title, handleCloseAddModal = 
                         )}
                     </div>
                     <div className={styles.footer}>
-                        <Button type="submit" className={clsx(styles.submit, { [styles.active]: true })}>
+                        <Button
+                            type="submit"
+                            className={clsx(styles.submit, { [styles.active]: true })}
+                        >
                             Thêm
                         </Button>
                     </div>

@@ -2,7 +2,6 @@ import LessonHeader from '~/components/LessonHeader';
 import SiderbarLessonAddEdit from '~/components/SiderbarLessonAddEdit';
 import BoxInputLessonAdd from '~/components/BoxInputLessonAdd';
 
-// @ts-ignore
 import styles from './styles.module.css';
 import { useForm, FormProvider } from 'react-hook-form';
 import { FormLessonType } from '~/types/lesson';

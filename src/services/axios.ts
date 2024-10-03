@@ -13,6 +13,7 @@ const axiosN = axios.create({
 
 axiosN.interceptors.request.use(
     (config) => {
+        config.headers = config.headers ?? {};
         config.headers['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
         return config;
     },
@@ -21,7 +22,7 @@ axiosN.interceptors.request.use(
         return Promise.reject(error);
     },
 );
-export const refreshTokenFunc = async (refreshToken) => {
+export const refreshTokenFunc = async (refreshToken: string) => {
     try {
         const res = await axiosN.post('/users/refresh-token', { refreshToken });
         localStorage.setItem('accessToken', res.data.result.accessToken);
@@ -39,10 +40,10 @@ const checkToken = async () => {
         const decodedToken = jwtDecode.jwtDecode(accessToken);
         const decodedRFToken = jwtDecode.jwtDecode(refreshToken);
         let date = new Date();
-        if (decodedRFToken.exp < date.getTime() / 1000) {
+        if ((decodedRFToken as { exp: number }).exp < date.getTime() / 1000) {
             window.location.href = '/login?jwt=out';
         }
-        if (decodedToken.exp < date.getTime() / 1000) {
+        if ((decodedToken as { exp: number }).exp < date.getTime() / 1000) {
             await refreshTokenFunc(refreshToken);
         }
         return true;
@@ -53,7 +54,7 @@ const checkToken = async () => {
 };
 
 class Axios {
-    async post(url, data, callback) {
+    async post(url: string, data: any, callback?: (res: any) => void) {
         const response = await axiosN
             .post(url, data)
             .then((res) => {
@@ -71,7 +72,7 @@ class Axios {
         return response;
     }
 
-    async postAuth(url, data, callback) {
+    async postAuth(url: string, data: any, callback?: (res: any) => void) {
         await checkToken();
         const response = await axiosN
             .post(url, data)
@@ -90,7 +91,7 @@ class Axios {
         return response;
     }
 
-    async get(url, callback) {
+    async get(url: string, callback?: (res: any) => void) {
         const response = await axiosN
             .get(url)
             .then((res) => {
@@ -108,7 +109,7 @@ class Axios {
         return response;
     }
 
-    async getAuth(url: string, callback?: any) {
+    async getAuth(url: string, callback?: (res: any) => void) {
         await checkToken();
         const response = await axiosN
             .get(url)
