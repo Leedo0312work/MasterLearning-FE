@@ -1,5 +1,5 @@
 import Post from '~/components/Post';
-// @ts-ignore
+
 import styles from './styles.module.css';
 import CreatePost from '~/components/CreatePost';
 import useAuthStore from '~/store/useAuthStore';

@@ -10,6 +10,7 @@ export interface RegisterForm {
     role: number;
     confirmPassword: string;
     date_of_birth: string;
+    forgotPasswordToken: string;
 }
 export interface RegisterResponse {
     data: object;

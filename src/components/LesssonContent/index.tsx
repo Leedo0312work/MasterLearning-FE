@@ -1,6 +1,6 @@
 import LesssonContentHeader from '~/components/LesssonContentHeader';
 import CardVideo from '~/components/CardVideo';
-// @ts-ignore
+
 import styles from './styles.module.css';
 import useFolderStore from '~/store/useFolderStore';
 import { useQuery } from 'react-query';

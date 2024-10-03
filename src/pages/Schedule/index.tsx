@@ -1,7 +1,6 @@
 import { Grid } from '@mui/material';
 import { useMemo, useState } from 'react';
 
-// @ts-ignore
 import styles from './styles.module.css';
 import ScheduleColTable from '~/components/ScheduleColTable';
 import ScheduleHeader from '~/components/ScheduleHeader';
@@ -134,7 +133,9 @@ function Schedule() {
             />
             <Grid container>
                 {dates?.map((item, index) => {
-                    return <ScheduleColTable addSchedule={handleOpenModal} key={index} item={item} />;
+                    return (
+                        <ScheduleColTable addSchedule={handleOpenModal} key={index} item={item} />
+                    );
                 })}
             </Grid>
         </div>

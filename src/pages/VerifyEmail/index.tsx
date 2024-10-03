@@ -1,6 +1,7 @@
 
 import { useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import API from '~/network/API'; 
 import axiosIns from '~/services/axios';
 
@@ -19,6 +20,7 @@ const VerifyEmail: React.FC = () => {
               console.log('Received emailVerifyToken:', response.data.emailVerifyToken);
               alert('Xác thực email thành công');
               navigate('/login'); 
+              toast.success('Mời bạn đăng nhập lại ');
             } else {
               throw new Error('Token verification failed');
             }

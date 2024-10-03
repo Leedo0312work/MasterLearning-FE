@@ -3,7 +3,6 @@ import AddIcon from '@mui/icons-material/Add';
 import { memo } from 'react';
 import TextField from '@mui/material/TextField';
 
-// @ts-ignore
 import styles from './styles.module.css';
 import { useFormContext, Controller } from 'react-hook-form';
 import SelectMaterial from '~/components/SelectMaterial/index';

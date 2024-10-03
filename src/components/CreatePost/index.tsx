@@ -1,6 +1,5 @@
-// @ts-ignore
 import styles from './styles.module.css';
-// @ts-ignore
+
 import avatarDefault from '~/assets/images/avatar_default.png';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 import { Box, Button } from '@mui/material';
@@ -37,7 +36,11 @@ function CreatePost({ handleCreatePost, avatar }: Prop) {
         <div className={styles.wrap}>
             <Box className={styles.container} component="form" onSubmit={handleSubmit(submit)}>
                 <div className={styles.header}>
-                    <img src={avatar || avatarDefault} alt="" className={'tw-h-12 tw-w-12 tw-rounded-full'} />
+                    <img
+                        src={avatar || avatarDefault}
+                        alt=""
+                        className={'tw-h-12 tw-w-12 tw-rounded-full'}
+                    />
                     <div className={styles.input}>
                         <TextareaAutosize
                             aria-label="minimum height"
@@ -52,7 +55,11 @@ function CreatePost({ handleCreatePost, avatar }: Prop) {
                     <Button sx={{ fontSize: 14 }} className={clsx(styles.button, styles.addImg)}>
                         Thêm hình
                     </Button>
-                    <Button type="submit" sx={{ fontSize: 14 }} className={clsx(styles.button, styles.post)}>
+                    <Button
+                        type="submit"
+                        sx={{ fontSize: 14 }}
+                        className={clsx(styles.button, styles.post)}
+                    >
                         Đăng tin
                     </Button>
                 </div>

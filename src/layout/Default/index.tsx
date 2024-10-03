@@ -1,5 +1,5 @@
 import Header from '~/components/Header';
-// @ts-ignore
+
 import styles from './style.module.scss';
 
 interface Prop {

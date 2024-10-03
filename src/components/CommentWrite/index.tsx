@@ -1,5 +1,5 @@
 import { Box, TextField } from '@mui/material';
-// @ts-ignore
+
 import styles from './style.module.scss';
 import { toast } from 'react-toastify';
 

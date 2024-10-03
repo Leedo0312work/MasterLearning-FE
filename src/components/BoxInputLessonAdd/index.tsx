@@ -1,5 +1,5 @@
 import TextField from '@mui/material/TextField';
-// @ts-ignore
+
 import styles from './styles.module.css';
 import { useFormContext } from 'react-hook-form';
 import { FormLessonType } from '~/types/lesson';
