@@ -37,39 +37,52 @@
 
 // export default CardCourse;
 
+// @ts-ignore
 import styles from './style.module.scss';
-
-import images from '~/assets/images/default_classes.jpg';
+// @ts-ignore
+import images from '~/assets/images/default_classes2.jpg';
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { IClass } from '~/models/IClass';
 
-type Prop = Pick<IClass, 'name' | '_id' | 'code'>;
+type Prop = Pick<IClass, 'name' | '_id' | 'code' | 'teacher'>;
 
-function CardCourse({ name, _id, code }: Prop) {
+function CardCourse({ name, _id, code, teacher }: Prop) {
     return (
-        <div className={styles.cover}>
+        <Link to={`/class/${_id}/newsfeed`} className={styles.cover}>
             <div className={styles.course}>
                 <div className={styles.img_wrap}>
                     <img className={styles.img} src={images} alt="" />
                 </div>
                 <div className={styles.contant}>
                     <div className={styles.text_wrap}>
-                        <Link to={`/class/${_id}/newsfeed`} className={styles.link}>
-                            <p className={styles.name}>{name}</p>
-                        </Link>
+                        <p className={styles.name}>{name}</p>
                         <p className={styles.code}>{code}</p>
                     </div>
-                    <div>
-                        <img
-                            className={styles.btn}
-                            src="https://www.shareicon.net/data/512x512/2016/06/04/775696_interface_512x512.png"
-                            alt=""
-                        />
+                    <div className={styles.teachers}>
+                        {teacher.map((teacher:any, index:any) => {
+                            const teacherInitial = teacher.name.charAt(0).toUpperCase();
+                            return (
+                                <div key={index} className={styles.avatar_wrap}>
+                                    {teacher.avatar ? (
+                                        <img
+                                            className={styles.avatar}
+                                            src={teacher.avatar}
+                                            alt="Teacher Avatar"
+                                        />
+                                    ) : (
+                                        <div className={styles.avatar_placeholder}>
+                                            {teacherInitial}
+                                        </div>
+                                    )}
+                                    <p className={styles.teacher_name}>{teacher.name}</p>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
             </div>
-        </div>
+        </Link>
     );
 }
 

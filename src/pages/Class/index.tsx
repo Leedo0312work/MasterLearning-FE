@@ -1,5 +1,5 @@
 import CardCourse from '~/components/CardCourse';
-
+// @ts-ignore
 import styles from './styles.module.css';
 import ClassModalAddEdit from '~/components/ClassModalAddEdit';
 import useModal from '~/hooks/useModal';
@@ -11,7 +11,6 @@ import { useEffect, useState } from 'react';
 import { CreateClassForm, SearchClassForm } from '~/types/class';
 import useManageJoinClasses from '~/hooks/useManageJoinClasses';
 import ClassModalJoin from '~/components/ClassModalJoin';
-import useDebounceFunction from '~/hooks/useDebounceFunction';
 import dayjs from 'dayjs';
 
 function Class() {
@@ -25,9 +24,33 @@ function Class() {
         open: handleOpenJoinModal,
         close: handleCloseJoinModal,
     } = useModal();
+    
     const { mutateJoin } = useManageJoinClasses();
 
-    const { activeClass, mutate, handleSearch } = useManageMyClass();
+    const { activeClass, mutate } = useManageMyClass();
+    const [filteredClass, setFilteredClass] = useState<any>(activeClass);
+
+   
+
+    const handleSearch = ({ search, sort }: { search: string; sort: string }) => {
+            const filter = activeClass.filter((item) =>
+                item.name.toLowerCase().includes(search.trim().toLowerCase()),
+            );
+            console.log("giá trị sort", sort)
+            console.log("giá trị search", search)
+            if (sort === 'A-Z') {
+                filter.sort((a, b) => a?.name?.localeCompare(b?.name));
+            } else if (sort === 'Z-A') {
+                filter.sort((a, b) => b?.name?.localeCompare(a?.name));
+            } else if (sort === 'time_asc') {
+                filter.sort((a, b) => dayjs(b.updated_at).diff(dayjs(a.updated_at)));
+            } else if (sort === 'time_desc') {
+                filter.sort((a, b) => dayjs(a?.updated_at).diff(dayjs(b?.updated_at)));
+            }
+
+            setFilteredClass(filter);
+        
+    };
 
     const createClasses = (data: CreateClassForm) => {
         mutate(data);
@@ -35,25 +58,17 @@ function Class() {
 
     const methods = useForm<SearchClassForm>({
         defaultValues: {
+            search: '',
             sort: 'default',
         },
     });
 
     useEffect(() => {
-        const value = methods.watch('search');
         handleSearch({
-            search: value,
-            sort: methods.watch('sort'),
+            search: methods.watch('search'),
+            sort:  methods.watch('sort'),
         });
-    }, [methods.watch('search'), methods.watch('sort')]);
-
-    // moi
-    const handleJoinClass = (data: any) => {
-        console.log(data);
-        mutateJoin(data);
-    };
-
-    console.log('filteredClass', filteredClass);
+    }, [methods.watch('search'), methods.watch('sort'), activeClass]);
 
     return (
         <div className={styles.wrap}>
@@ -62,20 +77,19 @@ function Class() {
                 <FormProvider {...methods}>
                     <ClassContentHeader handleOpenAddModal={handleOpenAddModal} />
                 </FormProvider>
-
-                {/* <ClassListHeading /> */}
-
-                {/* <MyClass />  */}
             </div>
             <div className={styles.listClasses}>
-                {filteredClass.map((item: any, index: any) => (
-                    <CardCourse
-                        key={item?._id}
-                        _id={item?._id}
-                        name={item?.name}
-                        code={item?.code}
-                    />
-                ))}
+                {
+                    filteredClass.map((item: any, index: any) => (
+                        <CardCourse
+                            key={item?._id}
+                            _id={item?._id}
+                            name={item?.name}
+                            code={item?.code}
+                            teacher={item?.teacher}
+                        />
+                    ))
+                }
             </div>
             <ClassModalAddEdit
                 subMitForm={createClasses}
@@ -84,7 +98,6 @@ function Class() {
                 title="Thêm lớp học mới"
             />
             <ClassModalJoin
-                subMitForm={handleJoinClass}
                 openJoinModal={openJoinModal}
                 handleCloseJoinModal={handleCloseJoinModal}
             />
