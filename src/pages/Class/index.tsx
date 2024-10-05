@@ -53,7 +53,7 @@ function Class() {
         mutateJoin(data);
     };
 
-    console.log('filteredClass', filteredClass);
+    //console.log('filteredClass', filteredClass);
 
     return (
         <div className={styles.wrap}>
@@ -67,7 +67,7 @@ function Class() {
 
                 {/* <MyClass />  */}
             </div>
-            <div className={styles.listClasses}>
+            {/* <div className={styles.listClasses}>
                 {filteredClass.map((item: any, index: any) => (
                     <CardCourse
                         key={item?._id}
@@ -76,7 +76,7 @@ function Class() {
                         code={item?.code}
                     />
                 ))}
-            </div>
+            </div> */}
             <ClassModalAddEdit
                 subMitForm={createClasses}
                 openAddModal={openAddModal}

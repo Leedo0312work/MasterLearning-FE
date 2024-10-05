@@ -2,7 +2,7 @@ import { FormLessonType } from '~/types/lesson';
 import API from '~/network/API';
 
 export const fetchCreateLesson = (data: FormLessonType) => {
-    return API.post('/v1/lessons', data);
+    return API.post('/lessons/create', data);
 };
 
 export const fetchGetLessonByFolder = (folderId: number) => {

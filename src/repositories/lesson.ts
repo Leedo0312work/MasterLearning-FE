@@ -20,6 +20,6 @@ export const getLessonById = async (id: number): Promise<ILesson> => {
 };
 
 export const getUpdateLesson = async (id: number, data: FormLessonType): Promise<ResponseAPI> => {
-    const response = await API.put(`/v1/lessons/${id}`, data);
+    const response = await API.put(`/lessons/update/${id}`, data);
     return response.data;
 };
