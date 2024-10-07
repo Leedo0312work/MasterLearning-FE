@@ -46,7 +46,7 @@ const routes: Route[] = [
     {
         path: '/',
         component: Home,
-        // layout: DefaultLayout,
+        layout: DefaultLayout,
     },
     {
         path: '/login',
@@ -71,8 +71,8 @@ const routes: Route[] = [
     {
         path: '/class',
         component: Class,
-        // layout: DefaultLayout,
-        private: true,
+        layout: DefaultLayout,
+        // private: true,
     },
 
     {
@@ -93,7 +93,7 @@ const routes: Route[] = [
     {
         path: '/class/:id',
         component: DetailClass,
-        // layout: DefaultLayout,
+        layout: DefaultLayout,
         private: true,
         children: [
             {

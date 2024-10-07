@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from '~/App';
 import '~/styles/global.scss';
+import '~/index.css';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ConfirmProvider } from 'material-ui-confirm';
 import { LocalizationProvider } from '@mui/x-date-pickers';

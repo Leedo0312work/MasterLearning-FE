@@ -11,7 +11,7 @@ const defaultAvatar =
 
 interface Prop {
     postId: number;
-    handleCreateComment: (comment: Pick<IComment, 'content' | 'postId'>) => void;
+    handleCreateComment: (comment: Pick<IComment, 'content' | 'parent_id'>) => void;
     avatar?: string;
 }
 
@@ -23,7 +23,7 @@ function CommentWrite({ postId, handleCreateComment, avatar }: Prop) {
         if (content !== '') {
             handleCreateComment({
                 content,
-                postId: postId,
+                parent_id: parent_id,
             });
             reset({
                 content: '',
