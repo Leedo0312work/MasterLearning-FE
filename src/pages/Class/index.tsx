@@ -24,13 +24,9 @@ function Class() {
         open: handleOpenJoinModal,
         close: handleCloseJoinModal,
     } = useModal();
-    
-    const { mutateJoin } = useManageJoinClasses();
 
     const { activeClass, mutate } = useManageMyClass();
     const [filteredClass, setFilteredClass] = useState<any>(activeClass);
-
-   
 
     const handleSearch = ({ search, sort }: { search: string; sort: string }) => {
             const filter = activeClass.filter((item) =>
