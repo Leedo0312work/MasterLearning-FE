@@ -25,7 +25,12 @@ function ClassModalAddEdit({
     handleCloseAddModal = () => {},
     subMitForm,
 }: Prop) {
+    const [classType, setClassType] = useState('')
+
     const { register, handleSubmit, reset } = useForm<CreateClassForm>({
+        defaultValues: {
+            type: '',
+        },
         shouldUseNativeValidation: true,
     });
     const style = {

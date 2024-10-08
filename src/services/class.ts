@@ -22,5 +22,7 @@ export const fetchRole = (classId: number) => {
 };
 
 export const fetchSearchClass = (code: string) => {
-    return API.post("classes/search", code)
+    return API.post("classes/find-by-code", {
+        "code": code
+    })
 }

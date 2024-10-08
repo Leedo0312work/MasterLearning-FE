@@ -9,9 +9,13 @@ import { getCreateLesson, getUpdateLesson } from '~/repositories/lesson';
 import { useMutation } from 'react-query';
 import useFolderStore from '~/store/useFolderStore';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import mediaServices from '~/services/media';
 
 function SiderbarLessonAddEdit() {
     const { control, handleSubmit } = useFormContext<FormLessonType>();
+    const [attachedFiles, setAttachedFiles] = useState<File[]>([]);
+    const [attachedMedias, setAttachedMedias] = useState<File[]>([]);
 
     const { id } = useParams();
 
@@ -35,17 +39,51 @@ function SiderbarLessonAddEdit() {
 
     const navigate = useNavigate();
 
-    const submit = (data: FormLessonType) => {
-        if (Boolean(data?.id)) {
-            mutateEdit({
-                ...data,
-                folderId: Number(folderId),
-            });
-        } else {
-            mutate({
-                ...data,
-                folderId: Number(folderId),
-            });
+    const submit = async (data: FormLessonType) => {
+        let uploadedFiles: any[] = [];
+        let uploadedMedias: any[] = [];
+
+        try {
+            // Upload tài liệu PDF
+            if (attachedFiles.length > 0) {
+                const pdfRes = await mediaServices.uploadPDF(attachedFiles);
+                uploadedFiles = pdfRes.result;
+            }
+
+            // Upload hình ảnh và video
+            if (attachedMedias.length > 0) {
+                const images = attachedMedias.filter((file) => file.type.startsWith('image/'));
+                const videos = attachedMedias.filter((file) => file.type.startsWith('video/'));
+
+                if (images.length > 0) {
+                    const imagesRes = await mediaServices.uploadImage(images);
+                    uploadedMedias = [...uploadedMedias, ...imagesRes.result];
+                }
+
+                if (videos.length > 0) {
+                    const videosRes = await mediaServices.uploadVideoHLS(videos);
+                    uploadedMedias = [...uploadedMedias, ...videosRes.map((res) => res.result[0])];
+                }
+            }
+
+            // Sau khi upload thành công, thực hiện tạo hoặc cập nhật bài giảng
+            if (Boolean(data?.id)) {
+                mutateEdit({
+                    ...data,
+                    folderId: Number(folderId),
+                    attachedFiles: uploadedFiles,
+                    attachedMedias: uploadedMedias,
+                });
+            } else {
+                mutate({
+                    ...data,
+                    folderId: Number(folderId),
+                    attachedFiles: uploadedFiles,
+                    attachedMedias: uploadedMedias,
+                });
+            }
+        } catch (error) {
+            console.error('Error uploading files: ', error);
         }
     };
 
@@ -99,20 +137,96 @@ function SiderbarLessonAddEdit() {
             </div>
             <div className={styles.item}>
                 <div className={styles.name}>Bài tập đính kèm</div>
-                <div className={styles.button}>
-                    <div className={styles.icon}>
+                <div
+                    className={styles.button}
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                    }}
+                >
+                    <div
+                        className={styles.input}
+                        style={{
+                            cursor: 'pointer',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                    >
                         <FindInPageIcon />
+                        <input
+                            style={{
+                                cursor: 'pointer',
+                            }}
+                            type="file"
+                            accept=".pdf"
+                            multiple
+                            onChange={(e) =>
+                                setAttachedFiles([
+                                    ...attachedFiles,
+                                    ...(e.target.files ? Array.from(e.target.files) : []),
+                                ])
+                            }
+                        />
                     </div>
-                    <div className={styles.title}>Chọn bài tập</div>
+                </div>
+                <div className="listAttachedFile">
+                    <div className="flex flex-wrap">
+                        {attachedFiles.length > 0 &&
+                            attachedFiles.map((file, index) => (
+                                <div key={index}>
+                                    <p>{file.name}</p>
+                                </div>
+                            ))}
+                    </div>
                 </div>
             </div>
             <div className={styles.item}>
                 <div className={styles.name}>Bài giảng đính kèm</div>
                 <div className={styles.button}>
-                    <div className={styles.icon}>
+                    <div
+                        className={styles.input}
+                        style={{
+                            cursor: 'pointer',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                    >
                         <FindInPageIcon />
+                        <input
+                            style={{
+                                cursor: 'pointer',
+                            }}
+                            type="file"
+                            accept="image/*, video/*"
+                            multiple
+                            onChange={(e) =>
+                                setAttachedMedias([
+                                    ...attachedMedias,
+                                    ...(e.target.files ? Array.from(e.target.files) : []),
+                                ])
+                            }
+                        />
                     </div>
-                    <div className={styles.title}>Chọn tài liệu</div>
+                </div>
+                <div className="listAttachedMedias">
+                    {attachedMedias.length > 0 &&
+                        attachedMedias.map((file, index) => (
+                            <div key={index}>
+                                {file.type.startsWith('image/') ? (
+                                    <img
+                                        src={URL.createObjectURL(file)}
+                                        alt="media"
+                                        style={{ width: '100px' }}
+                                    />
+                                ) : (
+                                    <video width="100px" controls>
+                                        <source src={URL.createObjectURL(file)} type={file.type} />
+                                    </video>
+                                )}
+                            </div>
+                        ))}
                 </div>
             </div>
             <div className={'tw-w-full'}>

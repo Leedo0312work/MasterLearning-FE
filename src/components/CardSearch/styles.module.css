@@ -1,8 +1,15 @@
 
+.main {
+    display: flex;
+    justify-content: center;
+
+}
+
 .cover {
+    position: relative;
     display: flex;
     flex-direction: column;
-    width: 25%;
+    width: 60%;
     box-sizing: border-box;
     cursor: pointer;
     padding:8px;
@@ -61,11 +68,12 @@
 
 }
 .btn {
-    width: 14px;
-    padding: 10px 24px;
+    border: 1px solid #ccc;
     border-radius: 20px;
     background-color: #fff;
-    transition: background-color 0.2s;
+    padding: 10px;
+    width: 80px;
+    text-align: center;
 }
 
 .btn:hover {
@@ -73,38 +81,33 @@
     cursor: pointer;
 }
 
-.teachers {
-    display: flex;
-    gap: 10px;
+.close {
+    position: absolute;
+    top: 16px;
+    right: 22px;
+    font-size: 18px;
+    color: #848383;
 }
 
-.avatar_wrap {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding-top: 12px;
+.close:hover {
+    color: #000;
 }
 
-.avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
+.error {
+    color: red;
+    font-size: 10px;
 }
 
-.avatar_placeholder {
+.join {
     display: flex;
     align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px; 
-    border-radius: 50%;
-    background-color: #ccc;
-    color: #fff;
-    font-size: 16px; 
-    font-weight: bold;
+    justify-content: space-between;
+    margin-top: 10px;
 }
 
-.teacher_name {
-    font-weight: 500;
+.password_input {
+    border: none;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 10px;
 }
