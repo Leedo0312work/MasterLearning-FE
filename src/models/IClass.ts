@@ -13,4 +13,5 @@ export interface IClass {
     createdAt: string;
     updatedAt: string;
     statusClass?: number;
+    teacher: [];
 }

@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from 'react';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import API from '~/network/API';
 import { STATUS } from '~/enums/class';
 import { toast } from 'react-toastify';
@@ -11,8 +11,12 @@ import { ResponseAPI } from '~/app/response';
 import { AxiosError } from 'axios';
 import { CreateClassForm } from '~/types/class';
 
+
+
 export default function useManageMyClass() {
     const [listData, setListData] = useState<IClass[]>([]);
+
+    const queryClient = useQueryClient();
 
     const originData = useRef<IClass[]>([]);
     const { data } = useQuery(
@@ -44,15 +48,19 @@ export default function useManageMyClass() {
         'submit',
         async (classes) => getCreate(classes),
         {
-            onMutate: async (newClass) => {
-                setListData((prev: any) => {
-                    if (Array.isArray(prev) && Array.isArray(prev[0])) {
-                        return [[newClass, ...prev[0]], ...prev.slice(1)];
-                    }
-                    return prev;
-                });
+            onSuccess() {
+                queryClient.invalidateQueries(["classes"]);
                 toast.success('Thêm lớp học thành công');
             },
+            // onMutate: async (newClass) => {
+            //     setListData((prev: any) => {
+            //         if (Array.isArray(prev) && Array.isArray(prev[0])) {
+            //             return [[newClass, ...prev[0]], ...prev.slice(1)];
+            //         }
+            //         return prev;
+            //     });
+            //     toast.success('Thêm lớp học thành công');
+            // },
             onError(err) {
                 console.log(err);
                 if (err.response?.status === 409) {
