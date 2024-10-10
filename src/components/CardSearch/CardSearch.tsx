@@ -23,6 +23,8 @@ function CardSearch({ findedClass, closeCard }: any) {
     const handleJoinClick = () => {
         if (findedClass.type === 'Security' && !password) {
             toast.error("Vui lòng nhập mật khẩu lớp học")
+        } else if(findedClass.password !== password) {
+            toast.error("Mật khẩu không đúng")
         } else {
             handleJoinClass({ classId: findedClass._id, password: password || findedClass.password });
         }
