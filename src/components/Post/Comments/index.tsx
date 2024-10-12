@@ -32,7 +32,7 @@ const Comments = ({ postId, listComment, setListComment }: any) => {
     }, [comments.data]);
 
     if (comments.isLoading) {
-        return <Spin className="w-full" spinning={true} />;
+        return <Spin className="tw-w-full" spinning={true} />;
     }
 
     const fetchMoreComments = async () => {
@@ -58,7 +58,7 @@ const Comments = ({ postId, listComment, setListComment }: any) => {
                     dataLength={listComment.length}
                     next={fetchMoreComments}
                     hasMore={pagiantion.page < pagiantion.total_page}
-                    loader={<Spin className="w-full" spinning={true} />}
+                    loader={<Spin className="tw-w-full" spinning={true} />}
                 >
                     {listComment.map((comment: any) => (
                         <Comment key={comment._id} comment={comment} />
@@ -67,7 +67,7 @@ const Comments = ({ postId, listComment, setListComment }: any) => {
             )}
 
             {listComment.length === 0 && (
-                <p className="text-center py-10">Chưa có bình luận nào</p>
+                <p className="tw-text-center tw-py-10">Chưa có bình luận nào</p>
             )}
         </div>
     );

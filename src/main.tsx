@@ -9,25 +9,25 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 ReactDOM.createRoot(document?.getElementById('root')).render(
-    <React.StrictMode>
-        <QueryClientProvider
-            client={
-                new QueryClient({
-                    defaultOptions: {
-                        queries: {
-                            refetchOnWindowFocus: false,
-                        },
+    // <React.StrictMode>
+    <QueryClientProvider
+        client={
+            new QueryClient({
+                defaultOptions: {
+                    queries: {
+                        refetchOnWindowFocus: false,
                     },
-                })
-            }
-        >
-            <ConfirmProvider>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <App />
-                </LocalizationProvider>
-            </ConfirmProvider>
-        </QueryClientProvider>
-    </React.StrictMode>,
+                },
+            })
+        }
+    >
+        <ConfirmProvider>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <App />
+            </LocalizationProvider>
+        </ConfirmProvider>
+    </QueryClientProvider>
+    // {/* </React.StrictMode>, */}
 );
 
 //branch -> dev -> pull request -> merge

@@ -1,3 +1,4 @@
+import axios from "axios";
 import axiosIns from "./axios";
 import { message, Spin } from "antd";
 class TweetServices {
@@ -11,7 +12,12 @@ class TweetServices {
         );
         return response?.data;
     }
-
+    async getTweet(postId: string) {
+        const response = await axiosIns.getAuth(
+            `/tweets/tweet/${postId}`
+        );
+        return response?.data;
+    }
 
     async getComments(data: any) {
         const response = await axiosIns.getAuth(
@@ -31,6 +37,14 @@ class TweetServices {
         const response = await axiosIns.postAuth(`/likes/unlike`, {
             tweet_id: postId,
         });
+        return response?.data;
+    }
+    async deleteTweet(postId: string) {
+        const response = await axiosIns.getAuth(`/tweets/delete/${postId}`);
+        return response?.data;
+    }
+    async updateTweet(data: any, postId: string) {
+        const response = await axiosIns.postAuth(`/tweets/update/${postId}`, data);
         return response?.data;
     }
 }

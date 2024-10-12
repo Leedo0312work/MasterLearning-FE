@@ -21,11 +21,20 @@
     justify-content: center;
     margin-bottom: 28px;
     align-items: center;
-    width: 74%;
+    /* width: 74% !important; */
 }
 .postItem {
     margin-top: 20px;
     display: flex;
     width: 70%;
     display: inline-block;
+}
+.scrollContent {
+    display: flex;
+    flex-direction: column;
+    width: 960px;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+
 }

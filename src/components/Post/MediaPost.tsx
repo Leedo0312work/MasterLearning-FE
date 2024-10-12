@@ -19,7 +19,6 @@ const MediaPost = ({ post }: any) => {
 
     const renderMedia = () => {
         if (!medias || medias.length === 0) return null;
-
         const mediaFiles = medias.slice(0, 4); // Limit to 4 files
         const remainingFilesCount = medias.length - 4; // Count of remaining files
 
@@ -36,7 +35,7 @@ const MediaPost = ({ post }: any) => {
                             className={`tw-relative  ${isSingleInRow ? "tw-col-span-2" : ""
                                 }`}
                         >
-                            {media.type === 0 ? (
+                            {media?.type === 0 ? (
                                 <div
                                     className={`${isSingleInRow
                                         ? "tw-h-[300px]"
@@ -50,13 +49,13 @@ const MediaPost = ({ post }: any) => {
                                             isSingleInRow ? "300px" : "187px"
                                         }
                                         width={"100%"}
-                                        style={{ objectFit: "cover" }}
+                                        style={{ objectFit: "contain" }}
                                         preview={true}
                                     />
                                 </div>
                             ) : (
                                 <VideoHLS
-                                    src={media.url}
+                                    src={media?.url}
                                     controlType={
                                         mediaCount > 4 && index === 3
                                             ? "none"

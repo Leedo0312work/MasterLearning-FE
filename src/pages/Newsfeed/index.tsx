@@ -19,35 +19,22 @@ import Group from '../Group';
 
 function Newsfeed() {
     // Define the shape of the response from the query
+    const [listPost, setListPost] = useState([]);
     const { id } = useParams();
-    const _id = useMemo(() => {
+    const class_id = useMemo(() => {
         return id?.substring(1);
     }, [id]);
-    const getNewFeeds = useQuery({
-        queryKey: ["getNewsfeed", _id, 10, 1],
-        queryFn: async () =>
-            await tweetServices.getNewFeeds({
-                class_id: _id,
-                page: 1,
-                limit: 10,
-            }),
-        // refetchInterval: 10000,
-    });
-
-
-    // Type the posts array to ensure it matches the IPost type
-    const posts: IPost[] | undefined = getNewFeeds?.data?.result;
-
-    const getAvatar = useAuthStore((state) => state.getAvatar);
-
     return (
         <div className={styles.wrap}>
             <div className={styles.content}>
                 <NewsfeedHeader />
-                <NewsfeedContent />
+                <NewsfeedContent classId={class_id}
+                    listPost={listPost}
+                    setListPost={setListPost} />
+
 
             </div>
-            <NewsfeedSiderBarRight />
+            {/* <NewsfeedSiderBarRight /> */}
         </div>
     );
 }

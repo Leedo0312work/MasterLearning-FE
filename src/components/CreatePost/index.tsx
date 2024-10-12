@@ -23,7 +23,7 @@ import { Box, Button } from '@mui/material';
 import clsx from 'clsx';
 import { memo } from 'react';
 
-const CreatePost: React.FC<any> = ({ class_id }) => {
+const CreatePost: React.FC<any> = ({ class_id, refetchPosts }) => {
     const [mediaList, setMediaList] = useState<UploadFile[]>([]);
     const [uploadMedia, setUploadMedia] = useState(false);
     const [content, setContent] = useState<string>("");
@@ -133,9 +133,11 @@ const CreatePost: React.FC<any> = ({ class_id }) => {
         }
 
         const create = await tweetServices.createTweet(data);
+        console.log(create);
         if (create && create.status === 200) {
             handleCancel();
             message.success("Tạo bài viết thành công!");
+            refetchPosts();
         }
     };
 
@@ -165,9 +167,33 @@ const CreatePost: React.FC<any> = ({ class_id }) => {
                         className={clsx(styles.button, styles.addImg)}
                         onClick={() => setUploadMedia(!uploadMedia)}
                     >
-                        Thêm hình
+                        <Upload
+                            multiple
+                            listType="picture-card"
+                            fileList={mediaList}
+                            onChange={handleUploadChange}
+                            itemRender={itemRender}
+                            onRemove={handleRemove}
+                            isImageUrl={customIsImageUrl}
+                            beforeUpload={(file) => {
+                                const isImageOrVideo =
+                                    file.type.startsWith("image/") ||
+                                    file.type.startsWith("video/");
+                                if (!isImageOrVideo) {
+                                    message.error(
+                                        "Bạn chỉ có thể upload file ảnh hoặc video!"
+                                    );
+                                }
+                                return false;
+                            }}
+                        >
+                            <div>
+                                <PlusOutlined />
+                                <div style={{ marginTop: 8 }}>Thêm hình</div>
+                            </div>
+                        </Upload>
                     </Button>
-                    {uploadMedia && (
+                    {/* {uploadMedia && (
                         <Upload
                             multiple
                             listType="picture-card"
@@ -193,7 +219,7 @@ const CreatePost: React.FC<any> = ({ class_id }) => {
                                 <div style={{ marginTop: 8 }}>Tải ảnh/video</div>
                             </div>
                         </Upload>
-                    )}
+                    )} */}
                     <Button
                         onClick={handleCreate}
 

@@ -62,7 +62,7 @@ export function timeAgo(dateString: string): string {
     const past = new Date(dateString);
 
     // Chuyển thời gian UTC sang múi giờ
-    const pastInVn = new Date(past.getTime() + -7 * 60 * 60 * 1000);
+    const pastInVn = new Date(past.getTime() + 0 * 60 * 60 * 1000);
 
     const diffInSeconds = Math.floor((now.getTime() - pastInVn.getTime()) / 1000);
 
