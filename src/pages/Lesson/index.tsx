@@ -23,16 +23,29 @@ function Lesson() {
     const { id: classId } = useParams();
     const { setLessons } = useLessonStore((state) => state);
 
-    // Fetch lessons by class ID
-    const { data: lessons } = useQuery(
-        ['lessons', classId],
-        () => getLessonByClassId(Number(classId)),
-        {
-            onSuccess: (data) => {
-                setLessons(data); // Set fetched lessons in the store
-            },
+    console.log('Class ID from URL:', classId);
+
+    const {
+        data: lessons,
+        isLoading,
+        isError,
+    } = useQuery(['lessons', classId], () => getLessonByClassId(classId as string), {
+        onSuccess: (data) => {
+            console.log('Fetched lessons:', data);
+            setLessons(data);
         },
-    );
+        onError: (error) => {
+            console.error('Error fetching lessons:', error);
+        },
+    });
+
+    if (isLoading) {
+        return <div>Loading lessons...</div>;
+    }
+
+    if (isError) {
+        return <div>Error fetching lessons.</div>;
+    }
 
     console.log('lessons fetch from classID: ', lessons);
 

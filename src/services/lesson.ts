@@ -13,8 +13,8 @@ export const fetchCreateLesson = (data: FormLessonType) => {
 //     });
 // };
 
-export const fetchGetLessonByClass = (classId: number) => {
+export const fetchGetLessonByClass = (classId: string) => {
     return API.post(`/lessons/getByClassId`, {
-        classId,
+        class_id: classId,
     });
 };

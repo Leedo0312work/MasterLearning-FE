@@ -1,7 +1,7 @@
 import create from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
-import { ILesson } from '~/models/ILesson'; // Assuming you have an ILesson model
+import { ILesson } from '~/models/ILesson';
 
 interface LessonStore {
     id: number | null;

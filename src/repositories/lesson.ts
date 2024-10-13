@@ -9,9 +9,22 @@ export const getCreateLesson = async (data: FormLessonType): Promise<ResponseAPI
     return response.data;
 };
 
-export const getLessonByClassId = async (classId: number): Promise<ILesson[]> => {
-    const response = await fetchGetLessonByClass(classId);
-    return response.data.data;
+export const getLessonByClassId = async (classId: string): Promise<ILesson[]> => {
+    try {
+        const response = await fetchGetLessonByClass(classId);
+
+        console.log('API response:', response);
+
+        if (response?.data?.result) {
+            console.log('Lessons data:', response.data.result);
+            return response.data.result;
+        } else {
+            throw new Error('Unexpected response structure');
+        }
+    } catch (error) {
+        console.error('Error fetching lessons by class ID:', error);
+        throw error;
+    }
 };
 
 export const getLessonById = async (id: number): Promise<ILesson> => {
