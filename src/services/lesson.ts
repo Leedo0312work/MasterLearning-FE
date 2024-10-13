@@ -5,10 +5,16 @@ export const fetchCreateLesson = (data: FormLessonType) => {
     return API.post('/lessons/create', data);
 };
 
-export const fetchGetLessonByFolder = (folderId: number) => {
-    return API.get(`/v1/lessons`, {
-        params: {
-            folderId,
-        },
+// export const fetchGetLessonByClass = (classId: number) => {
+//     return API.get(`/lessons/getByClassId`, {
+//         params: {
+//             classId,
+//         },
+//     });
+// };
+
+export const fetchGetLessonByClass = (classId: number) => {
+    return API.post(`/lessons/getByClassId`, {
+        classId,
     });
 };

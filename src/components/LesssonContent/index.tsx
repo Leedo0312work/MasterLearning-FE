@@ -4,26 +4,18 @@ import CardVideo from '~/components/CardVideo';
 import styles from './styles.module.css';
 import useFolderStore from '~/store/useFolderStore';
 import { useQuery } from 'react-query';
-import { getLessonByFolderId } from '~/repositories/lesson';
+import { getLessonByClassId } from '~/repositories/lesson';
 import useLessonStore from '~/store/useLessonStore';
 
 function LesssonContent() {
-    const id = useFolderStore((state) => state.id);
-
-    const { data } = useQuery(['folders', id], () => getLessonByFolderId(Number(id)), {
-        onSuccess(data) {
-            setId(data[0].id);
-        },
-    });
-
-    const { id: lessonId, setId } = useLessonStore((state) => state);
+    const { lessons, id: lessonId, setId } = useLessonStore((state) => state);
 
     return (
         <div className={styles.wrap}>
             <LesssonContentHeader />
             <div className={styles.list_card}>
-                {data && data?.length > 0 ? (
-                    data.map((item: any, index: any) => (
+                {lessons && lessons?.length > 0 ? (
+                    lessons.map((item: any, index: any) => (
                         <CardVideo
                             id={item?.id}
                             active={item?.id === lessonId}
