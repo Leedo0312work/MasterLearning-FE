@@ -6,8 +6,18 @@
     flex-direction: column;
     height: 100%;
 }
+.filename {
+    padding: 5px;
+}
+.listAttachedFile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+}
 .item {
     margin-bottom: 16px;
+    width: 90%;
 }
 .name {
     color: #65697b;
@@ -16,6 +26,10 @@
 }
 .input {
     width: 100%;
+    cursor: 'pointer';
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .aria {
     border: 1px solid #c5c6ca;
@@ -31,12 +45,15 @@
     justify-content: center;
     border: 1px dashed #1e88e5;
     color: #1e88e5;
-    padding: 3px 0;
+    padding: 5px 0;
     border-radius: 4px;
-}
-.icon {
 }
 .title {
     font-size: 14px;
     margin-left: 4px;
+}
+
+.btnsubmit {
+    width: 100%;
+    padding: 0px;
 }

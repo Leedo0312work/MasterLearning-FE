@@ -7,8 +7,10 @@ import ModalAddFolder from '~/components/ModalAddFolder';
 
 import styles from './styles.module.css';
 import { useParams } from 'react-router-dom';
-import { useEffect } from 'react';
-import UseFolder from '~/hooks/useFolder';
+import { useQuery } from 'react-query';
+import { getLessonByClassId } from '~/repositories/lesson';
+import useLessonStore from '~/store/useLessonStore';
+
 const defaultData = [
     {
         video: 10,
@@ -18,38 +20,29 @@ const defaultData = [
     },
 ];
 function Lesson() {
-    const {
-        handleCloseModalAddFolder,
-        handleOpenModalAddFolder,
-        isOpenModalAddFolder,
-        mutateCreateFolder,
-        allFolder,
-    } = UseFolder();
-    const { id } = useParams();
+    const { id: classId } = useParams();
+    const { setLessons } = useLessonStore((state) => state);
 
-    const handleCreate = (name: string) => {
-        mutateCreateFolder({
-            classId: Number(id),
-            name,
-        });
-    };
+    // Fetch lessons by class ID
+    const { data: lessons } = useQuery(
+        ['lessons', classId],
+        () => getLessonByClassId(Number(classId)),
+        {
+            onSuccess: (data) => {
+                setLessons(data); // Set fetched lessons in the store
+            },
+        },
+    );
+
+    console.log('lessons fetch from classID: ', lessons);
 
     return (
         <div className={styles.wrap}>
             <LessonHeader name="Bài giảng" />
             <div className={styles.content}>
-                <SidebarLeftLesson
-                    data={allFolder}
-                    handleOpenModalAddFolder={handleOpenModalAddFolder}
-                />
                 <LesssonContent />
                 <SiderbarRightLesson />
             </div>
-            <ModalAddFolder
-                handleCreate={handleCreate}
-                open={isOpenModalAddFolder}
-                handleClose={handleCloseModalAddFolder}
-            />
         </div>
     );
 }

@@ -104,7 +104,7 @@ function ClassModalAddEdit({
                             variant="outlined"
                             displayEmpty
                             defaultValue=""
-                            onChange={(e) => setClassType(e.target.value)}
+                            //onChange={(e) => setClassType(e.target.value)}
                         >
                             <MenuItem value="" disabled>
                                 Chọn loại lớp học
@@ -137,7 +137,7 @@ function ClassModalAddEdit({
                             label="Topic"
                             variant="outlined"
                         />
-                        {classType === 'Security' && (
+                        {/* {classType === 'Security' && (
                             <TextField
                                 {...register('password', { required: 'Please enter a password.' })}
                                 name="password"
@@ -147,7 +147,7 @@ function ClassModalAddEdit({
                                 label="Mật khẩu"
                                 variant="outlined"
                             />
-                        )}
+                        )} */}
                     </div>
                     <div className={styles.footer}>
                         <Button

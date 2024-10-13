@@ -2,13 +2,19 @@ import { FormLessonType } from '~/types/lesson';
 import API from '~/network/API';
 
 export const fetchCreateLesson = (data: FormLessonType) => {
-    return API.post('/v1/lessons', data);
+    return API.post('/lessons/create', data);
 };
 
-export const fetchGetLessonByFolder = (folderId: number) => {
-    return API.get(`/v1/lessons`, {
-        params: {
-            folderId,
-        },
+// export const fetchGetLessonByClass = (classId: number) => {
+//     return API.get(`/lessons/getByClassId`, {
+//         params: {
+//             classId,
+//         },
+//     });
+// };
+
+export const fetchGetLessonByClass = (classId: number) => {
+    return API.post(`/lessons/getByClassId`, {
+        classId,
     });
 };

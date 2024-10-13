@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import styles from './styles.module.css';
 import useFolderStore from '~/store/useFolderStore';
 import { useQuery } from 'react-query';
-import { getLessonByFolderId } from '~/repositories/lesson';
+import { getLessonByClassId } from '~/repositories/lesson';
 import useLessonStore from '~/store/useLessonStore';
 import { useMemo } from 'react';
 import { ILesson } from '~/models/ILesson';
@@ -25,11 +25,6 @@ const actions = [
     //     to: 'alo/edit',
     // },
     {
-        name: 'Di chuyển',
-        Icon: FolderOpenIcon,
-        to: '',
-    },
-    {
         name: 'Xóa bài giảng',
         Icon: DeleteOutlineIcon,
         to: '',
@@ -37,18 +32,11 @@ const actions = [
 ];
 
 function SiderbarRightLesson() {
-    const id = useFolderStore((state) => state.id);
-
-    const { data } = useQuery(['folders', id], () => getLessonByFolderId(Number(id)), {
-        onSuccess(data) {},
-    });
-
-    const lessonId = useLessonStore((state) => state.id);
+    const { lessons, id: lessonId } = useLessonStore((state) => state);
 
     const lesson = useMemo<ILesson | undefined>(() => {
-        const result = data?.find((item) => item.id === Number(lessonId));
-        return result;
-    }, [data, lessonId]);
+        return lessons?.find((item) => item.id === Number(lessonId));
+    }, [lessons, lessonId]);
 
     const handleClickView = () => {
         window.open(lesson?.youtubeLink);
