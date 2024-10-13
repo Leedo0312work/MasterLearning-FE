@@ -11,8 +11,6 @@ import { ResponseAPI } from '~/app/response';
 import { AxiosError } from 'axios';
 import { CreateClassForm } from '~/types/class';
 
-
-
 export default function useManageMyClass() {
     const [listData, setListData] = useState<IClass[]>([]);
 
@@ -49,18 +47,10 @@ export default function useManageMyClass() {
         async (classes) => getCreate(classes),
         {
             onSuccess() {
-                queryClient.invalidateQueries(["classes"]);
+                queryClient.invalidateQueries(['classes']);
                 toast.success('Thêm lớp học thành công');
             },
-            // onMutate: async (newClass) => {
-            //     setListData((prev: any) => {
-            //         if (Array.isArray(prev) && Array.isArray(prev[0])) {
-            //             return [[newClass, ...prev[0]], ...prev.slice(1)];
-            //         }
-            //         return prev;
-            //     });
-            //     toast.success('Thêm lớp học thành công');
-            // },
+
             onError(err) {
                 console.log(err);
                 if (err.response?.status === 409) {
@@ -71,32 +61,6 @@ export default function useManageMyClass() {
             },
         },
     );
-
-    // const handleSearch = useDebounceFunction(({ search, sort }: { search: string; sort: string }) => {
-    //     const origin1 = structuredClone(originData.current);
-    //     const origin = origin1[0]
-    //     if (!Array.isArray(origin)) return;
-
-    //     const filter = origin?.filter((item) => item.name.toLowerCase().includes(search?.trim()?.toLowerCase()));
-
-    //     if (!search) {
-    //         setListData(origin1);
-    //         return;
-    //     }
-
-    //     if (sort === 'A-Z') {
-    //         filter.sort((a, b) => a?.name?.localeCompare(b?.name));
-    //     } else if (sort === 'Z-A') {
-    //         filter.sort((a, b) => b?.name?.localeCompare(a?.name));
-    //     } else if (sort === 'time_asc') {
-    //         filter.sort((a, b) => dayjs(b.updatedAt).diff(dayjs(a.updatedAt)));
-    //     } else if (sort === 'time_desc') {
-    //         filter.sort((a, b) => dayjs(a?.updatedAt).diff(dayjs(b?.updatedAt)));
-    //     }
-
-    //     setListData(filter);
-
-    // }, 500);
 
     return {
         listData,

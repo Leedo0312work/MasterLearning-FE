@@ -30,23 +30,22 @@ function Class() {
     const [filteredClass, setFilteredClass] = useState<any>(activeClass);
 
     const handleSearch = ({ search, sort }: { search: string; sort: string }) => {
-            const filter = activeClass.filter((item) =>
-                item.name.toLowerCase().includes(search.trim().toLowerCase()),
-            );
-            console.log("giá trị sort", sort)
-            console.log("giá trị search", search)
-            if (sort === 'A-Z') {
-                filter.sort((a, b) => a?.name?.localeCompare(b?.name));
-            } else if (sort === 'Z-A') {
-                filter.sort((a, b) => b?.name?.localeCompare(a?.name));
-            } else if (sort === 'time_asc') {
-                filter.sort((a, b) => dayjs(b.updated_at).diff(dayjs(a.updated_at)));
-            } else if (sort === 'time_desc') {
-                filter.sort((a, b) => dayjs(a?.updated_at).diff(dayjs(b?.updated_at)));
-            }
+        const filter = activeClass.filter((item) =>
+            item.name.toLowerCase().includes(search.trim().toLowerCase()),
+        );
+        console.log('giá trị sort', sort);
+        console.log('giá trị search', search);
+        if (sort === 'A-Z') {
+            filter.sort((a, b) => a?.name?.localeCompare(b?.name));
+        } else if (sort === 'Z-A') {
+            filter.sort((a, b) => b?.name?.localeCompare(a?.name));
+        } else if (sort === 'time_asc') {
+            filter.sort((a, b) => dayjs(b.updated_at).diff(dayjs(a.updated_at)));
+        } else if (sort === 'time_desc') {
+            filter.sort((a, b) => dayjs(a?.updated_at).diff(dayjs(b?.updated_at)));
+        }
 
-            setFilteredClass(filter);
-        
+        setFilteredClass(filter);
     };
 
     const createClasses = (data: CreateClassForm) => {
@@ -63,7 +62,7 @@ function Class() {
     useEffect(() => {
         handleSearch({
             search: methods.watch('search'),
-            sort:  methods.watch('sort'),
+            sort: methods.watch('sort'),
         });
     }, [methods.watch('search'), methods.watch('sort'), activeClass]);
 
@@ -76,17 +75,15 @@ function Class() {
                 </FormProvider>
             </div>
             <div className={styles.listClasses}>
-                {
-                    filteredClass.map((item: any, index: any) => (
-                        <CardCourse
-                            key={item?._id}
-                            _id={item?._id}
-                            name={item?.name}
-                            code={item?.code}
-                            teacher={item?.teacher}
-                        />
-                    ))
-                }
+                {filteredClass.map((item: any, index: any) => (
+                    <CardCourse
+                        key={item?._id}
+                        _id={item?._id}
+                        name={item?.name}
+                        code={item?.code}
+                        teacher={item?.teacher}
+                    />
+                ))}
             </div>
             <ClassModalAddEdit
                 subMitForm={createClasses}
