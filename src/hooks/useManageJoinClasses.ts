@@ -1,19 +1,23 @@
 import { toast } from 'react-toastify';
 
 import API from '~/network/API';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import axiosIns from '~/services/axios';
 
 export default function useManageJoinClasses() {
+    const queryClient = useQueryClient();
+
     const { mutate: mutateJoin } = useMutation(
         'joinClass',
         async (data) => {
             const res = await API.post('/classes/join-class', data);
+            console.log("hi", res)
             return res.data;
         },
         {
             onSuccess(data) {
-                toast.success('Gửi yêu cầu tham gia lớp học thành công vui lòng chờ xét duyệt');
+                toast.success('Gửi yêu cầu tham gia lớp học thành công');
+                queryClient.invalidateQueries(['classes']);
             },
             onError(err: any) {
                 console.log(err);

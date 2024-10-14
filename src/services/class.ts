@@ -26,3 +26,21 @@ export const fetchSearchClass = (code: string) => {
         "code": code
     })
 }
+
+export const fetchGetAcceptedMember = (classId: string) => {
+    return API.post("classes/get-member-accept", {
+        "classId": classId
+    })
+}
+
+export const fetchGetPendingMember = (classId: string) => {
+    return API.post("classes/get-member-pending", {
+        "classId": classId
+    })
+}
+
+export const fetchAcceptMember = (id: string) => {
+    return API.post("classes/accept-class", {
+        "id": id
+    })
+}

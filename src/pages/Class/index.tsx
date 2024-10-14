@@ -12,6 +12,7 @@ import { CreateClassForm, SearchClassForm } from '~/types/class';
 import useManageJoinClasses from '~/hooks/useManageJoinClasses';
 import ClassModalJoin from '~/components/ClassModalJoin';
 import dayjs from 'dayjs';
+import Member from '../Member';
 
 function Class() {
     const {
