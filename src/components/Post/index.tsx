@@ -121,7 +121,7 @@ const Post: React.FC<any> = ({ post, isShowGroupName = true, listPost, setListPo
                     <div className="tw-text-[14px] tw-mt-1 tw-text-gray-500">
                         {timeAgo(post?.created_at)}
                     </div>
-                    <ModalOption postId={post._id} refetchPosts={refetchPosts} />
+                    <ModalOption post={post} postId={post._id} refetchPosts={refetchPosts} />
 
 
                 </div>

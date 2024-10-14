@@ -16,7 +16,7 @@ function NewsfeedContent({ classId, listPost, setListPost }: any) {
     });
     const { id } = useParams();
     const class_id = useMemo(() => id?.substring(0), [id]);
-    console.log(class_id);
+    // console.log(class_id);
     const posts = useQuery({
         queryKey: ["getNewsfeed", class_id, 10, 1],
         queryFn: async () =>
