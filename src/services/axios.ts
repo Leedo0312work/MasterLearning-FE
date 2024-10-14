@@ -72,10 +72,10 @@ class Axios {
         return response;
     }
 
-    async postAuth(url: string, data: any, callback?: (res: any) => void) {
+    async postAuth(url: string, data: any, config?: any, callback?: (res: any) => void) {
         await checkToken();
         const response = await axiosN
-            .post(url, data)
+            .post(url, data, config)
             .then((res) => {
                 if (res.status === 200) {
                     if (typeof callback === 'function') {

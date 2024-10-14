@@ -1,7 +1,7 @@
 import { IUser } from '~/models/IUser';
 
 export interface IClass {
-    _id: string;
+    class_id: number;
     name: string;
     type: string;
     description: string;

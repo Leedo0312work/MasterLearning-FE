@@ -1,6 +1,5 @@
 import React, { ExoticComponent, Fragment, lazy, ReactNode } from 'react';
 
-
 import DefaultLayout from '~/layout/Default';
 
 const Home = lazy(() => import('~/pages/Home'));
@@ -25,12 +24,11 @@ const TestHomework = lazy(() => import('~/pages/TestHomework/index'));
 const DoHomework = lazy(() => import('~/pages/DoHomework/index'));
 const VerifyEmail = lazy(() => import('~/pages/VerifyEmail/index'));
 const ForgotPassword = lazy(() => import('~/pages/ForgotPassword'));
-const ResetPassword = lazy(() => import('~/pages/ResetPassword')); 
+const ResetPassword = lazy(() => import('~/pages/ResetPassword'));
 const CheckEmailNoti = lazy(() => import('~/pages/CheckEmailNoti'));
 
 const NewMemberAccepted = lazy(() => import('~/components/NewMemberAccepted'));
 const NewMemberPending = lazy(() => import('~/components/NewMemberPending'));
-
 
 interface Route {
     path: string;
@@ -56,7 +54,7 @@ const routes: Route[] = [
     {
         path: '/',
         component: Home,
-        // layout: DefaultLayout,
+        layout: DefaultLayout,
     },
     {
         path: '/login',
@@ -82,7 +80,7 @@ const routes: Route[] = [
         path: '/class',
         component: Class,
         layout: DefaultLayout,
-        private: true,
+        // private: true,
         // children: [
         //     {
         //         path: 'myclass',

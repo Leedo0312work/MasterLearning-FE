@@ -1,8 +1,8 @@
-import styles from './styles.module.css';
 import React, { useState } from "react";
 import { Media } from "~/enums/media";
 import {
     Avatar,
+    Button,
     Form,
     Modal,
     Input,
@@ -13,17 +13,29 @@ import {
     UploadFile,
 } from "antd";
 import { useSelector } from "react-redux";
+import { Button as Button2 } from "@material-tailwind/react";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import { TweetType } from "~/enums/tweet";
 import tweetServices from "~/services/tweet";
 import mediaServices from "~/services/media";
-import avatarDefault from '~/assets/images/avatar_default.png';
-import TextareaAutosize from '@mui/material/TextareaAutosize';
-import { Box, Button } from '@mui/material';
-import clsx from 'clsx';
-import { memo } from 'react';
 
-const CreatePost: React.FC<any> = ({ class_id, refetchPosts }) => {
+const { TextArea } = Input;
+
+interface CreatePostModalProps {
+    open: boolean;
+    setOpen: (open: boolean) => void;
+    class_id: string;
+    groupName: string;
+}
+
+interface MediaFile extends File {
+    uid: string;
+    thumbUrl?: string;
+    originFileObj?: File;
+}
+
+const CreatePostModal: React.FC<CreatePostModalProps> = ({ open, setOpen, class_id, groupName }) => {
+    const userInfo = useSelector((state: any) => state.user.userInfo);
     const [mediaList, setMediaList] = useState<UploadFile[]>([]);
     const [uploadMedia, setUploadMedia] = useState(false);
     const [content, setContent] = useState<string>("");
@@ -32,6 +44,7 @@ const CreatePost: React.FC<any> = ({ class_id, refetchPosts }) => {
         setContent("");
         setMediaList([]);
         setUploadMedia(false);
+        setOpen(false);
     };
 
     const handleUploadChange = ({ fileList }: { fileList: any[] }) => {
@@ -133,105 +146,91 @@ const CreatePost: React.FC<any> = ({ class_id, refetchPosts }) => {
         }
 
         const create = await tweetServices.createTweet(data);
-        console.log(create);
         if (create && create.status === 200) {
             handleCancel();
             message.success("Tạo bài viết thành công!");
-            refetchPosts();
         }
     };
 
     return (
-        <div className={styles.wrap}>
-            <Box className={styles.container} component="form">
-                <div className={styles.header}>
-                    <img
-                        src={avatarDefault}
-                        alt=""
-                        className={'tw-h-12 tw-w-12 tw-rounded-full'}
-                    />
-                    <div className={styles.input}>
-                        <TextareaAutosize
-                            aria-label="minimum height"
-                            minRows={3}
-                            placeholder="Nhập nội dung thảo luận với lớp học..."
-                            className={styles.text}
-                            value={content}
-                            onChange={(e) => setContent(e.target.value)}
-                        />
+        <Modal
+            open={open}
+            width={"90%"}
+            style={{ maxWidth: "900px" }}
+            onCancel={handleCancel}
+            maskClosable={false}
+            title={<p className="text-center">Tạo bài viết mới</p>}
+            centered
+            footer={
+                <>
+                    <Button onClick={handleCancel}>
+                        Hủy
+                    </Button>
+                    <Button
+                        className="ml-2 text-white bg-main"
+
+                        onClick={handleCreate}
+                    >
+                        Tạo
+                    </Button>
+                </>
+            }
+        >
+            <div className="px-3">
+                <div className="flex mb-3 items-center">
+                    <Avatar size={45} src={userInfo.avatar} />
+                    <div className="leading-none ml-2 font-bold">
+                        <p className="text-[16px]">{userInfo.name}</p>
+                        <p className="font-semibold">{groupName}</p>
                     </div>
                 </div>
-                <div className={styles.footer}>
-                    <Button
-                        sx={{ fontSize: 14 }}
-                        className={clsx(styles.button, styles.addImg)}
-                        onClick={() => setUploadMedia(!uploadMedia)}
-                    >
-                        <Upload
-                            multiple
-                            listType="picture-card"
-                            fileList={mediaList}
-                            onChange={handleUploadChange}
-                            itemRender={itemRender}
-                            onRemove={handleRemove}
-                            isImageUrl={customIsImageUrl}
-                            beforeUpload={(file) => {
-                                const isImageOrVideo =
-                                    file.type.startsWith("image/") ||
-                                    file.type.startsWith("video/");
-                                if (!isImageOrVideo) {
-                                    message.error(
-                                        "Bạn chỉ có thể upload file ảnh hoặc video!"
-                                    );
-                                }
-                                return false;
-                            }}
-                        >
-                            <div>
-                                <PlusOutlined />
-                                <div style={{ marginTop: 8 }}>Thêm hình</div>
-                            </div>
-                        </Upload>
-                    </Button>
-                    {/* {uploadMedia && (
-                        <Upload
-                            multiple
-                            listType="picture-card"
-                            fileList={mediaList}
-                            onChange={handleUploadChange}
-                            itemRender={itemRender}
-                            onRemove={handleRemove}
-                            isImageUrl={customIsImageUrl}
-                            beforeUpload={(file) => {
-                                const isImageOrVideo =
-                                    file.type.startsWith("image/") ||
-                                    file.type.startsWith("video/");
-                                if (!isImageOrVideo) {
-                                    message.error(
-                                        "Bạn chỉ có thể upload file ảnh hoặc video!"
-                                    );
-                                }
-                                return false;
-                            }}
-                        >
-                            <div>
-                                <PlusOutlined />
-                                <div style={{ marginTop: 8 }}>Tải ảnh/video</div>
-                            </div>
-                        </Upload>
-                    )} */}
-                    <Button
-                        onClick={handleCreate}
 
-                        sx={{ fontSize: 14 }}
-                        className={clsx(styles.button, styles.post)}
+                <TextArea
+                    placeholder="Nhập nội dung bài viết..."
+                    className="custom-textarea"
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    style={{
+                        border: "none",
+                        fontSize: "16px",
+                        outline: "none",
+                        boxShadow: "none",
+                    }}
+                    autoSize={{ minRows: 3 }}
+                />
+
+                {uploadMedia && (
+                    <Upload
+                        multiple
+                        listType="picture-card"
+                        fileList={mediaList.filter((file: UploadFile) =>
+                            file.type?.startsWith("image/")
+                        )}
+                        onChange={handleUploadChange}
+                        itemRender={itemRender}
+                        onRemove={handleRemove}
+                        isImageUrl={customIsImageUrl}
+                        beforeUpload={(file) => {
+                            const isImageOrVideo =
+                                file.type.startsWith("image/") ||
+                                file.type.startsWith("video/");
+                            if (!isImageOrVideo) {
+                                message.error(
+                                    "Bạn chỉ có thể upload file ảnh hoặc video!"
+                                );
+                            }
+                            return false;
+                        }}
                     >
-                        Đăng tin
-                    </Button>
-                </div>
-            </Box>
-        </div>
+                        <div>
+                            <PlusOutlined />
+                            <div style={{ marginTop: 8 }}>Tải ảnh/video</div>
+                        </div>
+                    </Upload>
+                )}
+            </div>
+        </Modal>
     );
-}
+};
 
-export default CreatePost;
+export default CreatePostModal;
