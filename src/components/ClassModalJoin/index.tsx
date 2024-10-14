@@ -11,8 +11,32 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import {useState } from 'react';
+import { getSearch } from '~/repositories/class';
+import CardSearch from '../CardSearch/CardSearch';
 
-function ClassModalJoin({ openJoinModal = false, handleCloseJoinModal = () => {}, subMitForm }) {
+function ClassModalJoin({ openJoinModal = false, handleCloseJoinModal = () => {} }) {
+
+    const [FindedClass, setFindedClass] = useState<any>(null);
+
+    const handleFindClass = async (data: any) => {
+        console.log("Dữ liệu", data.code);
+        try {     
+            const res = await getSearch(data.code);
+
+            if (res.result) {
+                console.log("Kết quả", res.result);
+                setFindedClass(res.result);
+                toast.success('Tìm thấy lớp học!');
+            } else {
+                setFindedClass(null); 
+                toast.error('Không tìm thấy lớp học.');
+            }
+        } catch (error) {
+            toast.error('Đã xảy ra lỗi, vui lòng thử lại sau.');
+        }
+    };
+
     const { register, handleSubmit, reset } = useForm({ shouldUseNativeValidation: true });
     const style = {
         position: 'absolute',
@@ -25,16 +49,21 @@ function ClassModalJoin({ openJoinModal = false, handleCloseJoinModal = () => {}
         p: 4,
     };
 
-    const submit = (data) => {
+    const submit = (data: any) => {
         const code = data.code.trim();
 
         reset({
             code: '',
         });
 
-        handleCloseJoinModal();
-        subMitForm(data);
+        // handleCloseJoinModal();
+        handleFindClass(data);
     };
+
+    const handleCloseCard = () => {
+        setFindedClass(null)
+    }
+
     return (
         <div>
             <Modal
@@ -65,9 +94,11 @@ function ClassModalJoin({ openJoinModal = false, handleCloseJoinModal = () => {}
                     </div>
                     <div className={styles.footer}>
                         <Button type="submit" className={clsx(styles.submit, { [styles.active]: true })}>
-                            Gửi yêu cầu tham gia lớp
+                            Tìm kiếm lớp học
                         </Button>
                     </div>
+
+                    {FindedClass && <CardSearch findedClass = {FindedClass} closeCard = {handleCloseCard}/>}
                 </Box>
             </Modal>
         </div>

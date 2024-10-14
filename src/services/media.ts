@@ -1,84 +1,112 @@
-import { toast } from "react-toastify";
-import axiosIns from "./axios";
-import { message, Spin } from "antd";
-import { AxiosRequestConfig } from "axios";
+import axiosIns from '~/services/axios';
 
-class MediaServices {
-    async uploadImage(file: any) {
-        const formData = new FormData();
+export const uploadImage = async (file: File | File[]) => {
+    const formData = new FormData();
 
-        if (Array.isArray(file)) {
-            file.forEach((file) => {
-                formData.append("image", file);
-            });
-        } else {
-            formData.append("image", file);
-        }
-
-        const config: AxiosRequestConfig = {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        };
-
-        const response = await axiosIns.postAuth(
-            "/medias/upload-image",
-            formData,
-            config
-        );
-        return response?.data;
+    if (Array.isArray(file)) {
+        file.forEach((f: File) => {
+            formData.append('image', f);
+        });
+    } else {
+        formData.append('image', file);
     }
 
-    async uploadVideoHLS(file: any) {
-        const formData = new FormData();
-
-        if (Array.isArray(file)) {
-            file.forEach((file) => {
-                formData.append("video", file);
-            });
-        } else {
-            formData.append("video", file);
-        }
-
-        const config: AxiosRequestConfig = {
+    try {
+        const response = await axiosIns.post('/medias/upload-image', formData, {
             headers: {
-                "Content-Type": "multipart/form-data",
+                'Content-Type': 'multipart/form-data',
             },
-        };
-
-        const response = await axiosIns.postAuth(
-            "/medias/upload-video-hls",
-            formData,
-            config
-        );
+        });
         return response?.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const uploadVideoHLS = async (file: File | File[]) => {
+    const formData = new FormData();
+
+    if (Array.isArray(file)) {
+        file.forEach((f: File) => {
+            formData.append('video', f);
+        });
+    } else {
+        formData.append('video', file);
     }
 
-    async uploadVideo(file: any) {
-        const formData = new FormData();
-
-        if (Array.isArray(file)) {
-            file.forEach((file) => {
-                formData.append("video", file);
-            });
-        } else {
-            formData.append("video", file);
-        }
-
-        const config: AxiosRequestConfig = {
+    try {
+        const response = await axiosIns.post('/medias/upload-video-hls', formData, {
             headers: {
-                "Content-Type": "multipart/form-data",
+                'Content-Type': 'multipart/form-data',
             },
-        };
-
-        const response = await axiosIns.postAuth(
-            "/medias/upload-video",
-            formData,
-            config
-        );
+        });
         return response?.data;
+    } catch (error) {
+        throw error;
     }
-}
+};
 
-const mediaServices = new MediaServices();
+export const uploadVideo = async (file: File | File[]) => {
+    const formData = new FormData();
+
+    if (Array.isArray(file)) {
+        file.forEach((f: File) => {
+            formData.append('video', f);
+        });
+    } else {
+        formData.append('video', file);
+    }
+
+    try {
+        const response = await axiosIns.post('/medias/upload-video', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return response?.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const uploadPDF = async (file: File | File[]) => {
+    const formData = new FormData();
+
+    if (Array.isArray(file)) {
+        file.forEach((f: File) => {
+            formData.append('pdf', f);
+        });
+    } else {
+        formData.append('pdf', file);
+    }
+
+    try {
+        const response = await axiosIns.post('/medias/upload-pdf', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return response?.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const getStatusUploadVideoHLS = async (uploadId: string) => {
+    try {
+        const response = await axiosIns.get(`/medias/getStatusUploadVideoHLS/${uploadId}`);
+        return response?.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const mediaServices = {
+    uploadImage,
+    uploadVideoHLS,
+    uploadVideo,
+    uploadPDF,
+    getStatusUploadVideoHLS,
+};
+
 export default mediaServices;

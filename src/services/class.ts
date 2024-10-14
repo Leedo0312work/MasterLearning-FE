@@ -1,32 +1,46 @@
-import axiosIns from "./axios";
-import { message, Spin } from "antd";
+import { CreateClassForm } from '~/types/class';
+import API from '~/network/API';
 
 export const fetchGetClassList = () => {
-    return axiosIns.getAuth("/classes/");
-}
+    return API.get('/classes');
+};
 
-export const fetchCreateClass = (data: any) => {
-    return axiosIns.postAuth("/classes/create", data);
+export const fetchCreateClass = (classes: CreateClassForm) => {
+    return API.post('/classes/create', classes);
 };
 
 export const fetchRoles = () => {
-    return axiosIns.get('/v1/classes/roles');
+    return API.get('/v1/classes/roles');
 };
 
-export const fetchDetailClass = (id: number) => {
-    return axiosIns.getAuth(`/classes/${id}`);
+export const fetchDetailClass = (classId: number) => {
+    return API.get(`/v1/classes/${classId}`);
 };
 
 export const fetchRole = (classId: number) => {
-    return axiosIns.get(`/v1/classes/${classId}/role`);
+    return API.get(`/v1/classes/${classId}/role`);
 };
 
 export const fetchSearchClass = (code: string) => {
-    return axiosIns.post("classes/search", code)
-}
-
-export const joinClass = async (class_id: string) => {
-    return axiosIns.postAuth(`/classes/join-class`, {
-        class_id: class_id,
+    return API.post('classes/find-by-code', {
+        code: code,
     });
-}
+};
+
+export const fetchGetAcceptedMember = (classId: string) => {
+    return API.post('classes/get-member-accept', {
+        classId: classId,
+    });
+};
+
+export const fetchGetPendingMember = (classId: string) => {
+    return API.post('classes/get-member-pending', {
+        classId: classId,
+    });
+};
+
+export const fetchAcceptMember = (id: string) => {
+    return API.post('classes/accept-class', {
+        id: id,
+    });
+};

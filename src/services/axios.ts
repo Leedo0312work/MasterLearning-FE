@@ -48,7 +48,6 @@ const checkToken = async () => {
         }
         return true;
     } else {
-
         window.location.href = '/login?jwt=out';
         return false;
     }

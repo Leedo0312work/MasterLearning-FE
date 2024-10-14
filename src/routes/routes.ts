@@ -13,6 +13,7 @@ const AddHomework = lazy(() => import('~/pages/AddHomework'));
 const Schedule = lazy(() => import('~/pages/Schedule'));
 const Profile = lazy(() => import('~/pages/Profile'));
 const Member = lazy(() => import('~/pages/Member'));
+const NewMember = lazy(() => import('~/pages/NewMember'));
 const Lesson = lazy(() => import('~/pages/Lesson'));
 const LessonAdd = lazy(() => import('~/pages/LessonAdd'));
 const LessonEdit = lazy(() => import('~/pages/LessonEdit'));
@@ -26,8 +27,8 @@ const ForgotPassword = lazy(() => import('~/pages/ForgotPassword'));
 const ResetPassword = lazy(() => import('~/pages/ResetPassword'));
 const CheckEmailNoti = lazy(() => import('~/pages/CheckEmailNoti'));
 
-
-
+const NewMemberAccepted = lazy(() => import('~/components/NewMemberAccepted'));
+const NewMemberPending = lazy(() => import('~/components/NewMemberPending'));
 
 interface Route {
     path: string;
@@ -40,6 +41,13 @@ interface Route {
 interface RouteChildren {
     path: string;
     component: React.LazyExoticComponent<any>;
+    children?: RouteChildren1[];
+}
+
+interface RouteChildren1 {
+    path: string;
+    component: React.LazyExoticComponent<any>;
+    layout?: any;
 }
 
 const routes: Route[] = [
@@ -73,6 +81,16 @@ const routes: Route[] = [
         component: Class,
         layout: DefaultLayout,
         // private: true,
+        // children: [
+        //     {
+        //         path: 'myclass',
+        //         component: MyClass,
+        //     },
+        //     {
+        //         path: 'hiddenclass',
+        //         component: HiddenClass,
+        //     },
+        // ],
     },
 
     {
@@ -106,7 +124,18 @@ const routes: Route[] = [
             },
             {
                 path: 'member',
-                component: Member,
+                component: NewMember,
+                children: [
+                    {
+                        path: 'accepted',
+                        component: NewMemberAccepted,
+                        layout: DefaultLayout,
+                    },
+                    {
+                        path: 'pending',
+                        component: NewMemberPending,
+                    },
+                ],
             },
             {
                 path: 'lesson',

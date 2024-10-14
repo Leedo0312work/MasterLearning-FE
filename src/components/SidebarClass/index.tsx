@@ -43,7 +43,8 @@ function SidebarClass() {
                 icon: PersonOutlineIcon,
                 text: 'Thành viên',
                 to: 'member',
-                show: role == Role.ADMIN,
+                // show: role == Role.ADMIN,
+                show: true,
             },
             // {
             //     icon: WorkOutlineIcon,

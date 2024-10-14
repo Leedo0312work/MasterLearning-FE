@@ -17,19 +17,19 @@ function BoxInputLessonAdd() {
             <Controller
                 rules={{
                     pattern: {
-                        value: /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/,
-                        message: 'Link không hợp lệ',
+                        value: /^(https?:\/\/)?((www\.)?(youtube\.com|youtu\.be)\/(watch\?v=|embed\/|v\/|u\/\w\/|playlist\?list=|[\w-]+)|((www\.)?facebook\.com\/.*\/videos\/[0-9]+))/,
+                        message: 'Link không hợp lệ. Vui lòng nhập link Youtube hoặc Facebook.',
                     },
                 }}
                 control={control}
-                name={'youtubeLink'}
+                name={'media.url'}
                 render={({ field, fieldState: { error, invalid } }) => (
                     <TextField
                         error={invalid}
                         helperText={error?.message}
                         {...field}
                         className={styles.input}
-                        placeholder="Nhập link youtube/facebook video tại đây..."
+                        placeholder="Nhập link Youtube/Facebook video tại đây..."
                         id="outlined-basic"
                         variant="outlined"
                     />
