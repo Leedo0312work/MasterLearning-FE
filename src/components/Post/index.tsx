@@ -31,7 +31,7 @@ const Post: React.FC<any> = ({ post, isShowGroupName = true, listPost, setListPo
         total_page: 0,
     });
     const { id } = useParams();
-    const class_id = useMemo(() => id?.substring(1), [id]);
+    const class_id = useMemo(() => id?.substring(0), [id]);
 
     const posts = useQuery({
         queryKey: ["getNewsfeed", class_id, 10, 1],
@@ -170,10 +170,10 @@ const Post: React.FC<any> = ({ post, isShowGroupName = true, listPost, setListPo
                     <i className="tw-text-[25px] tw-mr-2 fa-regular fa-comment"></i>
                     <p>Bình luận</p>
                 </div>
-                <div className="tw-flex">
+                {/* <div className="tw-flex">
                     <i className="tw-text-[25px] tw-mr-2 fa-regular fa-share-from-square"></i>
                     <p>Chia sẻ</p>
-                </div>
+                </div> */}
             </div>
             {showComments && (
                 <ModalComment
