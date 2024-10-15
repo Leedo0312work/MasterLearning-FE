@@ -15,8 +15,8 @@ function NewsfeedContent({ classId, listPost, setListPost }: any) {
         total_page: 0,
     });
     const { id } = useParams();
-    const class_id = useMemo(() => id?.substring(1), [id]);
-
+    const class_id = useMemo(() => id?.substring(0), [id]);
+    // console.log(class_id);
     const posts = useQuery({
         queryKey: ["getNewsfeed", class_id, 10, 1],
         queryFn: async () =>
@@ -93,9 +93,11 @@ function NewsfeedContent({ classId, listPost, setListPost }: any) {
                         </div>
                     </InfiniteScroll>
                 )}
-                {listPost.length === 0 && (
-                    <p className="tw-text-center tw-py-10">Chưa có bài viết nào</p>
-                )}
+                {/* {listPost.length === 0 && (
+                    <div className={styles.createPost}>
+                        <p className="tw-text-center tw-py-10">Chưa có bài viết nào</p>
+                    </div>
+                )} */}
             </div>
         </div>
     );

@@ -22,7 +22,7 @@ function Newsfeed() {
     const [listPost, setListPost] = useState([]);
     const { id } = useParams();
     const class_id = useMemo(() => {
-        return id?.substring(1);
+        return id?.substring(0);
     }, [id]);
     return (
         <div className={styles.wrap}>

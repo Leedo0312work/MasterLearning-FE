@@ -12,6 +12,7 @@ import clsx from 'clsx';
 import avatarDefault from '~/assets/images/avatar_default.png';
 import { TweetType } from '~/enums/tweet';
 import { Media } from "~/enums/media";
+import MediaPost from './MediaPost';
 import {
     Avatar,
     Form,
@@ -31,7 +32,7 @@ import { useState } from 'react';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 import { Box, Button } from '@mui/material';
 
-const ModalOption = ({ postId, refetchPosts }: any) => {
+const ModalOption = ({ post, postId, refetchPosts }: any) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [mediaList, setMediaList] = useState<UploadFile[]>([]);
@@ -282,7 +283,10 @@ const ModalOption = ({ postId, refetchPosts }: any) => {
                                             onChange={(e) => setContent(e.target.value)}
                                         />
                                     </div>
+
                                 </div>
+                                <MediaPost post={post} />
+
                                 <div className={styles.footer}>
                                     <Button
                                         sx={{ fontSize: 14 }}
