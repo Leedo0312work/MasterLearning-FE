@@ -9,10 +9,6 @@ const config = [
         text: 'Lớp học',
         to: '/class',
     },
-    {
-        text: 'Học liệu',
-        to: '/resource',
-    },
 ];
 
 function HeaderContent() {
@@ -26,14 +22,14 @@ function HeaderContent() {
     }, [location]);
     return (
         <div className={styles.wrap}>
-            {config.map((item) => (
+            {/* {config.map((item) => (
                 <HeaderContentItem
                     active={item.to === active}
                     key={item.to}
                     text={item.text}
                     to={item.to}
                 />
-            ))}
+            ))} */}
         </div>
     );
 }
