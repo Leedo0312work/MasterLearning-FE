@@ -33,12 +33,12 @@ function SidebarClass() {
                 to: 'newsfeed',
                 show: true,
             },
-            {
-                icon: EventNoteIcon,
-                text: 'Lịch học',
-                to: 'schedule',
-                show: true,
-            },
+            // {
+            //     icon: EventNoteIcon,
+            //     text: 'Lịch học',
+            //     to: 'schedule',
+            //     show: true,
+            // },
             {
                 icon: PersonOutlineIcon,
                 text: 'Thành viên',
