@@ -2,7 +2,6 @@ import { Image } from "antd";
 import React, { useEffect } from "react";
 import SliderPost from "./SliderPost";
 import PropTypes from "prop-types";
-
 import VideoHLS from "~/utils/media/videoHLS";
 
 const MediaPost = ({ post }: any) => {
@@ -17,10 +16,16 @@ const MediaPost = ({ post }: any) => {
         }
     }, [medias]);
 
+    const handleDeleteMedia = (index: number) => {
+        const updatedMedias = mediasPost.filter((_, i) => i !== index);
+        setMediasPost(updatedMedias);
+        // Optionally, you can make an API call here to update the backend with the new list of medias.
+    };
+
     const renderMedia = () => {
-        if (!medias || medias.length === 0) return null;
-        const mediaFiles = medias.slice(0, 4); // Limit to 4 files
-        const remainingFilesCount = medias.length - 4; // Count of remaining files
+        if (!mediasPost || mediasPost.length === 0) return null;
+        const mediaFiles = mediasPost.slice(0, 4); // Limit to 4 files
+        const remainingFilesCount = mediasPost.length - 4; // Count of remaining files
 
         return (
             <div className="tw-grid tw-grid-cols-2 tw-gap-2">
@@ -32,35 +37,34 @@ const MediaPost = ({ post }: any) => {
                     return (
                         <div
                             key={index}
-                            className={`tw-relative  ${isSingleInRow ? "tw-col-span-2" : ""
-                                }`}
+                            className={`tw-relative ${isSingleInRow ? "tw-col-span-2" : ""}`}
                         >
                             {media?.type === 0 ? (
                                 <div
-                                    className={`${isSingleInRow
-                                        ? "tw-h-[300px]"
-                                        : "tw-h-[187px]"
+                                    className={`${isSingleInRow ? "tw-h-[300px]" : "tw-h-[187px]"
                                         } tw-rounded-lg tw-overflow-hidden`}
                                 >
                                     <Image
                                         src={media.url}
                                         alt={`Image ${index}`}
-                                        height={
-                                            isSingleInRow ? "300px" : "187px"
-                                        }
+                                        height={isSingleInRow ? "300px" : "187px"}
                                         width={"100%"}
                                         style={{ objectFit: "contain" }}
                                         preview={true}
                                     />
+                                    {/* Delete button overlay */}
+                                    <div
+                                        onClick={() => handleDeleteMedia(index)}
+                                        className="tw-absolute tw-top-1 tw-right-1 tw-text-gray-500 tw-border-none"
+                                    >
+                                        <i className="fa-solid fa-circle-xmark tw-text-xl"></i>
+                                    </div>
+
                                 </div>
                             ) : (
                                 <VideoHLS
                                     src={media?.url}
-                                    controlType={
-                                        mediaCount > 4 && index === 3
-                                            ? "none"
-                                            : "control"
-                                    }
+                                    controlType={mediaCount > 4 && index === 3 ? "none" : "control"}
                                 />
                             )}
                             {index === 3 && remainingFilesCount > 0 && (
