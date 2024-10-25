@@ -5,7 +5,6 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CropSquareIcon from '@mui/icons-material/CropSquare';
 
-// @ts-ignore
 import styles from './styles.module.css';
 
 function ScheduleDetailclasses() {
@@ -53,7 +52,10 @@ function ScheduleDetailclasses() {
                 </div>
                 <div className={styles.bottom_item}>
                     <div className={styles.icon_bottom_wrap}>
-                        <img className={styles.icon_bottom} src="https://shub.edu.vn/images/icons/user-check.svg" />
+                        <img
+                            className={styles.icon_bottom}
+                            src="https://shub.edu.vn/images/icons/user-check.svg"
+                        />
                     </div>
                     <div className={styles.text}>Điểm danh: 9/9</div>
                 </div>

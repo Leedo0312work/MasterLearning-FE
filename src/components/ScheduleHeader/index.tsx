@@ -3,7 +3,6 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 
-// @ts-ignore
 import styles from './styles.module.css';
 import { useMemo } from 'react';
 import dayjs from '~/packages/dayjs';
@@ -32,7 +31,10 @@ function ScheduleHeader({
             </div>
             <div className={styles.mid}>
                 <div className={styles.icon}>
-                    <ChevronLeftIcon onClick={handleClickPreviousWeek} sx={{ color: 'rgba(0, 0, 0, 0.54)' }} />
+                    <ChevronLeftIcon
+                        onClick={handleClickPreviousWeek}
+                        sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
+                    />
                 </div>
                 <div className={styles.content}>
                     <div className={styles.day}>{dateToString}</div>

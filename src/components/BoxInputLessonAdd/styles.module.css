@@ -1,11 +1,12 @@
 .wrap {
-    width: 560px;
+    /* width: 560px; */
     background-color: #fff;
-    padding: 26px;
+    padding: 10px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     height: 190px;
-    margin-top: 20px;
+    /* margin-top: 20px; */
     box-sizing: border-box;
+    border-radius: 10px;
 }
 .header {
     font-size: 18px;
@@ -24,7 +25,6 @@
 }
 .input {
     width: 100%;
-    margin: 0 10px 10px 10px;
 }
 .input input {
     font-size: 14px;

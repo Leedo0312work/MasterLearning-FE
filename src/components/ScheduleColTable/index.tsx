@@ -3,7 +3,6 @@ import 'tippy.js/dist/tippy.css';
 import { Fragment, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
-// @ts-ignore
 import styles from './styles.module.css';
 import ScheduletableHeaderItem from '~/components/ScheduletableHeaderItem';
 import ScheduleDetailclasses from '~/components/ScheduleDetailclasses';
@@ -17,7 +16,11 @@ interface Prop {
 function ScheduleColTable({ item, addSchedule }: Prop) {
     return (
         <div className={styles.col}>
-            <ScheduletableHeaderItem addSchedule={addSchedule} text={item?.text} date={item?.date} />
+            <ScheduletableHeaderItem
+                addSchedule={addSchedule}
+                text={item?.text}
+                date={item?.date}
+            />
             <div className={styles.col_wrap}>
                 {item?.children ? (
                     item.children.map((child: any, index: number) => (

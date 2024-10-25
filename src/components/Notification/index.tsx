@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import NotificationItem from '~/components/NotificationItem';
-// @ts-ignore
+
 import styles from './styles.module.css';
 import useGetMyNotifications from '~/hooks/useGetMyNotifications';
 import { INotification } from '~/models/INotification';

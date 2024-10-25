@@ -1,6 +1,5 @@
 import clsx from 'clsx';
 
-// @ts-ignore
 import styles from './styles.module.css';
 import PropTypes from 'prop-types';
 import dayjs from '~/packages/dayjs';

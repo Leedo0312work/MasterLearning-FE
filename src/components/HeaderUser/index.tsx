@@ -4,10 +4,10 @@ import Tippy from '@tippyjs/react/headless';
 import 'tippy.js/dist/tippy.css';
 
 import HeaderMenuUser from '~/components/HeaderMenuUser';
-// @ts-ignore
+
 import styles from './styles.module.css';
 import useAuthStore from '~/store/useAuthStore';
-// @ts-ignore
+
 import avatarDefault from '~/assets/images/avatar_default.png';
 import { useRef } from 'react';
 import { Instance } from 'tippy.js';

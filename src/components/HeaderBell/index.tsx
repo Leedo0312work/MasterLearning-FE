@@ -3,7 +3,6 @@ import 'tippy.js/dist/tippy.css';
 import Avatar from '@mui/material/Avatar';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 
-// @ts-ignore
 import styles from './styles.module.css';
 
 function HeaderBell() {

@@ -45,7 +45,19 @@ function App() {
                                                         key={child.path}
                                                         path={child.path}
                                                         element={createElement(child.component)}
-                                                    />
+                                                    >
+                                                    {Boolean(child?.children) && Array.isArray(child?.children) && (
+                                                        <>
+                                                            {child.children.map((subChild) => (
+                                                                <Route
+                                                                    key={subChild.path}
+                                                                    path={subChild.path}
+                                                                    element={createElement(subChild.component)}
+                                                                />
+                                                            ))}
+                                                        </>
+                                                    )}
+                                                    </Route>
                                                 ))}
                                             </>
                                         )}

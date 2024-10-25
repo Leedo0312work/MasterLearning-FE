@@ -1,4 +1,3 @@
-// @ts-ignore
 import styles from './styles.module.scss';
 import FolderItem from '~/components/FolderItem';
 

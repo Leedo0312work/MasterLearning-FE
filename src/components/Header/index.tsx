@@ -1,7 +1,7 @@
 import React from 'react';
 import HeaderContent from '~/components/HeaderContent';
 import HeaderRight from '~/components/HeaderRight';
-// @ts-ignore
+
 import styles from './Header.module.css';
 import useAuthStore from '~/store/useAuthStore';
 import Button from '@mui/material/Button';

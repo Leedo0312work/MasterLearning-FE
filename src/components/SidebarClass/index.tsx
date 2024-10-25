@@ -1,6 +1,6 @@
 import SiderbarClassItem from '~/components/SiderbarClassItem';
 import SiderbarClassHeader from '~/components/SiderbarClassHeader';
-// @ts-ignore
+
 import styles from './styles.module.css';
 import NewspaperIcon from '@mui/icons-material/Newspaper';
 
@@ -33,17 +33,18 @@ function SidebarClass() {
                 to: 'newsfeed',
                 show: true,
             },
-            {
-                icon: EventNoteIcon,
-                text: 'Lịch học',
-                to: 'schedule',
-                show: true,
-            },
+            // {
+            //     icon: EventNoteIcon,
+            //     text: 'Lịch học',
+            //     to: 'schedule',
+            //     show: true,
+            // },
             {
                 icon: PersonOutlineIcon,
                 text: 'Thành viên',
                 to: 'member',
-                show: role == Role.ADMIN,
+                // show: role == Role.ADMIN,
+                show: true,
             },
             // {
             //     icon: WorkOutlineIcon,
@@ -94,7 +95,11 @@ function SidebarClass() {
         const result = menu.find((item) => pathname.includes(item.to));
         return result?.to;
     }, [location]);
-    const { isOpen: openAddEditModal, open: handleOpenAddEditModal, close: handleCloseAddEditModal } = useModal();
+    const {
+        isOpen: openAddEditModal,
+        open: handleOpenAddEditModal,
+        close: handleCloseAddEditModal,
+    } = useModal();
 
     return (
         <div className={styles.wrap}>

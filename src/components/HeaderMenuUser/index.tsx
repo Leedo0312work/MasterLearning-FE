@@ -9,7 +9,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 
 import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
-// @ts-ignore
+
 import styles from './styles.module.css';
 import useAuthStore from '~/store/useAuthStore';
 import { toast } from 'react-toastify';

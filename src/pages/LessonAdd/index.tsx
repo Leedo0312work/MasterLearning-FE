@@ -2,7 +2,6 @@ import LessonHeader from '~/components/LessonHeader';
 import SiderbarLessonAddEdit from '~/components/SiderbarLessonAddEdit';
 import BoxInputLessonAdd from '~/components/BoxInputLessonAdd';
 
-// @ts-ignore
 import styles from './styles.module.css';
 import { useForm, FormProvider } from 'react-hook-form';
 import { FormLessonType } from '~/types/lesson';
@@ -12,19 +11,18 @@ function LessonAdd() {
         defaultValues: {
             name: '',
             description: '',
-            youtubeLink: '',
+            class_id: '',
+            type: 0,
+            media: {
+                type: 0,
+                url: '',
+            },
         },
     });
 
     return (
         <div className={styles.wrap}>
             <FormProvider {...methods}>
-                <div className={styles.content}>
-                    <LessonHeader name={'abc'} />
-                    <div className={styles.box}>
-                        <BoxInputLessonAdd />
-                    </div>
-                </div>
                 <SiderbarLessonAddEdit />
             </FormProvider>
         </div>

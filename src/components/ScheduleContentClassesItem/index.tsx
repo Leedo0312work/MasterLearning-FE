@@ -1,6 +1,5 @@
 import 'tippy.js/dist/tippy.css';
 
-// @ts-ignore
 import styles from './styles.module.css';
 
 interface Prop {
@@ -24,7 +23,10 @@ function ScheduleContentClassesItem({ time, name, number }: Prop) {
                 <div className={styles.text}>{name}</div>
                 <div className={styles.bottom}>
                     <div className={styles.img_checkP}>
-                        <img src="https://shub.edu.vn/images/icons/user-check-white.svg" alt="check people" />
+                        <img
+                            src="https://shub.edu.vn/images/icons/user-check-white.svg"
+                            alt="check people"
+                        />
                     </div>
                     <div className={styles.bottom_text}>Điểm danh: {number}</div>
                 </div>

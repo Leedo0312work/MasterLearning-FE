@@ -1,5 +1,6 @@
-import API from '~/network/API';
+import axiosIns from "./axios";
 
-export const fetchPostByClass = (classId: number) => {
-    return API.get(`/v1/classes/${classId}/posts`);
+export const fetchPostByClass = (page: number, limit: number, class_id: string) => {
+    return axiosIns.getAuth(`/tweets?page=${page}&limit=${limit}&class_id=${class_id}`);
 };
+

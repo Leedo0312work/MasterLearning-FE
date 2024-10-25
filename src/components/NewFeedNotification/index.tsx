@@ -1,4 +1,3 @@
-// @ts-ignore
 import styles from './styles.module.css';
 import clsx from 'clsx';
 import CloseIcon from '@mui/icons-material/Close';

@@ -1,10 +1,10 @@
 import Tippy from '@tippyjs/react/headless';
 import 'tippy.js/dist/tippy.css';
-// @ts-ignore
+
 import styles from './styles.module.css';
 import HeaderBell from '~/components/HeaderBell';
 import HeaderUser from '~/components/HeaderUser';
-// @ts-ignore
+
 import Notification from '~/components/Notification';
 import useGetMyNotifications from '~/hooks/useGetMyNotifications';
 import { useEffect, useRef } from 'react';

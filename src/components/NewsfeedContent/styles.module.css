@@ -12,7 +12,7 @@
     align-items: center;
 }
 .createPost {
-    width: 620px;
+    width: 70%;
     margin-bottom: 20px;
 }
 .listPost {
@@ -20,10 +20,21 @@
     flex-direction: column;
     justify-content: center;
     margin-bottom: 28px;
+    align-items: center;
+    /* width: 74% !important; */
 }
 .postItem {
     margin-top: 20px;
     display: flex;
-    width: 620px;
+    width: 70%;
     display: inline-block;
+}
+.scrollContent {
+    display: flex;
+    flex-direction: column;
+    width: 960px;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+
 }

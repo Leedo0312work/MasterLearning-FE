@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-// @ts-ignore
+
 import styles from './styles.module.css';
 import HeaderContentItem from '~/components/HeaderContentItem';
 import { useLocation } from 'react-router-dom';
@@ -8,10 +8,6 @@ const config = [
     {
         text: 'Lớp học',
         to: '/class',
-    },
-    {
-        text: 'Học liệu',
-        to: '/resource',
     },
 ];
 
@@ -26,9 +22,14 @@ function HeaderContent() {
     }, [location]);
     return (
         <div className={styles.wrap}>
-            {config.map((item) => (
-                <HeaderContentItem active={item.to === active} key={item.to} text={item.text} to={item.to} />
-            ))}
+            {/* {config.map((item) => (
+                <HeaderContentItem
+                    active={item.to === active}
+                    key={item.to}
+                    text={item.text}
+                    to={item.to}
+                />
+            ))} */}
         </div>
     );
 }

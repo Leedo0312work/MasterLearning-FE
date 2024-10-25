@@ -1,7 +1,6 @@
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import PropTypes from 'prop-types';
 
-// @ts-ignore
 import styles from './styles.module.css';
 
 interface Prop {

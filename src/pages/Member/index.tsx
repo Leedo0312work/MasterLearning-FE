@@ -1,13 +1,12 @@
 import styles from './styles.module.css';
-import MemberTableHeader from '~/components/MemberTableHeader';
-import MemberTableContentHeader from '~/components/MemberTableContentHeader';
-import MemberTableContentItem from '~/components/MemberTableContentItem';
-import MemberModalAddStudent from '~/components/MemberModalAddStudent';
-import MemberModalEditStudent from '~/components/MemberModalEditStudent';
+import MemberTableHeader from '../../components/MemberTableHeader';
+import MemberTableContentHeader from '../../components/MemberTableContentHeader';
+import MemberTableContentItem from '../../components/MemberTableContentItem';
+import MemberModalAddStudent from '../../components/MemberModalAddStudent';
+import MemberModalEditStudent from '../../components/MemberModalEditStudent';
 import { useCallback, useMemo, useState } from 'react';
 import useModal from '~/hooks/useModal';
-import SiderbarRightMemberItem from '~/components/SiderbarRightMemberItem';
-import SiderbarRightMember from '~/components/SiderbarRightMember';
+import SiderbarRightMember from '../../components/SiderbarRightMember';
 import useManageMember from '~/hooks/useManageMember';
 import { useConfirm } from 'material-ui-confirm';
 import { ConfirmProvider } from 'material-ui-confirm';
@@ -44,20 +43,20 @@ function Member() {
     const confirm = useConfirm();
     const handleDelete = (name: any, id: any) => {
         confirm({ title: 'Hãy chắc chắn rằng', description: `Học sinh ${name} sẽ bị xóa.` })
-            .then(() =>
-                mutateDeleteStudent({
-                    classId: classId,
-                    userId: id,
-                }),
-            )
+            // .then(() =>
+            //     mutateDeleteStudent({
+            //         classId: classId,
+            //         userId: id,
+            //     }),
+            // )
             .catch(() => console.log('Deletion cancelled.'));
     };
 
     const handleAcceptMember = (userId: any) => {
-        mutateAcceptPending({
-            classId: classId,
-            userId: userId,
-        });
+        // mutateAcceptPending({
+        //     classId: classId,
+        //     userId: userId,
+        // });
     };
     const handleAcceptAll = () => {
         mutateAcceptPendingAll();
