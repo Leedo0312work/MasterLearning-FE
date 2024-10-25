@@ -36,7 +36,7 @@ function HeaderUser() {
             <div className={styles.user_wrap}>
                 <div className={styles.user}>
                     <Avatar src={getAvatar() || avatarDefault} />
-                    <div className={styles.user_name}>{user?.username || 'username'}</div>
+                    <div className={styles.user_name}>{user?.name || 'username'}</div>
                     <div className={styles.user_action}>
                         <ArrowDropDownIcon fontSize="small" className={styles.icon_down} />
                     </div>

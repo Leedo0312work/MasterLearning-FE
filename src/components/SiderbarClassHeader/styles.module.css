@@ -27,10 +27,36 @@
 .class_code{
     color:#333;
     font-size: 14px;
-    margin-left: 8px;
+    display: flex;
+    align-items: center;
 
 }
 .code{
-    color:#202227;
+    color:#202227; 
+    font-size: 12px;
+    font-weight: 480;
+}
+
+.title {
+    font-size: 14px;
     font-weight: 500;
+    margin-right: 2px;
+    text-decoration: underline;
+}
+
+.back_icon {
+    margin-bottom: 10px;
+}
+.back_link {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+.back_link:hover {
+    color: #1E88E5;
+}
+.icon {
+    color: #1E88E5;
+    font-size: 22px;
+    margin-bottom: 5px;
 }

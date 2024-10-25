@@ -44,3 +44,7 @@ export const fetchAcceptMember = (id: string) => {
         id: id,
     });
 };
+
+export const fetchGetClassById = (id: string) => {
+    return API.get(`classes/get/${id}`);
+};
