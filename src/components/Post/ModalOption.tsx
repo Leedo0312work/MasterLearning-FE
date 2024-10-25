@@ -13,6 +13,7 @@ import avatarDefault from '~/assets/images/avatar_default.png';
 import { TweetType } from '~/enums/tweet';
 import { Media } from "~/enums/media";
 import MediaPost from './MediaPost';
+import MediaComment from './MediaComment';
 import {
     Avatar,
     Form,
@@ -39,11 +40,12 @@ const ModalOption = ({ post, postId, refetchPosts }: any) => {
     const [uploadMedia, setUploadMedia] = useState(false);
     const [content, setContent] = useState<string>("");
 
-    const handleCancel = () => {
-        setContent("");
-        setMediaList([]);
-        setUploadMedia(false);
-    };
+    // const handleCancel = () => {
+    //     setContent("");
+    //     setMediaList([]);
+    //     setUploadMedia(false);
+    // };
+
     const handleEditClick = async () => {
         setIsEditModalOpen(true);
         await fetchTweet(postId);
@@ -55,14 +57,13 @@ const ModalOption = ({ post, postId, refetchPosts }: any) => {
             console.log(tweetData);
             // Set the retrieved content and media list.
             setContent(tweetData.content || "");
-            setMediaList(
-                tweetData.medias.map((media: any) => ({
+            const mediaFiles = tweetData.medias.map((media: any) => ({
 
-                    url: media.url,
-                    type: media.type,
 
-                }))
-            );
+                url: media.url,
+                type: media.type,
+            }));
+            setMediaList(mediaFiles); // This acts as defaultFileList
         } catch (error) {
             console.error('Error fetching tweet:', error);
         }
@@ -285,7 +286,7 @@ const ModalOption = ({ post, postId, refetchPosts }: any) => {
                                     </div>
 
                                 </div>
-                                <MediaPost post={post} />
+                                <MediaComment post={post} />
 
                                 <div className={styles.footer}>
                                     <Button
@@ -293,13 +294,11 @@ const ModalOption = ({ post, postId, refetchPosts }: any) => {
                                         className={clsx(styles.button, styles.addImg)}
                                         onClick={() => setUploadMedia(!uploadMedia)}
                                     >
-                                        Thêm hình
-                                    </Button>
-                                    {uploadMedia && (
                                         <Upload
                                             multiple
                                             listType="picture-card"
                                             fileList={mediaList}
+                                            defaultFileList={mediaList}
                                             onChange={handleUploadChange}
                                             itemRender={itemRender}
                                             onRemove={handleRemove}
@@ -318,10 +317,10 @@ const ModalOption = ({ post, postId, refetchPosts }: any) => {
                                         >
                                             <div>
                                                 <PlusOutlined />
-                                                <div style={{ marginTop: 8 }}>Tải ảnh/video</div>
+                                                <div style={{ marginTop: 8 }}>Thêm hình</div>
                                             </div>
                                         </Upload>
-                                    )}
+                                    </Button>
                                     <Button
                                         onClick={handleEditPost}
 
