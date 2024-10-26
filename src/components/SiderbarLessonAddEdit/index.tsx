@@ -13,13 +13,15 @@ import { useState } from 'react';
 import mediaServices from '~/services/media';
 import BoxInputLessonAdd from '../BoxInputLessonAdd';
 
-function SiderbarLessonAddEdit() {
+function SiderbarLessonAddEdit({
+    attachedMedias,
+    setAttachedMedias,
+}: {
+    attachedMedias: File[];
+    setAttachedMedias: React.Dispatch<React.SetStateAction<File[]>>;
+}) {
     const { control, handleSubmit } = useFormContext<FormLessonType>();
-    const [attachedFiles, setAttachedFiles] = useState<File[]>([]);
-    const [attachedMedias, setAttachedMedias] = useState<File[]>([]);
-
     const { id: classId } = useParams();
-
     const navigate = useNavigate();
 
     const { mutate } = useMutation('create', (data: FormLessonType) => getCreateLesson(data), {
@@ -38,30 +40,43 @@ function SiderbarLessonAddEdit() {
         },
     );
 
-    const submit = async (data: FormLessonType) => {
-        let uploadedFiles: any[] = [];
-        let uploadedMedia: { type: number; url: string } | null = null;
+    const handleVideoUpload = async () => {
+        if (attachedMedias.length === 0) return null;
 
         try {
-            if (attachedFiles.length > 0) {
-                const pdfRes = await mediaServices.uploadPDF(attachedFiles);
-                uploadedFiles = pdfRes.result;
+            // Upload the video(s)
+            const uploadResponse = await mediaServices.uploadVideoHLS(attachedMedias);
+            const uploadResult = uploadResponse?.result?.[0];
+
+            if (!uploadResult) {
+                throw new Error('No upload result found');
             }
 
-            if (attachedMedias.length > 0) {
-                const images = attachedMedias.filter((file) => file.type.startsWith('image/'));
-                const videos = attachedMedias.filter((file) => file.type.startsWith('video/'));
+            const uploadId = uploadResult.url.split('/').pop();
+            let uploadStatus;
+            do {
+                uploadStatus = await mediaServices.getStatusUploadVideoHLS(uploadId);
+                await new Promise((resolve) => setTimeout(resolve, 2000)); // Wait for 2 seconds
+            } while (uploadStatus.result !== 'Uploaded');
 
-                if (images.length > 0) {
-                    const imagesRes = await mediaServices.uploadImage(images);
-                    uploadedMedia = { type: 0, url: imagesRes.result[0].url };
-                }
+            return { type: uploadResult.type, url: uploadResult.url };
+        } catch (error) {
+            console.error('Video upload error:', error);
+            return null;
+        }
+    };
 
-                if (videos.length > 0) {
-                    const videosRes = await mediaServices.uploadVideoHLS(videos);
-                    uploadedMedia = { type: 3, url: videosRes[0].url };
-                }
-            }
+    const submit = async (data: FormLessonType) => {
+        // let uploadedFiles: any[] = [];
+        //let uploadedMedia: { type: number; url: string } | null = null;
+
+        try {
+            // if (attachedFiles.length > 0) {
+            //     const pdfRes = await mediaServices.uploadPDF(attachedFiles);
+            //     uploadedFiles = pdfRes.result;
+            // }
+
+            const uploadedMedia = await handleVideoUpload();
 
             if (Boolean(data?.id)) {
                 mutateEdit({
@@ -70,7 +85,6 @@ function SiderbarLessonAddEdit() {
                     media: uploadedMedia ? uploadedMedia : data.media,
                 });
             } else {
-                // Create new lesson
                 mutate({
                     ...data,
                     class_id: classId as string,
@@ -83,7 +97,7 @@ function SiderbarLessonAddEdit() {
     };
 
     return (
-        <div style={{ width: '100%', height: '100%', padding: '5px' }}>
+        <div style={{ height: '100%', padding: '5px' }}>
             <div style={{ height: '90%', display: 'flex', justifyContent: 'space-around' }}>
                 <div
                     style={{
@@ -141,97 +155,32 @@ function SiderbarLessonAddEdit() {
                         </div>
                     </div>
                     <div className={styles.item}>
-                        <div className={styles.name}>Bài tập đính kèm</div>
-                        <div
-                            className={styles.button}
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                            }}
-                        >
+                        <div className={styles.name}>Bài giảng đính kèm</div>
+                        <div className={styles.button}>
                             <div className={styles.input}>
-                                <FindInPageIcon />
+                                <FindInPageIcon
+                                    style={{
+                                        cursor: 'pointer',
+                                        marginLeft: '25px',
+                                    }}
+                                />
                                 <input
                                     style={{
                                         cursor: 'pointer',
                                     }}
                                     type="file"
-                                    accept=".pdf"
+                                    accept="video/*"
+                                    // accept="image/*, video/*"
                                     multiple
                                     onChange={(e) =>
-                                        setAttachedFiles([
-                                            ...attachedFiles,
+                                        setAttachedMedias([
+                                            ...attachedMedias,
                                             ...(e.target.files ? Array.from(e.target.files) : []),
                                         ])
                                     }
                                 />
                             </div>
                         </div>
-                        <div>
-                            <div className={styles.listAttachedFile}>
-                                {attachedFiles.length > 0 &&
-                                    attachedFiles.map((file, index) => (
-                                        <div key={index}>
-                                            <div className={styles.filename}>{file.name}</div>
-                                        </div>
-                                    ))}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div
-                    className={styles.item}
-                    style={{
-                        flexBasis: '50%',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                    }}
-                >
-                    <div className={styles.box} style={{ width: '100%', marginBottom: '30px' }}>
-                        <BoxInputLessonAdd />
-                    </div>
-                    <div className={styles.name}>Bài giảng đính kèm</div>
-                    <div className={styles.button}>
-                        <div className={styles.input}>
-                            <FindInPageIcon />
-                            <input
-                                style={{
-                                    cursor: 'pointer',
-                                }}
-                                type="file"
-                                accept="image/*, video/*"
-                                multiple
-                                onChange={(e) =>
-                                    setAttachedMedias([
-                                        ...attachedMedias,
-                                        ...(e.target.files ? Array.from(e.target.files) : []),
-                                    ])
-                                }
-                            />
-                        </div>
-                    </div>
-                    <div className="listAttachedMedias">
-                        {attachedMedias.length > 0 &&
-                            attachedMedias.map((file, index) => (
-                                <div key={index}>
-                                    {file.type.startsWith('image/') ? (
-                                        <img
-                                            src={URL.createObjectURL(file)}
-                                            alt="media"
-                                            style={{ width: '100px' }}
-                                        />
-                                    ) : (
-                                        <video width="100%" controls>
-                                            <source
-                                                src={URL.createObjectURL(file)}
-                                                type={file.type}
-                                            />
-                                        </video>
-                                    )}
-                                </div>
-                            ))}
                     </div>
                 </div>
             </div>
