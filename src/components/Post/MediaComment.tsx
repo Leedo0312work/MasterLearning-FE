@@ -4,7 +4,7 @@ import SliderPost from "./SliderPost";
 import PropTypes from "prop-types";
 import VideoHLS from "~/utils/media/videoHLS";
 
-const MediaPost = ({ post }: any) => {
+const MediaComment = ({ post }: any) => {
     const [openSlider, setOpenSlider] = React.useState(false);
     const [mediasPost, setMediasPost] = React.useState([]);
     const { medias } = post;
@@ -53,19 +53,27 @@ const MediaPost = ({ post }: any) => {
                                         preview={true}
                                     />
                                     {/* Delete button overlay */}
-                                    {/* <div
+                                    <div
                                         onClick={() => handleDeleteMedia(index)}
                                         className="tw-absolute tw-top-1 tw-right-1 tw-text-gray-500 tw-border-none"
                                     >
                                         <i className="fa-solid fa-circle-xmark tw-text-xl"></i>
-                                    </div> */}
+                                    </div>
 
                                 </div>
                             ) : (
-                                <VideoHLS
-                                    src={media?.url}
-                                    controlType={mediaCount > 4 && index === 3 ? "none" : "control"}
-                                />
+                                <div>
+                                    <VideoHLS
+                                        src={media?.url}
+                                        controlType={mediaCount > 4 && index === 3 ? "none" : "control"}
+                                    />
+                                    <div
+                                        onClick={() => handleDeleteMedia(index)}
+                                        className="tw-absolute tw-top-1 tw-right-1 tw-text-gray-500 tw-border-none"
+                                    >
+                                        <i className="fa-solid fa-circle-xmark tw-text-xl"></i>
+                                    </div>
+                                </div>
 
                             )}
                             {index === 3 && remainingFilesCount > 0 && (
@@ -96,8 +104,8 @@ const MediaPost = ({ post }: any) => {
     );
 };
 
-MediaPost.propTypes = {
+MediaComment.propTypes = {
     post: PropTypes.object.isRequired,
 };
 
-export default MediaPost;
+export default MediaComment;

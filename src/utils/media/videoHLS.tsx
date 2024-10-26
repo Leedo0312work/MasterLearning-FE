@@ -16,7 +16,7 @@ interface VideoProps {
     controlType?: string;
 }
 
-const VideoHLS: React.FC<VideoProps> = ({ src, controlType = "control" }) => {
+const VideoHLS: React.FC<any> = ({ src, controlType = "control" }) => {
     const videoRef = useRef(null);
 
     return (

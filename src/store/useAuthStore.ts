@@ -57,7 +57,7 @@ const useAuthStore = create<AuthStore>()(
             },
             getAvatar: () => {
                 const user = get().user;
-                return user?.profile?.avatar;
+                return user?.avatar;
             },
         })),
     ),

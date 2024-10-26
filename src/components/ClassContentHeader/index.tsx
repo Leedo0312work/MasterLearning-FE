@@ -7,6 +7,7 @@ import styles from './styles.module.css';
 import { useFormContext, Controller } from 'react-hook-form';
 import SelectMaterial from '~/components/SelectMaterial/index';
 import { SearchClassForm } from '~/types/class';
+import useAuthStore from '~/store/useAuthStore';
 
 interface Prop {
     handleOpenAddModal: () => void;
@@ -14,6 +15,9 @@ interface Prop {
 
 function ClassContentHeader({ handleOpenAddModal }: Prop) {
     const { register, control } = useFormContext<SearchClassForm>();
+
+    const user = useAuthStore((state) => state.user);
+
 
     return (
         <div className={styles.wrap}>
@@ -65,12 +69,13 @@ function ClassContentHeader({ handleOpenAddModal }: Prop) {
                     )}
                 />
             </div>
+            {user?.role === 2 &&
             <div className={styles.button} onClick={handleOpenAddModal}>
                 <div className={styles.plush}>
                     <AddIcon sx={{ color: '#fff' }} />
                 </div>
                 <div className={styles.info}>Tạo lớp học</div>
-            </div>
+            </div> }
         </div>
     );
 }

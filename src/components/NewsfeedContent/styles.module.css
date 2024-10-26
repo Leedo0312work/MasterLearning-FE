@@ -36,5 +36,9 @@
     margin: 0 auto;
     justify-content: center;
     align-items: center;
-
+    scrollbar-width: none; 
+    -ms-overflow-style: none;
+}
+.scrollContent::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
 }
