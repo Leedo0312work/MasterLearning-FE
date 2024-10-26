@@ -44,7 +44,6 @@ function SiderbarLessonAddEdit({
         if (attachedMedias.length === 0) return null;
 
         try {
-            // Upload the video(s)
             const uploadResponse = await mediaServices.uploadVideoHLS(attachedMedias);
             const uploadResult = uploadResponse?.result?.[0];
 
@@ -56,7 +55,7 @@ function SiderbarLessonAddEdit({
             let uploadStatus;
             do {
                 uploadStatus = await mediaServices.getStatusUploadVideoHLS(uploadId);
-                await new Promise((resolve) => setTimeout(resolve, 2000)); // Wait for 2 seconds
+                await new Promise((resolve) => setTimeout(resolve, 2000));
             } while (uploadStatus.result !== 'Uploaded');
 
             return { type: uploadResult.type, url: uploadResult.url };
@@ -83,12 +82,14 @@ function SiderbarLessonAddEdit({
                     ...data,
                     class_id: classId as string,
                     media: uploadedMedia ? uploadedMedia : data.media,
+                    type: 1,
                 });
             } else {
                 mutate({
                     ...data,
                     class_id: classId as string,
                     media: uploadedMedia,
+                    type: 1,
                 });
             }
         } catch (error) {

@@ -74,11 +74,12 @@ function SidebarClass() {
                 to: 'lesson',
                 show: true,
             },
-            // {
-            //     icon: SummarizeIcon,
-            //     text: 'Tài liệu',
-            //     to: 'file',
-            // },
+            {
+                icon: SummarizeIcon,
+                text: 'Tài liệu',
+                to: 'document',
+                show: true,
+            },
             {
                 icon: SettingsIcon,
                 text: 'Cài đặt lớp học',
