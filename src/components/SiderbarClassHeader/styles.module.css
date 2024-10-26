@@ -9,7 +9,8 @@
 }
 .header_class{
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    gap: 6px;
 }
 .header_icon{
     cursor: pointer;
@@ -33,15 +34,14 @@
 }
 .code{
     color:#202227; 
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 480;
 }
 
 .title {
     font-size: 14px;
     font-weight: 500;
-    margin-right: 2px;
-    text-decoration: underline;
+    margin-right: 4px;
 }
 
 .back_icon {
