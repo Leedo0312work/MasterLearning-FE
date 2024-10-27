@@ -17,6 +17,8 @@ const NewMember = lazy(() => import('~/pages/NewMember'));
 const Lesson = lazy(() => import('~/pages/Lesson'));
 const LessonAdd = lazy(() => import('~/pages/LessonAdd'));
 const LessonEdit = lazy(() => import('~/pages/LessonEdit'));
+// const DocumentAdd = lazy(() => import('~/pages/Document/DocumentAdd'));
+// const DocumentEdit = lazy(() => import('~/pages/Document/DocumentEdit'));
 const HomeWork = lazy(() => import('~/pages/HomeWork'));
 const Document = lazy(() => import('~/pages/Document'));
 const ScoreTable = lazy(() => import('~/pages/ScoreTable'));
@@ -160,7 +162,15 @@ const routes: Route[] = [
             },
             {
                 path: 'document',
-                component: Document,
+                component: Lesson,
+            },
+            {
+                path: 'document/add',
+                component: LessonAdd,
+            },
+            {
+                path: 'document/:documentID/edit',
+                component: LessonEdit,
             },
         ],
     },

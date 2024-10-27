@@ -15,20 +15,22 @@ function LesssonContent() {
             <LesssonContentHeader />
             <div className={styles.list_card}>
                 {lessons && lessons?.length > 0 ? (
-                    lessons.map((item: any, index: any) => (
-                        <CardVideo
-                            id={item?.id}
-                            active={item?.id === lessonId}
-                            onClick={(id: any) => setId(Number(id))}
-                            key={item?.name}
-                            name={item?.name}
-                            video={item?.video}
-                            viewer={item?.viewer}
-                            time={item?.time}
-                            createdAt={item?.createdAt}
-                            thumbnail={item?.thumbnail}
-                        />
-                    ))
+                    lessons
+                        .filter((lesson) => lesson.type === 1)
+                        .map((item: any, index: any) => (
+                            <CardVideo
+                                id={item?.id}
+                                active={item?.id === lessonId}
+                                onClick={(id: any) => setId(Number(id))}
+                                key={item?.name}
+                                name={item?.name}
+                                video={item?.video}
+                                viewer={item?.viewer}
+                                time={item?.time}
+                                createdAt={item?.createdAt}
+                                thumbnail={item?.thumbnail}
+                            />
+                        ))
                 ) : (
                     <div className={styles.noVideo}>Lớp học chưa có bài giảng nào</div>
                 )}

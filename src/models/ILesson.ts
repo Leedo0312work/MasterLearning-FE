@@ -5,4 +5,7 @@ export interface ILesson {
     youtubeLink: string;
     thumbnail: string;
     createdAt: string;
+    type?: number;
+    viewer?: number;
+    time?: string;
 }
