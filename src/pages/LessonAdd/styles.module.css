@@ -7,11 +7,14 @@
     border-right: 1px solid #d8dcf0;
     box-sizing: border-box;
     flex: 1;
+    height: auto;
+    background-color: rgb(240, 242, 245);
 }
 .box {
-    background-color: rgb(240, 242, 245);
     display: flex;
-    height: 100%;
+    height: fit-content;
     justify-content: center;
-    padding-top: 30px;
+}
+.sidebarRight {
+    background-color: rgb(240, 242, 245);
 }

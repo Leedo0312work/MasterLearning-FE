@@ -71,14 +71,15 @@ function SidebarClass() {
             {
                 icon: PlayCircleOutlineIcon,
                 text: 'Bài giảng',
-                to: 'lesson',
+                to: 'content/1',
                 show: true,
             },
-            // {
-            //     icon: SummarizeIcon,
-            //     text: 'Tài liệu',
-            //     to: 'file',
-            // },
+            {
+                icon: SummarizeIcon,
+                text: 'Tài liệu',
+                to: 'content/0',
+                show: true,
+            },
             {
                 icon: SettingsIcon,
                 text: 'Cài đặt lớp học',

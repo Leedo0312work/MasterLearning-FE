@@ -138,24 +138,34 @@ const routes: Route[] = [
                 ],
             },
             {
-                path: 'lesson',
-                component: Lesson,
-            },
-            {
                 path: 'scoretable',
                 component: ScoreTable,
             },
             {
-                path: 'lesson/add',
+                path: 'homework',
+                component: HomeWork,
+            },
+            {
+                path: 'content/:type',
+                component: Lesson,
+                // children: [
+                //     {
+                //         path: 'add',
+                //         component: LessonAdd,
+                //     },
+                //     {
+                //         path: ':contentId/edit',
+                //         component: LessonEdit,
+                //     },
+                // ],
+            },
+            {
+                path: 'content/:type/add',
                 component: LessonAdd,
             },
             {
-                path: 'lesson/:lessonId/edit',
+                path: 'content/:type/:contentId/edit',
                 component: LessonEdit,
-            },
-            {
-                path: 'homework',
-                component: HomeWork,
             },
         ],
     },
