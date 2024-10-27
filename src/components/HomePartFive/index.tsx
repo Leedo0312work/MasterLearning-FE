@@ -19,11 +19,13 @@ function HomePartFive() {
                         src="https://shub-storage.sgp1.cdn.digitaloceanspaces.com/landing-resource-2/images/SchoolRegisterSection/Shield.svg"
                         alt="logo"
                     />
-                    <h1 className={styles.header}>Chung tay cùng ngành giáo dục vượt qua đại dịch</h1>
+                    <h1 className={styles.header}>
+                        Chung tay cùng ngành giáo dục vượt qua đại dịch
+                    </h1>
                     <p className={styles.title}>
-                        Thời gian vừa qua SHub đã đồng hành cùng các đơn vị giáo dục, hệ thống trường học trên khắp cả
-                        nước nhằm triển khai công tác giảng dạy trực tuyến. Cùng ngành giáo dục Việt Nam chiến thắng,
-                        vượt qua đại dịch COVID-19.
+                        Thời gian vừa qua Master Learning đã đồng hành cùng các đơn vị giáo dục, hệ
+                        thống trường học trên khắp cả nước nhằm triển khai công tác giảng dạy trực
+                        tuyến. Cùng ngành giáo dục Việt Nam chiến thắng, vượt qua đại dịch COVID-19.
                     </p>
                 </div>
             </div>

@@ -9,13 +9,11 @@ function HomeFooter() {
     return (
         <div className={styles.wrap}>
             <div className={styles.left}>
-                <img
-                    className={styles.logo}
-                    src="https://shub.edu.vn/images/landing/ver3/footer-section/shub-logo.svg"
-                    alt="logo"
-                />
-                <h3 className={styles.left_header}>CÔNG TY CỔ PHẦN CÔNG NGHỆ SHUB</h3>
-                <p className={styles.left_title}>©Copyright 2022 SHub Classroom. All Rights Reserved</p>
+                <img className={styles.logo} src="/src//assets//images//logo.svg" alt="logo" />
+                <h3 className={styles.left_header}>CÔNG TY CỔ PHẦN CÔNG NGHỆ MASTER LEARNING</h3>
+                <p className={styles.left_title}>
+                    ©Copyright 2022 Master Learning. All Rights Reserved
+                </p>
             </div>
             <div className={styles.mid}>
                 <h3 className={styles.mid_header}>Số điện thoại</h3>

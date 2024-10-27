@@ -31,13 +31,15 @@ function HomePartThree() {
         <div className={styles.wrap}>
             <div className={styles.left}>
                 <div className={styles.leftWrap}>
-                    <h2 className={styles.header}>SHub đồng hành cùng giáo dục cả nước</h2>
+                    <h2 className={styles.header}>
+                        Master Learning đồng hành cùng giáo dục cả nước
+                    </h2>
                     <h1 className={styles.title}>
                         <span className={styles.red}>
                             Có mặt trên 63 tỉnh thành, với hơn 3.000.000 người dùng mỗi ngày{' '}
                         </span>
-                        cho việc dạy và học, SHub trở thành cộng đồng giáo dục trực tuyến, môi trường học tập, giảng dạy
-                        và chia sẻ rộng lớn.
+                        cho việc dạy và học, Master Learning trở thành cộng đồng giáo dục trực
+                        tuyến, môi trường học tập, giảng dạy và chia sẻ rộng lớn.
                     </h1>
                     <div className={styles.list}>
                         {items.map((item) => (

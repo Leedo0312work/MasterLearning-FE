@@ -14,7 +14,7 @@ function Header() {
         <div className={styles.container}>
             <div className={styles.wrap}>
                 <div className={styles.logo}>
-                    <img src="https://shub.edu.vn/images/brand-blue.svg" alt="logo" />
+                    <img src="/src/assets/images/logo.svg" alt="logo" />
                 </div>
 
                 {Boolean(user) && (
