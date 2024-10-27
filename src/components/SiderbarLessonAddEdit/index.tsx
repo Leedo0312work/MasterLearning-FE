@@ -26,7 +26,7 @@ function SiderbarLessonAddEdit({
 
     const { mutate } = useMutation('create', (data: FormLessonType) => getCreateLesson(data), {
         onSuccess() {
-            navigate(`/class/${classId}/lesson`);
+            navigate(`/class/${classId}/content/${type}`);
         },
     });
 
@@ -35,7 +35,7 @@ function SiderbarLessonAddEdit({
         (data: FormLessonType) => getUpdateLesson(Number(data.id), data),
         {
             onSuccess() {
-                navigate(`/class/${classId}/lesson`);
+                navigate(`/class/${classId}/content/${type}`);
             },
         },
     );
@@ -89,20 +89,17 @@ function SiderbarLessonAddEdit({
             const uploadedMedia =
                 type === '1' ? await handleVideoUpload() : await handlePDFUpload();
 
+            const lessonData = {
+                ...data,
+                class_id: classId as string,
+                media: uploadedMedia,
+                type: parseInt(type as string),
+            };
+
             if (Boolean(data?.id)) {
-                mutateEdit({
-                    ...data,
-                    class_id: classId as string,
-                    media: uploadedMedia ? uploadedMedia : data.media,
-                    type: 1,
-                });
+                mutateEdit(lessonData);
             } else {
-                mutate({
-                    ...data,
-                    class_id: classId as string,
-                    media: uploadedMedia,
-                    type: 1,
-                });
+                mutate(lessonData);
             }
         } catch (error) {
             console.error('Error uploading files: ', error);
@@ -187,7 +184,6 @@ function SiderbarLessonAddEdit({
                                     }}
                                     type="file"
                                     accept={type === '1' ? 'video/*' : 'application/pdf'}
-                                    multiple
                                     onChange={(e) =>
                                         setAttachedMedias([
                                             ...attachedMedias,

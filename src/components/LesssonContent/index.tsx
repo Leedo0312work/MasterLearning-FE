@@ -7,6 +7,7 @@ import { useQuery } from 'react-query';
 import { getLessonByClassId } from '~/repositories/lesson';
 import useLessonStore from '~/store/useLessonStore';
 import CardDocument from '../CardDocument';
+import { useState } from 'react';
 
 {
     /* <CardVideo
@@ -23,8 +24,15 @@ import CardDocument from '../CardDocument';
                             /> */
 }
 
-function LesssonContent() {
-    const { lessons, id: lessonId, setId } = useLessonStore((state) => state);
+function LesssonContent({ lessons }: any) {
+    const { id: lessonId, setId } = useLessonStore((state) => state);
+    const [lessonList, setLessonList] = useState(lessons);
+
+    const handleDeleteSuccess = (deletedId: number) => {
+        setLessonList(lessonList.filter((lesson: any) => lesson.id !== deletedId));
+    };
+
+    console.log('lesson: ', lessons);
 
     return (
         <div className={styles.wrap}>
@@ -34,27 +42,29 @@ function LesssonContent() {
                     lessons.map((item: any) =>
                         item.type === 1 ? (
                             <CardVideo
-                                id={item.id}
+                                id={item._id}
                                 active={item.id === lessonId}
                                 onClick={(id: any) => setId(Number(id))}
-                                key={item.id}
+                                key={item._id}
                                 name={item.name}
                                 video={item.media.url}
                                 viewer={item.viewer}
                                 time={item.time}
-                                createdAt={item.createdAt}
+                                createdAt={item.created_at}
                                 thumbnail={item.thumbnail}
                             />
                         ) : (
                             <CardDocument
-                                id={item.id}
+                                id={item._id}
                                 active={item.id === lessonId}
                                 onClick={(id: any) => setId(Number(id))}
-                                key={item.id}
+                                key={item._id}
                                 name={item.name}
                                 viewer={item.viewer}
-                                createdAt={item.createdAt}
+                                media={item.media}
+                                createdAt={item.created_at}
                                 thumbnail={item.thumbnail || 'default-thumbnail-url'}
+                                onDeleteSuccess={handleDeleteSuccess}
                             />
                         ),
                     )

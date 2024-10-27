@@ -55,8 +55,8 @@ function Lesson() {
         <div className={styles.wrap}>
             <LessonHeader name={type === '0' ? 'Tài liệu' : 'Bài giảng'} />
             <div className={styles.content}>
-                <LesssonContent />
-                <SiderbarRightLesson />
+                <LesssonContent lessons={filteredLessons} />
+                {type === '1' && <SiderbarRightLesson />}
             </div>
         </div>
     );

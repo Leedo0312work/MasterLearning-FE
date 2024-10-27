@@ -28,7 +28,10 @@ function LessonAdd() {
             <FormProvider {...methods}>
                 <div className={styles.content}>
                     <div className={styles.box}>
-                        <BoxInputLessonAdd attachedMedias={attachedMedias} />
+                        <BoxInputLessonAdd
+                            attachedMedias={attachedMedias}
+                            setAttachedMedias={setAttachedMedias}
+                        />
                     </div>
                 </div>
                 <SiderbarLessonAddEdit
