@@ -39,10 +39,6 @@ function HomeWork() {
         <div className={styles.wrap}>
             <LessonHeader name="Bài tập" />
             <div className={styles.content}>
-                <SidebarLeftLesson
-                    data={allFolder}
-                    handleOpenModalAddFolder={handleOpenModalAddFolder}
-                />
                 <HomeWorkContent />
                 <SiderbarRightHomeWork />
             </div>

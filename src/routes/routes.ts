@@ -2,6 +2,7 @@ import React, { ExoticComponent, Fragment, lazy, ReactNode } from 'react';
 
 import DefaultLayout from '~/layout/Default';
 
+const ViewLesson = lazy(() => import('~/pages/ViewLesson'));
 const Home = lazy(() => import('~/pages/Home'));
 const Login = lazy(() => import('~/pages/Login'));
 const Register = lazy(() => import('~/pages/Register'));
@@ -148,17 +149,14 @@ const routes: Route[] = [
             {
                 path: 'content/:type',
                 component: Lesson,
-                // children: [
-                //     {
-                //         path: 'add',
-                //         component: LessonAdd,
-                //     },
-                //     {
-                //         path: ':contentId/edit',
-                //         component: LessonEdit,
-                //     },
-                // ],
+                children: [
+                    // {
+                    //     path: ':contentId/edit',
+                    //     component: LessonEdit,
+                    // },
+                ],
             },
+
             {
                 path: 'content/:type/add',
                 component: LessonAdd,
@@ -166,6 +164,10 @@ const routes: Route[] = [
             {
                 path: 'content/:type/:contentId/edit',
                 component: LessonEdit,
+            },
+            {
+                path: 'content/:type/view/:lessonId',
+                component: ViewLesson,
             },
         ],
     },

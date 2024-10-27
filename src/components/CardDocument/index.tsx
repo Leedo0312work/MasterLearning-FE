@@ -75,19 +75,23 @@ function CardDocument({
     return (
         <div onClick={() => onClick(id)} className={clsx(styles.wrap, { [styles.active]: active })}>
             <div className={styles.card}>
-                <div className={styles.top}>
-                    <img
-                        src={thumbnail || 'default-thumbnail-url'}
-                        alt="Document thumbnail"
-                        className={styles.thumbnail}
-                    />
-                </div>
-                <div className={styles.bottom}>
-                    <div className={clsx(styles.header)}>{name}</div>
-                    <div className={styles.info}>
-                        {viewer ? `${viewer} lượt xem` : 'Chưa có lượt xem'}
-                        <br />
-                        {dayjs(createdAt).format('HH:mm:ss DD/MM/YYYY')}
+                <div style={{ display: 'flex', gap: '10px' }}>
+                    <div className={styles.top}>
+                        <img
+                            src={
+                                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFbssICLw_Xz8qJ9PPcrqZaW55wY23F0b43A&s'
+                            }
+                            alt="Document thumbnail"
+                            className={styles.thumbnail}
+                        />
+                    </div>
+                    <div className={styles.bottom}>
+                        <div className={clsx(styles.header)}>{name}</div>
+                        <div className={styles.info}>
+                            {viewer ? `${viewer} lượt xem` : 'Chưa có lượt xem'}
+                            <br />
+                            {dayjs(createdAt).format('HH:mm:ss DD/MM/YYYY')}
+                        </div>
                     </div>
                 </div>
                 <MoreVertIcon onClick={handleMenuClick} className={styles.menuIcon} />

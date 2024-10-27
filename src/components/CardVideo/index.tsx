@@ -11,23 +11,23 @@ function CardVideo({ video, name, viewer, time, createdAt, thumbnail, active, id
     return (
         <div onClick={handleClick} className={styles.wrap}>
             <div className={styles.card}>
-                <div className={styles.top}>
-                    {/*<div*/}
-                    {/*    className={styles.background}*/}
-                    {/*    style={{ backgroundImage: `url('${thumbnail}')` }}*/}
-                    {/*></div>*/}
-                    <img
-                        src={thumbnail}
-                        alt=""
-                        className={'tw-w-full tw-h-48 tw-object-cover   '}
-                    />
-                    {/*<div className={styles.name}>{video} video</div>*/}
-                </div>
-                <div className={styles.bottom}>
-                    <div className={clsx(styles.header, { [styles.active]: active })}>{name}</div>
-                    <div className={styles.title}>
-                        {/*{viewer} đã xem {time}*/}
-                        {dayjs(createdAt).format('HH:mm:ss DD/MM/YYYY')}
+                <div style={{ display: 'flex', gap: '10px' }}>
+                    <div className={styles.top}>
+                        <img
+                            src={
+                                'https://thaitrien.com/wp-content/uploads/2021/09/Phong-nen-hoc-online-by-Thaitrien.com-1-scaled.jpg.webp'
+                            }
+                            alt="Document thumbnail"
+                            className={styles.thumbnail}
+                        />
+                    </div>
+                    <div className={styles.bottom}>
+                        <div className={clsx(styles.header)}>{name}</div>
+                        <div className={styles.info}>
+                            {viewer ? `${viewer} lượt xem` : 'Chưa có lượt xem'}
+                            <br />
+                            {dayjs(createdAt).format('HH:mm:ss DD/MM/YYYY')}
+                        </div>
                     </div>
                 </div>
             </div>

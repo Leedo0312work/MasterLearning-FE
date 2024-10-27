@@ -6,7 +6,6 @@
 }
 .list_card {
     margin-top: 10px;
-    display: flex;
     width: 100%;
     flex-wrap: wrap;
     height: calc(100vh - 190px);

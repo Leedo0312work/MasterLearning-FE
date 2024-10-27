@@ -22,7 +22,7 @@ function BoxInputLessonAdd({
     };
 
     return (
-        <div className={styles.wrap}>
+        <div className={styles.wrap} style={{ width: '100%', height: '100%' }}>
             <h6 className={styles.header}>
                 {type === '1' ? 'Thông tin bài giảng' : 'Thông tin tài liệu'}
             </h6>
@@ -38,7 +38,7 @@ function BoxInputLessonAdd({
                                     src={URL.createObjectURL(file)}
                                     type="application/pdf"
                                     width="100%"
-                                    height="400px"
+                                    height="500px"
                                 />
                             ) : (
                                 <video width="100%" controls>

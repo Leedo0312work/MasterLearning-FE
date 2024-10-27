@@ -27,9 +27,10 @@ export const getLessonByClassId = async (classId: string): Promise<ILesson[]> =>
     }
 };
 
-export const getLessonById = async (id: number): Promise<ILesson> => {
+export const getLessonById = async (id: string): Promise<any> => {
+    if (!id) return null;
     const response = await API.get(`/lessons/${id}`);
-    return response.data.data;
+    return response.data;
 };
 
 export const getUpdateLesson = async (id: number, data: FormLessonType): Promise<ResponseAPI> => {
