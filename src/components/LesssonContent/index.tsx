@@ -8,7 +8,7 @@ import { getLessonByClassId } from '~/repositories/lesson';
 import useLessonStore from '~/store/useLessonStore';
 import CardDocument from '../CardDocument';
 import { useState } from 'react';
-
+import { useNavigate, useParams } from 'react-router-dom';
 {
     /* <CardVideo
                                 id={item?.id}
@@ -27,7 +27,8 @@ import { useState } from 'react';
 function LesssonContent({ lessons }: any) {
     const { id: lessonId, setId } = useLessonStore((state) => state);
     const [lessonList, setLessonList] = useState(lessons);
-
+    const { id: classId } = useParams();
+    const navigate = useNavigate();
     const handleDeleteSuccess = (deletedId: number) => {
         setLessonList(lessonList.filter((lesson: any) => lesson.id !== deletedId));
     };
@@ -44,7 +45,9 @@ function LesssonContent({ lessons }: any) {
                             <CardVideo
                                 id={item._id}
                                 active={item.id === lessonId}
-                                onClick={(id: any) => setId(Number(id))}
+                                onClick={() => {
+                                    navigate(`/class/${classId}/content/1/view/${item._id}`);
+                                }}
                                 key={item._id}
                                 name={item.name}
                                 video={item.media.url}
@@ -57,7 +60,9 @@ function LesssonContent({ lessons }: any) {
                             <CardDocument
                                 id={item._id}
                                 active={item.id === lessonId}
-                                onClick={(id: any) => setId(Number(id))}
+                                onClick={(id: any) =>
+                                    navigate(`/class/${classId}/content/0/view/${item._id}`)
+                                }
                                 key={item._id}
                                 name={item.name}
                                 viewer={item.viewer}
