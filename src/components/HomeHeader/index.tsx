@@ -13,7 +13,7 @@ function HomeHeader() {
                 <li className={styles.leftItem}>Liên hệ</li>
             </ul>
             <div className={styles.logo}>
-                <img src="https://shub.edu.vn/images/landing/ver3/header-section/logo.svg" alt="logo" />
+                <img style={{ height: '60px' }} src="/src//assets//images//logo.svg" alt="logo" />
             </div>
             <div className={styles.right}>
                 <Link className={styles.link} to="/login">
@@ -22,7 +22,10 @@ function HomeHeader() {
                     </Button>
                 </Link>
                 <Link className={styles.link} to="/register">
-                    <Button className={clsx(styles.rightItem, styles.resgister)} variant="contained">
+                    <Button
+                        className={clsx(styles.rightItem, styles.resgister)}
+                        variant="contained"
+                    >
                         Đăng ký
                     </Button>
                 </Link>

@@ -12,13 +12,7 @@ function HomePartOne() {
         <div className={styles.wrap}>
             <div className={styles.left}>
                 <div className={styles.leftWrap}>
-                    <div className={styles.logo}>
-                        <img
-                            src="https://shub.edu.vn/images/landing/ver3/hero-section/logo-shub-circle.svg"
-                            alt="logo"
-                        />
-                        <p className={styles.logoTitle}>Shub classroom</p>
-                    </div>
+                    <div className={styles.logo}></div>
                     <h2 className={styles.header}>Một cách hiệu quả để quản lý lớp học</h2>
                     <Button
                         className={styles.button}
