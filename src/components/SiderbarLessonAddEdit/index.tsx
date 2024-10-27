@@ -21,7 +21,7 @@ function SiderbarLessonAddEdit({
     setAttachedMedias: React.Dispatch<React.SetStateAction<File[]>>;
 }) {
     const { control, handleSubmit } = useFormContext<FormLessonType>();
-    const { id: classId } = useParams();
+    const { id: classId, type } = useParams();
     const navigate = useNavigate();
 
     const { mutate } = useMutation('create', (data: FormLessonType) => getCreateLesson(data), {
@@ -65,6 +65,17 @@ function SiderbarLessonAddEdit({
         }
     };
 
+    const handlePDFUpload = async () => {
+        if (attachedMedias.length === 0) return null;
+        try {
+            const uploadResponse = await mediaServices.uploadPDF(attachedMedias);
+            return uploadResponse?.result || [];
+        } catch (error) {
+            console.error('PDF upload error:', error);
+            return [];
+        }
+    };
+
     const submit = async (data: FormLessonType) => {
         // let uploadedFiles: any[] = [];
         //let uploadedMedia: { type: number; url: string } | null = null;
@@ -75,7 +86,8 @@ function SiderbarLessonAddEdit({
             //     uploadedFiles = pdfRes.result;
             // }
 
-            const uploadedMedia = await handleVideoUpload();
+            const uploadedMedia =
+                type === '1' ? await handleVideoUpload() : await handlePDFUpload();
 
             if (Boolean(data?.id)) {
                 mutateEdit({
@@ -110,7 +122,9 @@ function SiderbarLessonAddEdit({
                     }}
                 >
                     <div className={styles.item}>
-                        <div className={styles.name}>Tên bài giảng</div>
+                        <div className={styles.name}>
+                            Tên {type === '1' ? 'bài giảng' : 'tài liệu'}
+                        </div>
                         <div className={styles.input}>
                             <Controller
                                 rules={{
@@ -156,7 +170,9 @@ function SiderbarLessonAddEdit({
                         </div>
                     </div>
                     <div className={styles.item}>
-                        <div className={styles.name}>Bài giảng đính kèm</div>
+                        <div className={styles.name}>
+                            {type === '1' ? 'Bài giảng đính kèm' : 'Tài liệu đính kèm'}
+                        </div>
                         <div className={styles.button}>
                             <div className={styles.input}>
                                 <FindInPageIcon
@@ -170,8 +186,7 @@ function SiderbarLessonAddEdit({
                                         cursor: 'pointer',
                                     }}
                                     type="file"
-                                    accept="video/*"
-                                    // accept="image/*, video/*"
+                                    accept={type === '1' ? 'video/*' : 'application/pdf'}
                                     multiple
                                     onChange={(e) =>
                                         setAttachedMedias([

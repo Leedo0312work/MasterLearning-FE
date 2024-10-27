@@ -20,7 +20,7 @@ const defaultData = [
     },
 ];
 function Lesson() {
-    const { id: classId } = useParams();
+    const { id: classId, type } = useParams();
     const { setLessons } = useLessonStore((state) => state);
 
     console.log('Class ID from URL:', classId);
@@ -49,9 +49,11 @@ function Lesson() {
 
     console.log('lessons fetch from classID: ', lessons);
 
+    const filteredLessons = lessons?.filter((lesson) => lesson.type === parseInt(type ?? '0', 10));
+
     return (
         <div className={styles.wrap}>
-            <LessonHeader name="Bài giảng" />
+            <LessonHeader name={type === '0' ? 'Tài liệu' : 'Bài giảng'} />
             <div className={styles.content}>
                 <LesssonContent />
                 <SiderbarRightLesson />

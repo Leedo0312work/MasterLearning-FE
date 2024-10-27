@@ -17,10 +17,7 @@ const NewMember = lazy(() => import('~/pages/NewMember'));
 const Lesson = lazy(() => import('~/pages/Lesson'));
 const LessonAdd = lazy(() => import('~/pages/LessonAdd'));
 const LessonEdit = lazy(() => import('~/pages/LessonEdit'));
-// const DocumentAdd = lazy(() => import('~/pages/Document/DocumentAdd'));
-// const DocumentEdit = lazy(() => import('~/pages/Document/DocumentEdit'));
 const HomeWork = lazy(() => import('~/pages/HomeWork'));
-const Document = lazy(() => import('~/pages/Document'));
 const ScoreTable = lazy(() => import('~/pages/ScoreTable'));
 const EditHomework = lazy(() => import('~/pages/EditHomework/index'));
 const TestHomework = lazy(() => import('~/pages/TestHomework/index'));
@@ -141,35 +138,33 @@ const routes: Route[] = [
                 ],
             },
             {
-                path: 'lesson',
-                component: Lesson,
-            },
-            {
                 path: 'scoretable',
                 component: ScoreTable,
-            },
-            {
-                path: 'lesson/add',
-                component: LessonAdd,
-            },
-            {
-                path: 'lesson/:lessonId/edit',
-                component: LessonEdit,
             },
             {
                 path: 'homework',
                 component: HomeWork,
             },
             {
-                path: 'document',
+                path: 'content/:type',
                 component: Lesson,
+                // children: [
+                //     {
+                //         path: 'add',
+                //         component: LessonAdd,
+                //     },
+                //     {
+                //         path: ':contentId/edit',
+                //         component: LessonEdit,
+                //     },
+                // ],
             },
             {
-                path: 'document/add',
+                path: 'content/:type/add',
                 component: LessonAdd,
             },
             {
-                path: 'document/:documentID/edit',
+                path: 'content/:type/:contentId/edit',
                 component: LessonEdit,
             },
         ],

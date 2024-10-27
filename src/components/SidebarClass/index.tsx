@@ -71,13 +71,13 @@ function SidebarClass() {
             {
                 icon: PlayCircleOutlineIcon,
                 text: 'Bài giảng',
-                to: 'lesson',
+                to: 'content/1',
                 show: true,
             },
             {
                 icon: SummarizeIcon,
                 text: 'Tài liệu',
-                to: 'document',
+                to: 'content/0',
                 show: true,
             },
             {

@@ -1,11 +1,13 @@
 import { Button } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import styles from './styles.module.css';
 
 function LesssonContentHeader() {
+    const { type } = useParams();
+
     return (
         <div className={styles.wrap}>
             <div className={styles.search}>
@@ -25,8 +27,10 @@ function LesssonContentHeader() {
                     <SearchIcon />
                 </div>
             </div>
-            <Link to="add" className={styles.link}>
-                <Button className={styles.button}>Tạo bài giảng</Button>
+            <Link to={`add`} className={styles.link}>
+                <Button className={styles.button}>
+                    {type === '1' ? 'Tạo bài giảng' : 'Tạo tài liệu'}
+                </Button>
             </Link>
         </div>
     );
