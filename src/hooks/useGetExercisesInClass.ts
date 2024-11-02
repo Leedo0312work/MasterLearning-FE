@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { IExercise } from '~/models/IExercise';
-import { getExercisesByClass } from '~/repositories/exercise';
+import { getExercisesByClass, getListExercisesStudent } from '~/repositories/exercise';
 import useExercisesInClassStore from '~/store/useExercisesInClassStore';
 
 export default function useGetExerciseInClass() {
@@ -9,9 +9,9 @@ export default function useGetExerciseInClass() {
 
     const setId = useExercisesInClassStore((state) => state.setId);
 
-    return useQuery<IExercise[]>(['exercises', id], () => getExercisesByClass(Number(id)), {
+    return useQuery<IExercise[]>(['exercises', id], () => getListExercisesStudent(Number(id)), {
         onSuccess(data) {
-            setId(data[0].id);
+            setId(data[0]._id);
         },
     });
 }

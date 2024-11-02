@@ -21,13 +21,12 @@ const types = [
 interface Prop {
     name: string;
     active?: boolean;
-    id: number;
-    onClick: (id: number) => void;
-    totalMembers: number;
-    totalDoExercise: number;
+    id: string;
+    onClick: (id: string) => void;
+    created: string
 }
 
-function HomeWorkItem({ active = true, name, id, onClick, totalMembers, totalDoExercise }: Prop) {
+function HomeWorkItem({ active = true, name, id, onClick, created }: Prop) {
     const type = 'pdf';
     const typeCurrent = types.find((item) => item.type === type);
 
@@ -45,18 +44,15 @@ function HomeWorkItem({ active = true, name, id, onClick, totalMembers, totalDoE
                 {<img className={styles.img} src={typeCurrent?.url} alt="file" />}
             </div>
             <div className={styles.mid}>
-                <h6 className={styles.name}>{name}</h6>
+                <h6 className={styles.name}>Bài tập</h6>
                 {/*<div className={styles.loading}></div>*/}
-                <div>
+                <div className={styles.line}>
                     <LinearProgress
                         variant={'determinate'}
-                        value={(totalDoExercise / totalMembers) * 100}
                     />
                 </div>
-                <div className={styles.title}>Trac nghiem</div>
-            </div>
-            <div className={styles.right}>
-                {totalDoExercise}/{totalMembers} đã làm
+                <h6 className={styles.title}>{created}</h6>
+                {/* <div className={styles.title}>Trắc nghiệm</div> */}
             </div>
         </div>
     );

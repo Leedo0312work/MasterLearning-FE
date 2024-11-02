@@ -15,12 +15,12 @@ function HomeWorkContentHeader() {
                     <SelectMaterial
                         // value={field.value}
                         // onChange={field.onChange}
-                        label={'Sap xep'}
+                        label={'Sắp xếp'}
                         // className={styles.select111}
                         options={[
                             {
                                 value: 'default',
-                                text: 'sap xep',
+                                text: 'Sắp xếp',
                             },
                             {
                                 value: 'A-Z',
@@ -32,11 +32,11 @@ function HomeWorkContentHeader() {
                             },
                             {
                                 value: 'time_asc',
-                                text: 'Moi nhat',
+                                text: 'Mới nhất',
                             },
                             {
                                 value: 'time_desc',
-                                text: 'Cu nhat',
+                                text: 'Cũ nhất',
                             },
                         ]}
                     />
