@@ -24,24 +24,24 @@ function MultipleChoiceForm() {
 
     const navigate = useNavigate();
     const { mutate: mutateCreate } = useMutation(
-    (data: FormMultipleChoiceInterface) => {
-        console.log("Data sent to getCreateMultipleChoice:", data); 
-        return getCreateMultipleChoice(data);
-    },
-    {
-        onSuccess() {
-            navigate(`/class/${id}/homework`);
-            toast.success('Thêm mới bài tập thành công');
+        (data: FormMultipleChoiceInterface) => {
+            console.log("Data sent to getCreateMultipleChoice:", data);
+            return getCreateMultipleChoice(data);
         },
-        onError() {
-            toast.error('Bạn không phải là giáo viên của lớp học này');
+        {
+            onSuccess() {
+                navigate(`/class/${id}/homework`);
+                toast.success('Thêm mới bài tập thành công');
+            },
+            onError() {
+                toast.error('Bạn không phải là giáo viên của lớp học này');
+            }
         }
-    }
-);
+    );
 
     const { mutate: mutateUpdate } = useMutation(
         'edit',
-        (data: FormMultipleChoiceInterface) => getUpdateMultipleChoice(Number(exerciseId), data),
+        (data: FormMultipleChoiceInterface) => getUpdateMultipleChoice(data),
         {
             onSuccess() {
                 navigate(`/class/${id}/homework`);
@@ -68,13 +68,21 @@ function MultipleChoiceForm() {
         const fetchExerciseDetails = async () => {
             try {
                 const response = await getExercisesTeacher(exerciseId);
-                console.log("Thông tin bài tập nhận được:", response);
+                console.log("Assignment details received:", response);
+
+                // Setting fetched PDF file URL to state
+                setPdfUrl(response.file);
                 methods.reset({
                     ...response,
+                    multipleChoice: {
+                        ...response.multipleChoice,
+                        fileQuestionUrl: response.file, // Set the file URL here
+                        numberOfQuestions: response.answers.length,
+                        totalMark: response.max_point,
+                    }
                 });
-                setPdfUrl(response.file)
             } catch (error) {
-                console.error("Đã xảy ra lỗi khi gọi API:", error);
+                console.error("Error while fetching assignment details:", error);
             }
         };
 
@@ -83,7 +91,7 @@ function MultipleChoiceForm() {
         }
     }, [exerciseId]);
 
-    
+
 
     // const handleComplete = useCallback((data: FormMultipleChoiceInterface) => {
     //     data.class_id = id;
@@ -112,38 +120,63 @@ function MultipleChoiceForm() {
         setPdfUrl(url);
     };
 
-    console.log("URL", pdfUrl)
 
     const handleComplete = useCallback((data: FormMultipleChoiceInterface) => {
         const formattedData = {
+            excirse_id: exerciseId,
             class_id: id,
+            name: data.name,
             // file: data.multipleChoice.fileQuestionUrl || "", 
             file: pdfUrl || "",
-            password: data.password || "", 
-            time_limit: data.time_limit, 
-            deadline: data.deadline || null, 
+            password: data.password || "",
+            time_limit: data.time_limit,
+            deadline: data.deadline || null,
             time_to_enable: data.time_to_enable || null,
             is_test: Boolean(data.is_test),
             student_role: data.student_role,
             times_to_do: data.times_to_do,
-            point_type: data.point_type, 
+            point_type: data.point_type,
 
-            max_point: Number(data.multipleChoice.mark) || 0, 
+            max_point: Number(data.multipleChoice.mark) || 0,
             answers: data.answers.map((item, index) => ({
-                no: item.no || index + 1, 
+                no: item.no || index + 1,
                 type: item.type,
                 answer: item.answer || "",
                 point: item.point || 0,
             })),
         };
-    
+
         if (Boolean(data?._id)) {
             mutateUpdate(formattedData);
         } else {
             mutateCreate(formattedData);
         }
     }, [id, pdfUrl, mutateCreate, mutateUpdate]);
-    
+
+    const methods = useForm<FormMultipleChoiceInterface>({
+        defaultValues: {
+            multipleChoice: {
+                fileQuestionUrl: '',
+                mark: '10',
+                numberOfQuestions: '',
+            },
+            answers: [],
+            is_test: false,
+            student_role: RoleStudent.ONLY_VIEW_MARK,
+            times_to_do: 1,
+            point_type: 1,
+            time_limit: 90,
+            deadline: '',
+            time_to_enable: '',
+            password: '',
+            name: '',
+        },
+        reValidateMode: 'onChange',
+        mode: 'onChange',
+    });
+    const { getValues } = methods;
+    const numberOfQuestions = getValues("answers").length;
+    const totalMark = Number(getValues("multipleChoice.mark") || 10);
 
     const handleNext = useCallback(async () => {
         if (step === 1) {
@@ -161,51 +194,9 @@ function MultipleChoiceForm() {
         }
 
         next();
-    }, []);
+    }, [step, methods, next]);
 
-    // const methods = useForm<FormMultipleChoiceInterface>({
-    //     defaultValues: {
-    //         multipleChoice: {
-    //             mark: '10',
-    //             numberOfQuestions: '',
-    //         },
-    //         answers: [],
-    //         preventViewQuestion: false,
-    //         isTest: true,
-    //         roleStudent: RoleStudent.ONLY_VIEW_MARK,
-    //         numberOfTimeToDo: 1,
-    //         mode: ExerciseMode.GET_MARK_FOR_FIRST_TIME_TO_DO,
-    //         timeStart: null,
-    //         timeEnd: null,
-    //         password: '',
-    //         name: '',
-    //         timeToDo: 90,
-    //     },
-    //     reValidateMode: 'onChange',
-    //     mode: 'onChange',
-    // });
 
-    const methods = useForm<FormMultipleChoiceInterface>({
-        defaultValues: {
-            multipleChoice: {
-                fileQuestionUrl: '',
-                mark: '10',
-                numberOfQuestions: '', 
-            },
-            answers: [],
-            is_test: false, 
-            student_role: RoleStudent.ONLY_VIEW_MARK, 
-            times_to_do: 1, 
-            point_type: 1, 
-            time_limit: 90, 
-            deadline: '', 
-            time_to_enable: '', 
-            password: '', 
-            name: '', 
-        },
-        reValidateMode: 'onChange',
-        mode: 'onChange',
-    });
 
     return (
         <FormProvider {...methods}>
@@ -219,13 +210,13 @@ function MultipleChoiceForm() {
             <div>
                 <div className={'tw-grid tw-grid-cols-12 tw-gap-3'}>
                     <div className="tw-col-span-6">
-                        <PreviewFileMultipleChoice onFileUpload={handleFileUpload}/>
+                        <PreviewFileMultipleChoice pdfUrl={pdfUrl} onFileUpload={handleFileUpload} />
                     </div>
                     <div className={'tw-col-span-6'}>
                         <div>
                             <HeaderStepHomework step={step} />
                         </div>
-                        <div>{step === 1 && <FormMultipleChoice />}</div>
+                        <div>{step === 1 && <FormMultipleChoice numberOfQuestions={numberOfQuestions} totalMark={totalMark} />}</div>
                         {step === 2 && <FormExercise />}
                     </div>
                 </div>

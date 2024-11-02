@@ -13,6 +13,6 @@ export interface FormMultipleChoiceInterface extends IExercise {
 export interface FormMultipleChoiceAnswerItemInterface {
     no: number;
     answer: string;
-    type:number;
-    point:number
+    type: number;
+    point: number
 }

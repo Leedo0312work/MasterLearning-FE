@@ -3,12 +3,14 @@ import styles from './style.module.scss';
 import clsx from 'clsx';
 import mediaServices from '~/services/media';
 
+
 interface Prop {
     isFullScreen?: boolean;
+    pdfUrl?: string | null; // Add pdfUrl prop
+    onFileUpload?: (url: string) => void;
 }
 
-function PreviewFileMultipleChoice({ isFullScreen = false, onFileUpload }: any) {
-    const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+function PreviewFileMultipleChoice({ isFullScreen = false, pdfUrl, onFileUpload }: Prop) {
     const [fileName, setFileName] = useState<string | null>(null);
 
     const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -17,11 +19,10 @@ function PreviewFileMultipleChoice({ isFullScreen = false, onFileUpload }: any) 
 
         try {
             const response = await mediaServices.uploadPDF(file);
-            setPdfUrl(response.result?.[0]?.url);
-            setFileName(file.name);
-            
-            if (onFileUpload) {
-                onFileUpload(response.result?.[0]?.url);
+            const uploadedUrl = response.result?.[0]?.url;
+            if (uploadedUrl) {
+                if (onFileUpload) onFileUpload(uploadedUrl);
+                setFileName(file.name);
             }
         } catch (error) {
             console.error('Upload failed:', error);
@@ -29,7 +30,7 @@ function PreviewFileMultipleChoice({ isFullScreen = false, onFileUpload }: any) 
     };
 
     const removePdf = () => {
-        setPdfUrl(null);
+        if (onFileUpload) onFileUpload(null); // Clear the PDF in the parent component as well
         setFileName(null);
     };
 
@@ -60,7 +61,7 @@ function PreviewFileMultipleChoice({ isFullScreen = false, onFileUpload }: any) 
                             height="600px"
                         />
                         <div className={styles.mediaInfo}>
-                            <span>{fileName}</span>
+                            <span>{fileName || "No name available"}</span>
                             <button onClick={removePdf} className={styles.removeButton}>Xóa</button>
                         </div>
                     </div>
@@ -71,4 +72,3 @@ function PreviewFileMultipleChoice({ isFullScreen = false, onFileUpload }: any) 
 }
 
 export default memo(PreviewFileMultipleChoice);
-

@@ -38,7 +38,10 @@ export const fetchExercisesTeacher = (exerciseId: string) => {
 export const fetchMultipleChoiceExerciseDetail = (id: number) => {
     return API.get(`/v1/exercises/multiple-choice/${id}/edit`);
 };
+export const fetchDeleteMultipleChoice = (id: string) => {
+    return API.delete(`/excirses/delete`);
+};
 
-export const fetchUpdateMultipleChoice = (id: number, data: FormMultipleChoiceInterface) => {
-    return API.put(`/v1/exercises/multiple-choice/${id}`, data);
+export const fetchUpdateMultipleChoice = (data: FormMultipleChoiceInterface) => {
+    return API.put(`/excirses/update`, data);
 };

@@ -7,6 +7,7 @@ import {
     fetchListExercisesTeacher,
     fetchMultipleChoiceExerciseDetail,
     fetchUpdateMultipleChoice,
+    fetchDeleteMultipleChoice
 } from '~/services/exercise';
 import { FormMultipleChoiceInterface } from '~/types/exercise';
 import { ResponseAPI } from '~/app/response';
@@ -41,7 +42,7 @@ export const getExercisesStudent = async (exerciseId: string): Promise<IExercise
 
 export const getExercisesTeacher = async (exerciseId: string): Promise<IExercise[]> => {
     const response = await fetchExercisesTeacher(exerciseId);
-    console.log("Response từ API:", response); 
+    console.log("Response từ API:", response);
     return response.data.result;
 };
 
@@ -59,7 +60,11 @@ export const getMultipleChoiceExerciseDetail = async (exerciseId: number): Promi
     };
 };
 
-export const getUpdateMultipleChoice = async (id: number, data: FormMultipleChoiceInterface): Promise<ResponseAPI> => {
-    const response = await fetchUpdateMultipleChoice(id, data);
+export const getUpdateMultipleChoice = async (data: FormMultipleChoiceInterface): Promise<ResponseAPI> => {
+    const response = await fetchUpdateMultipleChoice(data);
+    return response.data;
+};
+export const getDeleteMultipleChoice = async (exerciseId: string): Promise<IExercise[]> => {
+    const response = await fetchDeleteMultipleChoice(exerciseId);
     return response.data;
 };

@@ -4,7 +4,7 @@ import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import MouseIcon from '@mui/icons-material/Mouse';
 import { useParams } from 'react-router-dom';
-
+import { useMutation } from 'react-query';
 import styles from './styles.module.css';
 import React, { useEffect, useMemo, useState } from 'react';
 import SiderbarRightHomeWorkTitleItem from '~/components/SiderbarRightHomeWorkTitleItem';
@@ -16,7 +16,7 @@ import { IExercise } from '~/models/IExercise';
 import { getExerciseStudentRole, getTextExerciseMode } from '~/enums/exercise';
 import PermissionWrapper from '~/components/PermissionWrapper';
 import { Role } from '~/enums/role';
-import { getListExercisesStudent } from '~/repositories/exercise';
+import { getListExercisesStudent, getDeleteMultipleChoice } from '~/repositories/exercise';
 
 function SiderbarRightHomeWork() {
     // const { data } = useGetExerciseInClass();
@@ -27,24 +27,35 @@ function SiderbarRightHomeWork() {
 
     const [data, setData] = useState<IExercise[]>([]);
 
-        useEffect(() => {
-            const fetchData = async () => {
-                try {
-                    const exercises = await getListExercisesStudent(classId);
-                    setData(exercises); 
-                } catch (error) {
-                    console.error('Không thể lấy danh sách :', error);
-                }
-            };
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const exercises = await getListExercisesStudent(classId);
+                setData(exercises);
+            } catch (error) {
+                console.error('Không thể lấy danh sách :', error);
+            }
+        };
 
-            fetchData();
-    }, []); 
+        fetchData();
+    }, []);
 
     const exercise = useMemo<IExercise | undefined>(() => {
         return data?.find((item) => item._id === id);
     }, [id, data]);
 
-    console.log("Dữ liệu ở đây", exercise)
+    const { mutate: handleDelete } = useMutation(
+        () => getDeleteMultipleChoice(exercise?._id), // Use exercise's ID for deletion
+        {
+            onSuccess: () => {
+                setData((prevData) => prevData.filter((item) => item._id !== exercise?._id));
+                console.log('Exercise deleted successfully');
+            },
+            onError: (error) => {
+                console.error('Failed to delete exercise:', error);
+            },
+        }
+    );
 
     return (
         <div className={styles.wrap}>
@@ -79,12 +90,12 @@ function SiderbarRightHomeWork() {
                     <SiderbarRightHomeWorkTitleItem name="Đã làm" value="0/0" />
                     <SiderbarRightHomeWorkTitleItem
                         name="Cho phép"
-                        value={getExerciseStudentRole(exercise?.student_role)} 
+                        value={getExerciseStudentRole(exercise?.student_role)}
                     />
-                    <SiderbarRightHomeWorkTitleItem 
+                    <SiderbarRightHomeWorkTitleItem
                         name="Hạn chót"
                         value={exercise?.deadline.toString()}
-                     />
+                    />
                 </div>
             </div>
             <div className={styles.bottom}>
@@ -109,7 +120,12 @@ function SiderbarRightHomeWork() {
                     name="Chỉnh sửa"
                     Icon={BorderColorIcon}
                 />
-                <SiderbarRightHomeWorkSettingItem to="" name="Xóa" Icon={DeleteOutlineIcon} />
+                <SiderbarRightHomeWorkSettingItem
+                    to=""
+                    name="Xóa"
+                    Icon={DeleteOutlineIcon}
+                    onClick={handleDelete}
+                />
             </div>
         </div>
     );

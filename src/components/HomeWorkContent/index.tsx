@@ -19,32 +19,33 @@ function HomeWorkContent() {
     };
     console.log("lưu id lớp", _id)
 
-    const { id }:any = useParams();
+    const { id }: any = useParams();
 
     const [data, setData] = useState<IExercise[]>([]);
 
-        useEffect(() => {
-            const fetchData = async () => {
-                try {
-                    const exercises = await getListExercisesStudent(id);
-                    setData(exercises); 
-                } catch (error) {
-                    console.error('Không thể lấy danh sách :', error);
-                }
-            };
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const exercises = await getListExercisesStudent(id);
+                setData(exercises);
+            } catch (error) {
+                console.error('Không thể lấy danh sách :', error);
+            }
+        };
 
-            fetchData();
-    }, []); 
+        fetchData();
+    }, []);
 
     return (
         <div className={styles.wrap}>
             <HomeWorkContentHeader />
- 
+
             <div className={styles.list_card}>
                 {data?.map((item) => (
                     <HomeWorkItem
                         onClick={handleClickItem}
                         id={item._id}
+                        name={item.name}
                         key={item._id}
                         active={_id === item._id}
                         created={item.created_at}

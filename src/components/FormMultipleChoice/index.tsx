@@ -59,7 +59,7 @@ function FormMultipleChoice() {
 
         for (let i = 0; i < number; i++) {
             const item: FormMultipleChoiceAnswerItemInterface = origin.current[i];
-            item.mark = unit;
+            item.point = unit;
             result.push(item);
         }
 
@@ -133,6 +133,7 @@ function FormMultipleChoice() {
                             <TextField
                                 label={'Tổng điểm'}
                                 {...field}
+                                value="10"
                                 onChange={(event) => {
                                     handleChangeTotalMark(Number(event.target.value));
                                     field.onChange(event);

@@ -44,7 +44,7 @@ function HomeWorkItem({ active = true, name, id, onClick, created }: Prop) {
                 {<img className={styles.img} src={typeCurrent?.url} alt="file" />}
             </div>
             <div className={styles.mid}>
-                <h6 className={styles.name}>Bài tập</h6>
+                <h6 className={styles.name}>{name}</h6>
                 {/*<div className={styles.loading}></div>*/}
                 <div className={styles.line}>
                     <LinearProgress
