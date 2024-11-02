@@ -65,3 +65,6 @@
     margin-top: 5px;
     margin-left: -5px;
 }
+.ant-upload-list-item-container {
+    width: 177px;
+}

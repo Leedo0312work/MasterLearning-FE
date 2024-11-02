@@ -183,7 +183,10 @@ const ModalOption = ({ post, postId, refetchPosts }: any) => {
             setIsEditModalOpen(false)
         }
     };
+    const updateMediaList = (updatedMediaList: any) => {
+        setMediaList(updatedMediaList);
 
+    };
     const handleDeletePost = async () => {
         try {
             const deletePost = await tweetServices.deleteTweet(postId);
@@ -264,7 +267,7 @@ const ModalOption = ({ post, postId, refetchPosts }: any) => {
                     <DialogBackdrop className="tw-fixed tw-inset-0 tw-bg-black/30" />
                 </div>
                 <div className="tw-fixed tw-inset-0 tw-flex tw-items-center tw-justify-center">
-                    <DialogPanel className="tw-w-full tw-max-w-md tw-rounded tw-bg-white tw-p-6">
+                    <DialogPanel className="tw-w-full tw-rounded tw-bg-white tw-p-6" style={{ maxWidth: "40rem" }}>
                         <DialogTitle className="tw-text-lg tw-font-bold">Chỉnh sửa bài viết</DialogTitle>
                         <div className={styles.wrap}>
                             <Box className={styles.container} component="form">
@@ -286,12 +289,13 @@ const ModalOption = ({ post, postId, refetchPosts }: any) => {
                                     </div>
 
                                 </div>
-                                <MediaComment post={post} />
+                                <MediaComment post={post} mediaList={mediaList} updateMediaList={updateMediaList} />
 
-                                <div className={styles.footer}>
+                                <div className={styles.footer} >
                                     <Button
                                         sx={{ fontSize: 14 }}
                                         className={clsx(styles.button, styles.addImg)}
+
                                         onClick={() => setUploadMedia(!uploadMedia)}
                                     >
                                         <Upload
@@ -315,8 +319,8 @@ const ModalOption = ({ post, postId, refetchPosts }: any) => {
                                                 return false;
                                             }}
                                         >
-                                            <div>
-                                                <PlusOutlined />
+                                            <div style={{ flexWrap: "nowrap" }}>
+                                                <PlusOutlined style={{ flexWrap: "nowrap" }} />
                                                 <div style={{ marginTop: 8 }}>Thêm hình</div>
                                             </div>
                                         </Upload>

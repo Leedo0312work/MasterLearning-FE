@@ -4,7 +4,7 @@ import SliderPost from "./SliderPost";
 import PropTypes from "prop-types";
 import VideoHLS from "~/utils/media/videoHLS";
 
-const MediaComment = ({ post }: any) => {
+const MediaComment = ({ post, mediaList, updateMediaList }: any) => {
     const [openSlider, setOpenSlider] = React.useState(false);
     const [mediasPost, setMediasPost] = React.useState([]);
     const { medias } = post;
@@ -19,6 +19,7 @@ const MediaComment = ({ post }: any) => {
     const handleDeleteMedia = (index: number) => {
         const updatedMedias = mediasPost.filter((_, i) => i !== index);
         setMediasPost(updatedMedias);
+        updateMediaList(updatedMedias);
         // Optionally, you can make an API call here to update the backend with the new list of medias.
     };
 
