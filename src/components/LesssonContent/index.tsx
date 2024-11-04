@@ -11,16 +11,18 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 
-function LesssonContent({ lessons }: any) {
-    // const { id: lessonId, setId } = useLessonStore((state) => state);
-    const [lessonList, setLessonList] = useState(lessons);
-    const { id: classId, lessonId, type } = useParams();
+function LesssonContent({ lessons, onDeleteSuccess }: any) {
+    const { id: classId } = useParams();
     const navigate = useNavigate();
-    const handleDeleteSuccess = (deletedId: number) => {
-        setLessonList(lessonList.filter((lesson: any) => lesson.id !== deletedId));
+
+    const { setSelectedLessonId } = useLessonStore((state) => ({
+        setSelectedLessonId: state.setSelectedLessonId
+    }));
+    const handleSelectLesson = (lessonId: string) => {
+        setSelectedLessonId(lessonId);
     };
 
-    console.log('classId: ', classId);
+    console.log('lessons data', lessons);
 
     return (
         <div className={styles.wrap}>
@@ -31,10 +33,7 @@ function LesssonContent({ lessons }: any) {
                         item.type === 1 ? (
                             <CardVideo
                                 id={item._id}
-                                //  active={item.id === lessonId}
-                                onClick={() => {
-                                    navigate(`/class/${classId}/content/1/view/${item._id}`);
-                                }}
+                                onClick={() => handleSelectLesson(item._id)}
                                 key={item._id}
                                 name={item.name}
                                 video={item.media.url}
@@ -46,7 +45,6 @@ function LesssonContent({ lessons }: any) {
                         ) : (
                             <CardDocument
                                 lessonId={item._id}
-                                //  active={item.id === lessonId}
                                 classId={classId}
                                 key={item._id}
                                 name={item.name}
@@ -54,7 +52,7 @@ function LesssonContent({ lessons }: any) {
                                 media={item.media}
                                 createdAt={item.created_at}
                                 thumbnail={item.thumbnail || 'default-thumbnail-url'}
-                                onDeleteSuccess={handleDeleteSuccess}
+                                onDeleteSuccess={onDeleteSuccess}
                             />
                         ),
                     )

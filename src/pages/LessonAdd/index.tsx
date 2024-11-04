@@ -35,10 +35,15 @@ function LessonAdd() {
 
                     console.log('lessonData: ', lessonData);
 
-                    const mediaFiles = lessonData.media.map((media:any) => ({
-                        url: media.url,
-                        type: media.type,
-                    }));
+                    const mediaFiles = Array.isArray(lessonData.media)
+                        ? lessonData.media.map((media: any) => ({
+                              url: media.url,
+                              type: media.type,
+                          }))
+                        : lessonData.media // nếu media là đối tượng, chuyển nó thành mảng
+                        ? [{ url: lessonData.media.url, type: lessonData.media.type }]
+                        : []; // nếu không có media, thiết lập mediaFiles là mảng rỗng
+
                     console.log('mediaFiles: ', mediaFiles);
                     methods.reset({
                         name: lessonData.name,

@@ -3,13 +3,23 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import dayjs from '~/packages/dayjs';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Menu, MenuItem } from '@mui/material';
 import { useState } from 'react';
 
 import styles from './styles.module.css';
-import { deleteLesson, updateLesson } from '~/repositories/lesson';
+import { deleteLesson } from '~/repositories/lesson';
 import { useNavigate } from 'react-router-dom';
 import saveAs from 'file-saver'
+import { useConfirm } from 'material-ui-confirm';
+import { Menu, MenuItem, IconButton, styled } from '@mui/material';
+
+const CustomMenuItem = styled(MenuItem)({
+    fontSize: '16px',
+    color: '#555',
+    '&:hover': {
+        backgroundColor: '#f0f0f0',
+        color: '#000',
+    },
+});
 
 function CardDocument({
     name,
@@ -23,6 +33,7 @@ function CardDocument({
     lessonId, 
 }: any) {
     const navigate = useNavigate();
+    const confirm = useConfirm();
     
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -55,17 +66,28 @@ function CardDocument({
     };
 
     const handleDelete = async () => {
-        try {
-            await deleteLesson(lessonId);
-            if (onDeleteSuccess) {
-                onDeleteSuccess(lessonId);
+        confirm({
+            description: 'Bạn có chắc chắn muốn xóa bài giảng này?',
+            title: 'Xác nhận xóa',
+            confirmationText: 'Xóa',
+            cancellationText: 'Hủy',
+        })
+        .then(async () => {
+
+            try {
+                await deleteLesson(lessonId);
+                if (onDeleteSuccess) {
+                    onDeleteSuccess(lessonId);
+                }
+            } catch (error) {
+                console.error('Xóa lesson thất bại:', error);
+            } finally {
+                handleMenuClose();
             }
-        } catch (error) {
-            console.error('Xóa lesson thất bại:', error);
-        } finally {
+        })
+        .catch(() => {
             handleMenuClose();
-        }
-        handleMenuClose();
+        });
     };
 
     const handleEdit = () => {
@@ -95,15 +117,19 @@ function CardDocument({
                         </div>
                     </div>
                 </div>
-                <MoreVertIcon onClick={handleMenuClick} className={styles.menuIcon} />
+                <IconButton onClick={handleMenuClick}>
+                    <MoreVertIcon />
+                </IconButton>
+
+                <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+                    <CustomMenuItem onClick={handleView}>Xem</CustomMenuItem>
+                    <CustomMenuItem onClick={handleDownload}>Tải về</CustomMenuItem>
+                    <CustomMenuItem onClick={handleDelete}>Xóa</CustomMenuItem>
+                    <CustomMenuItem onClick={handleEdit}>Sửa</CustomMenuItem>
+                </Menu>
             </div>
 
-            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-                <MenuItem onClick={handleView}>Xem</MenuItem>
-                <MenuItem onClick={handleDownload}>Tải về</MenuItem>
-                <MenuItem onClick={handleDelete}>Xóa</MenuItem>
-                <MenuItem onClick={handleEdit}>Sửa</MenuItem>
-            </Menu>
+            
         </div>
     );
 }
