@@ -16,7 +16,6 @@ export const getLessonByClassId = async (classId: string): Promise<ILesson[]> =>
         console.log('API response:', response);
 
         if (response?.data?.result) {
-            console.log('Lessons data:', response.data.result);
             return response.data.result;
         } else {
             throw new Error('Unexpected response structure');
@@ -33,12 +32,27 @@ export const getLessonById = async (id: string): Promise<any> => {
     return response.data;
 };
 
-export const getUpdateLesson = async (id: number, data: FormLessonType): Promise<ResponseAPI> => {
-    const response = await API.put(`/lessons/update/${id}`, data);
-    return response.data;
+export const updateLesson = async (id: string, data: Partial<FormLessonType>): Promise<ResponseAPI> => {
+    try {
+        const response = await API.put('/lessons/update', {
+            id, 
+            ...data 
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error updating lesson:', error);
+        throw error;
+    }
 };
 
-export const getDeleteLesson = async (id: number): Promise<ResponseAPI> => {
-    const response = await API.put(`/lessons/delete/${id}`);
-    return response.data;
+export const deleteLesson = async (id: string): Promise<ResponseAPI> => {
+    try {
+        const response = await API.delete('/lessons/delete', {
+            data: { id } 
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error deleting lesson:', error);
+        throw error;
+    }
 };

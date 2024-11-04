@@ -7,37 +7,35 @@ import ModalAddFolder from '~/components/ModalAddFolder';
 
 import styles from './styles.module.css';
 import { useParams } from 'react-router-dom';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { getLessonByClassId } from '~/repositories/lesson';
 import useLessonStore from '~/store/useLessonStore';
 
-const defaultData = [
-    {
-        video: 10,
-        name: 'Sinh',
-        viewer: 2,
-        time: '28 tháng 7 lúc 14:44',
-    },
-];
 function Lesson() {
     const { id: classId, type } = useParams();
-    const { setLessons } = useLessonStore((state) => state);
+    const { lessons, setLessons } = useLessonStore((state) => state); // lấy `lessons` từ `useLessonStore`
+    const queryClient = useQueryClient();
 
     console.log('Class ID from URL:', classId);
 
     const {
-        data: lessons,
+        data: fetchedLessons,
         isLoading,
         isError,
     } = useQuery(['lessons', classId], () => getLessonByClassId(classId as string), {
         onSuccess: (data) => {
-            console.log('Fetched lessons:', data);
             setLessons(data);
         },
         onError: (error) => {
             console.error('Error fetching lessons:', error);
         },
     });
+
+    const handleDeleteSuccess = (deletedLessonId:any) => {
+        const updatedLessons = lessons.filter((lesson) => lesson.id !== deletedLessonId);
+        setLessons(updatedLessons);
+        queryClient.invalidateQueries(['lessons', classId]); 
+    };
 
     if (isLoading) {
         return <div>Loading lessons...</div>;
@@ -47,15 +45,16 @@ function Lesson() {
         return <div>Error fetching lessons.</div>;
     }
 
-    console.log('lessons fetch from classID: ', lessons);
-
     const filteredLessons = lessons?.filter((lesson) => lesson.type === parseInt(type ?? '0', 10));
 
     return (
         <div className={styles.wrap}>
             <LessonHeader name={type === '0' ? 'Tài liệu' : 'Bài giảng'} />
             <div className={styles.content}>
-                <LesssonContent lessons={filteredLessons} />
+                <LesssonContent
+                    lessons={filteredLessons}
+                    onDeleteSuccess={handleDeleteSuccess}
+                />
                 {type === '1' && <SiderbarRightLesson />}
             </div>
         </div>
