@@ -1,5 +1,4 @@
 import TextField from '@mui/material/TextField';
-
 import styles from './styles.module.css';
 import { useFormContext } from 'react-hook-form';
 import { FormLessonType } from '~/types/lesson';
@@ -10,11 +9,10 @@ function BoxInputLessonAdd({
     attachedMedias,
     setAttachedMedias,
 }: {
-    attachedMedias: File[];
-    setAttachedMedias: React.Dispatch<React.SetStateAction<File[]>>;
+    attachedMedias: any[];
+    setAttachedMedias: React.Dispatch<React.SetStateAction<any[]>>;
 }) {
     const { control } = useFormContext<FormLessonType>();
-
     const { type } = useParams();
 
     const removeMedia = (index: number) => {
@@ -29,42 +27,28 @@ function BoxInputLessonAdd({
 
             <div className="listAttachedMedias">
                 {attachedMedias.length > 0 &&
-                    attachedMedias.map((file, index) => (
+                    attachedMedias.map((media, index) => (
                         <div key={index}>
-                            {file.type.startsWith('image/') ? (
-                                <img src={URL.createObjectURL(file)} alt="Image preview" />
-                            ) : file.type.endsWith('pdf') ? (
+                            {media.type === 3 ? (
                                 <embed
-                                    src={URL.createObjectURL(file)}
+                                    src={media.url}
                                     type="application/pdf"
                                     width="100%"
                                     height="500px"
                                 />
-                            ) : (
+                            ) : media.type === 2 ? (
                                 <video width="100%" controls>
-                                    <source src={URL.createObjectURL(file)} type={file.type} />
+                                    <source src={media.url} type="video/mp4" />
                                 </video>
+                            ) : (
+                                <img src={media.url} alt="Image preview" style={{ width: '100%' }} />
                             )}
+                            <div>
+                                <button onClick={() => removeMedia(index)}>Xóa</button>
+                            </div>
                         </div>
                     ))}
-                {attachedMedias.map((file, index) => (
-                    <div key={index}>
-                        {file.name}
-                        <button onClick={() => removeMedia(index)}>Xóa</button>
-                    </div>
-                ))}
             </div>
-
-            {/* <div>
-                <div className={styles.listAttachedFile}>
-                    {attachedFiles.length > 0 &&
-                        attachedFiles.map((file, index) => (
-                            <div key={index}>
-                                <div className={styles.filename}>{file.name}</div>
-                            </div>
-                        ))}
-                </div>
-            </div> */}
         </div>
     );
 }

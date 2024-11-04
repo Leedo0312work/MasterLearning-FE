@@ -5,9 +5,8 @@ import FindInPageIcon from '@mui/icons-material/FindInPage';
 import { useFormContext } from 'react-hook-form';
 import { FormLessonType } from '~/types/lesson';
 import { Controller } from 'react-hook-form';
-import { getCreateLesson, getUpdateLesson } from '~/repositories/lesson';
+import { getCreateLesson, updateLesson } from '~/repositories/lesson';
 import { useMutation } from 'react-query';
-import useFolderStore from '~/store/useFolderStore';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import mediaServices from '~/services/media';
@@ -21,7 +20,7 @@ function SiderbarLessonAddEdit({
     setAttachedMedias: React.Dispatch<React.SetStateAction<File[]>>;
 }) {
     const { control, handleSubmit } = useFormContext<FormLessonType>();
-    const { id: classId, type } = useParams();
+    const { id:classId, lessonId, type } = useParams();
     const navigate = useNavigate();
 
     const { mutate } = useMutation('create', (data: FormLessonType) => getCreateLesson(data), {
@@ -32,7 +31,7 @@ function SiderbarLessonAddEdit({
 
     const { mutate: mutateEdit } = useMutation(
         'update',
-        (data: FormLessonType) => getUpdateLesson(Number(data.id), data),
+        (data: FormLessonType) => {console.log('data edit: ', data); return updateLesson(lessonId as string, data)},
         {
             onSuccess() {
                 navigate(`/class/${classId}/content/${type}`);
@@ -77,29 +76,32 @@ function SiderbarLessonAddEdit({
     };
 
     const submit = async (data: FormLessonType) => {
-        // let uploadedFiles: any[] = [];
-        //let uploadedMedia: { type: number; url: string } | null = null;
 
         try {
-            // if (attachedFiles.length > 0) {
-            //     const pdfRes = await mediaServices.uploadPDF(attachedFiles);
-            //     uploadedFiles = pdfRes.result;
-            // }
-
+            
             const uploadedMedia =
                 type === '1' ? await handleVideoUpload() : await handlePDFUpload();
 
-            const lessonData = {
+            const mediaToSubmit = lessonId ? attachedMedias[0] : uploadedMedia;
+
+            const lessonData = lessonId ? {
+                name: data.name,
+                id: lessonId as string,
+                media: attachedMedias,
+                description: data.description,
+            }:{
                 ...data,
                 class_id: classId as string,
-                media: uploadedMedia,
+                media: mediaToSubmit,
                 type: parseInt(type as string),
             };
 
-            if (Boolean(data?.id)) {
-                mutateEdit(lessonData);
+            
+
+            if (lessonId) {
+                mutateEdit(lessonData as FormLessonType);
             } else {
-                mutate(lessonData);
+                mutate(lessonData as FormLessonType);
             }
         } catch (error) {
             console.error('Error uploading files: ', error);
@@ -190,6 +192,7 @@ function SiderbarLessonAddEdit({
                                             ...(e.target.files ? Array.from(e.target.files) : []),
                                         ])
                                     }
+                                    disabled={!!lessonId}
                                 />
                             </div>
                         </div>
@@ -198,7 +201,7 @@ function SiderbarLessonAddEdit({
             </div>
             <div className={styles.btnsubhmit} style={{ height: '10%' }}>
                 <Button onClick={handleSubmit(submit)} fullWidth variant={'contained'}>
-                    Hoàn tất
+                    {lessonId ? 'Cập nhật' : 'Hoàn tất'}
                 </Button>
             </div>
         </div>
