@@ -2,7 +2,7 @@ import OndemandVideoIcon from '@mui/icons-material/OndemandVideo';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import styles from './styles.module.css';
 import useFolderStore from '~/store/useFolderStore';
@@ -12,6 +12,7 @@ import useLessonStore from '~/store/useLessonStore';
 import { useMemo } from 'react';
 import { ILesson } from '~/models/ILesson';
 import dayjs from '~/packages/dayjs';
+import { useConfirm } from 'material-ui-confirm';
 
 const actions = [
     // {
@@ -32,15 +33,46 @@ const actions = [
 ];
 
 function SiderbarRightLesson() {
-    const { lessons, id: lessonId } = useLessonStore((state) => state);
+    const { lessons, selectedLessonId } = useLessonStore((state) => ({
+        lessons: state.lessons,
+        selectedLessonId: state.selectedLessonId
+    }));
+    const { id: classId } = useParams();
+    const navigate = useNavigate();
+    const confirm = useConfirm();
+    
 
-    const lesson = useMemo<ILesson | undefined>(() => {
-        return lessons?.find((item) => item.id === Number(lessonId));
-    }, [lessons, lessonId]);
+    const lesson = useMemo(() => {
+        return lessons?.find((item) => item.id === selectedLessonId);
+    }, [lessons, selectedLessonId]);
 
     const handleClickView = () => {
-        window.open(lesson?.youtubeLink);
+        navigate(`/class/${classId}/content/1/view/${selectedLessonId}`);
     };
+
+    const handleEdit = () => {
+        console.log('selectedLessonId', selectedLessonId);
+        console.log('classId', classId);
+        navigate(`/class/${classId}/content/1/edit/${selectedLessonId}`);
+    };
+
+    const handleDelete = () => {
+        confirm({
+            title: 'Xác nhận xóa',
+            description: 'Bạn có chắc chắn muốn xóa bài giảng này?',
+            confirmationText: 'Xóa',
+            cancellationText: 'Hủy',
+        })
+        .then(() => {
+            // Thực hiện xóa ở đây
+            // Bạn có thể gọi hàm onDeleteSuccess nếu có
+        })
+        .catch(() => {
+            // Hủy xóa
+        });
+    };
+
+    console.log('selectedLessonId', selectedLessonId);
 
     return (
         <div className={styles.wrap}>
@@ -66,20 +98,18 @@ function SiderbarRightLesson() {
                         <OndemandVideoIcon />
                     </h5>
                 </div>
-                <Link to={`${lessonId}/edit`} className={styles.bottom_item}>
+                <div onClick={handleEdit} className={styles.bottom_item}>
                     <h4 className={styles.name}>Sửa</h4>
                     <h5 className={styles.icon}>
                         <BorderColorIcon />
                     </h5>
-                </Link>
-                {actions.map((item, index) => (
-                    <Link to={item?.to} key={index} className={styles.bottom_item}>
-                        <h4 className={styles.name}>{item?.name}</h4>
-                        <h5 className={styles.icon}>
-                            <item.Icon />
-                        </h5>
-                    </Link>
-                ))}
+                </div>
+                <div onClick={handleDelete} className={styles.bottom_item}>
+                    <h4 className={styles.name}>Xóa</h4>
+                    <h5 className={styles.icon}>
+                        <DeleteOutlineIcon />
+                    </h5>
+                </div>
             </div>
         </div>
     );
