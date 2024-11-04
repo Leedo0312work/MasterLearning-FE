@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getListExercisesStudent } from '~/repositories/exercise';
 import { IExercise } from '~/models/IExercise';
+import { useQuery } from 'react-query';
 
 function HomeWorkContent() {
     // const { data } = useGetExerciseInClass();
@@ -17,24 +18,37 @@ function HomeWorkContent() {
     const handleClickItem = (item: string) => {
         setId(item);
     };
-    console.log("lưu id lớp", _id)
 
     const { id }: any = useParams();
 
     const [data, setData] = useState<IExercise[]>([]);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const exercises = await getListExercisesStudent(id);
-                setData(exercises);
-            } catch (error) {
-                console.error('Không thể lấy danh sách :', error);
-            }
-        };
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const exercises = await getListExercisesStudent(id);
+    //             setData(exercises);
+    //         } catch (error) {
+    //             console.error('Không thể lấy danh sách :', error);
+    //         }
+    //     };
 
-        fetchData();
-    }, []);
+    //     fetchData();
+    // }, []);
+
+    const fetchData = useQuery(
+        ['exercises', id],
+        async () => {
+            const exercises = await getListExercisesStudent(id);
+            return exercises
+        },
+        {
+            onSuccess(response) {
+                console.log("list ex:", response)
+                setData(response);
+            },
+        },
+    );
 
     return (
         <div className={styles.wrap}>

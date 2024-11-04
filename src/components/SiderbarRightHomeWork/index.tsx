@@ -4,7 +4,7 @@ import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import MouseIcon from '@mui/icons-material/Mouse';
 import { useParams } from 'react-router-dom';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import styles from './styles.module.css';
 import React, { useEffect, useMemo, useState } from 'react';
 import SiderbarRightHomeWorkTitleItem from '~/components/SiderbarRightHomeWorkTitleItem';
@@ -17,11 +17,21 @@ import { getExerciseStudentRole, getTextExerciseMode } from '~/enums/exercise';
 import PermissionWrapper from '~/components/PermissionWrapper';
 import { Role } from '~/enums/role';
 import { getListExercisesStudent, getDeleteMultipleChoice } from '~/repositories/exercise';
+import { Modal } from 'antd';
+import { toast } from 'react-toastify';
+import useAuthStore from '~/store/useAuthStore';
+
+const { confirm } = Modal;
+
 
 function SiderbarRightHomeWork() {
     const id = useExercisesInClassStore((state) => state._id);
     const { id: classId, _id: exerciseId } = useParams();
     const [data, setData] = useState<IExercise[]>([]);
+
+    const user = useAuthStore((state) => state.user);
+
+    const queryClient = useQueryClient();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -36,15 +46,17 @@ function SiderbarRightHomeWork() {
     }, [classId]);
 
     const exercise = useMemo(() => data.find((item) => item._id === id), [id, data]);
-    console.log(exercise?._id);
 
     const { mutate: handleDelete } = useMutation(
         'delete',
-        () => getDeleteMultipleChoice(exerciseId),
+        () => getDeleteMultipleChoice({
+            id: exercise?._id
+        }),
         {
             onSuccess: () => {
                 setData((prevData) => prevData.filter((item) => item._id !== exercise?._id));
                 console.log('Exercise deleted successfully');
+                queryClient.invalidateQueries(['exercises', classId]);
             },
             onError: (error) => {
                 console.error('Failed to delete exercise:', error);
@@ -53,9 +65,19 @@ function SiderbarRightHomeWork() {
     );
 
     const confirmDelete = () => {
-        if (window.confirm('Bạn có chắc chắn muốn xóa bài tập này không?')) {
-            handleDelete();
-        }
+        confirm({
+            title: 'Bạn có chắc chắn muốn xóa bài tập này không?',
+            okText: 'Xóa',
+            okType: 'danger',
+            cancelText: 'Hủy',
+            onOk() {
+                handleDelete();
+                toast.success("Xoá bài tập thành công")
+            },
+            onCancel() {
+                console.log('Hủy xóa');
+            },
+        });
     };
 
     return (
@@ -114,15 +136,21 @@ function SiderbarRightHomeWork() {
                         Icon={OndemandVideoIcon}
                     />
                 </PermissionWrapper>
-                <SiderbarRightHomeWorkSettingItem
-                    to={`/class/${classId}/homework/${exercise?._id}/edit`}
-                    name="Chỉnh sửa"
-                    Icon={BorderColorIcon}
-                />
-                <div className={styles.bottom_item} onClick={confirmDelete}>
-                    <h4 className={styles.name}>Xóa</h4>
-                    <DeleteOutlineIcon />
-                </div>
+                {
+                    user?.role === 2 && (
+                        <>
+                        <SiderbarRightHomeWorkSettingItem
+                            to={`/class/${classId}/homework/${exercise?._id}/edit`}
+                            name="Chỉnh sửa"
+                            Icon={BorderColorIcon}
+                        />
+                        <div className={styles.bottom_item} onClick={confirmDelete}>
+                            <h4 className={styles.name}>Xóa</h4>
+                            <DeleteOutlineIcon />
+                        </div>
+                    </>
+                    )
+                }
             </div>
         </div>
     );

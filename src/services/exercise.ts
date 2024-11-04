@@ -40,7 +40,7 @@ export const fetchMultipleChoiceExerciseDetail = (id: number) => {
     return API.get(`/v1/exercises/multiple-choice/${id}/edit`);
 };
 export const fetchDeleteMultipleChoice = (id: any) => {
-    return API.delete(`/excirses/delete`, id);
+    return API.post(`/excirses/delete`, id);
 };
 
 export const fetchUpdateMultipleChoice = (data: FormMultipleChoiceInterface) => {
