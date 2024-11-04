@@ -64,7 +64,7 @@ export const getUpdateMultipleChoice = async (data: FormMultipleChoiceInterface)
     const response = await fetchUpdateMultipleChoice(data);
     return response.data;
 };
-export const getDeleteMultipleChoice = async (exerciseId: string): Promise<IExercise[]> => {
-    const response = await fetchDeleteMultipleChoice(exerciseId);
+export const getDeleteMultipleChoice = async (_id: string): Promise<IExercise[]> => {
+    const response = await fetchDeleteMultipleChoice(_id);
     return response.data;
 };

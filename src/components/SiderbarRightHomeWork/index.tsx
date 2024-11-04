@@ -19,12 +19,8 @@ import { Role } from '~/enums/role';
 import { getListExercisesStudent, getDeleteMultipleChoice } from '~/repositories/exercise';
 
 function SiderbarRightHomeWork() {
-    // const { data } = useGetExerciseInClass();
-
     const id = useExercisesInClassStore((state) => state._id);
-
-    const { id: classId } = useParams();
-
+    const { id: classId, _id: exerciseId } = useParams();
     const [data, setData] = useState<IExercise[]>([]);
 
     useEffect(() => {
@@ -36,16 +32,15 @@ function SiderbarRightHomeWork() {
                 console.error('Không thể lấy danh sách :', error);
             }
         };
-
         fetchData();
-    }, []);
+    }, [classId]);
 
-    const exercise = useMemo<IExercise | undefined>(() => {
-        return data?.find((item) => item._id === id);
-    }, [id, data]);
+    const exercise = useMemo(() => data.find((item) => item._id === id), [id, data]);
+    console.log(exercise?._id);
 
     const { mutate: handleDelete } = useMutation(
-        () => getDeleteMultipleChoice(exercise?._id), // Use exercise's ID for deletion
+        'delete',
+        () => getDeleteMultipleChoice(exerciseId),
         {
             onSuccess: () => {
                 setData((prevData) => prevData.filter((item) => item._id !== exercise?._id));
@@ -53,9 +48,15 @@ function SiderbarRightHomeWork() {
             },
             onError: (error) => {
                 console.error('Failed to delete exercise:', error);
-            },
-        }
+            }
+        },
     );
+
+    const confirmDelete = () => {
+        if (window.confirm('Bạn có chắc chắn muốn xóa bài tập này không?')) {
+            handleDelete();
+        }
+    };
 
     return (
         <div className={styles.wrap}>
@@ -109,23 +110,19 @@ function SiderbarRightHomeWork() {
                 <PermissionWrapper role={Role.STUDENT}>
                     <SiderbarRightHomeWorkSettingItem
                         to={`/class/${classId}/homework/${exercise?._id}/do`}
-                        name="Vao thi"
+                        name="Vào thi"
                         Icon={OndemandVideoIcon}
                     />
                 </PermissionWrapper>
-                {/* <SiderbarRightHomeWorkSettingItem to="alo/edit" name="Chi tiết" Icon={MouseIcon} /> */}
-                {/* <SiderbarRightHomeWorkSettingItem to="" name="Di chuyển" Icon={FolderOpenIcon} /> */}
                 <SiderbarRightHomeWorkSettingItem
                     to={`/class/${classId}/homework/${exercise?._id}/edit`}
                     name="Chỉnh sửa"
                     Icon={BorderColorIcon}
                 />
-                <SiderbarRightHomeWorkSettingItem
-                    to=""
-                    name="Xóa"
-                    Icon={DeleteOutlineIcon}
-                    onClick={handleDelete}
-                />
+                <div className={styles.bottom_item} onClick={confirmDelete}>
+                    <h4 className={styles.name}>Xóa</h4>
+                    <DeleteOutlineIcon />
+                </div>
             </div>
         </div>
     );

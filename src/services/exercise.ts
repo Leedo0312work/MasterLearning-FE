@@ -1,5 +1,6 @@
 import { FormMultipleChoiceInterface } from '~/types/exercise';
 import API from '~/network/API';
+import { identity } from 'lodash';
 
 export const fetchCreateMultipleChoiceExercise = (data: FormMultipleChoiceInterface) => {
     return API.post('/excirses/create', data);
@@ -38,8 +39,8 @@ export const fetchExercisesTeacher = (exerciseId: string) => {
 export const fetchMultipleChoiceExerciseDetail = (id: number) => {
     return API.get(`/v1/exercises/multiple-choice/${id}/edit`);
 };
-export const fetchDeleteMultipleChoice = (id: string) => {
-    return API.delete(`/excirses/delete`);
+export const fetchDeleteMultipleChoice = (id: any) => {
+    return API.delete(`/excirses/delete`, id);
 };
 
 export const fetchUpdateMultipleChoice = (data: FormMultipleChoiceInterface) => {
