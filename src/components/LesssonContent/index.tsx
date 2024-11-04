@@ -9,31 +9,18 @@ import useLessonStore from '~/store/useLessonStore';
 import CardDocument from '../CardDocument';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-{
-    /* <CardVideo
-                                id={item?.id}
-                                active={item?.id === lessonId}
-                                onClick={(id: any) => setId(Number(id))}
-                                key={item?.name}
-                                name={item?.name}
-                                video={item?.video}
-                                viewer={item?.viewer}
-                                time={item?.time}
-                                createdAt={item?.createdAt}
-                                thumbnail={item?.thumbnail}
-                            /> */
-}
+
 
 function LesssonContent({ lessons }: any) {
-    const { id: lessonId, setId } = useLessonStore((state) => state);
+    // const { id: lessonId, setId } = useLessonStore((state) => state);
     const [lessonList, setLessonList] = useState(lessons);
-    const { id: classId } = useParams();
+    const { id: classId, lessonId, type } = useParams();
     const navigate = useNavigate();
     const handleDeleteSuccess = (deletedId: number) => {
         setLessonList(lessonList.filter((lesson: any) => lesson.id !== deletedId));
     };
 
-    console.log('lesson: ', lessons);
+    console.log('classId: ', classId);
 
     return (
         <div className={styles.wrap}>
@@ -44,7 +31,7 @@ function LesssonContent({ lessons }: any) {
                         item.type === 1 ? (
                             <CardVideo
                                 id={item._id}
-                                active={item.id === lessonId}
+                                //  active={item.id === lessonId}
                                 onClick={() => {
                                     navigate(`/class/${classId}/content/1/view/${item._id}`);
                                 }}
@@ -58,11 +45,9 @@ function LesssonContent({ lessons }: any) {
                             />
                         ) : (
                             <CardDocument
-                                id={item._id}
-                                active={item.id === lessonId}
-                                onClick={(id: any) =>
-                                    navigate(`/class/${classId}/content/0/view/${item._id}`)
-                                }
+                                lessonId={item._id}
+                                //  active={item.id === lessonId}
+                                classId={classId}
                                 key={item._id}
                                 name={item.name}
                                 viewer={item.viewer}

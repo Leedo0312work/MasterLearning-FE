@@ -31,7 +31,6 @@ function Lesson() {
         isError,
     } = useQuery(['lessons', classId], () => getLessonByClassId(classId as string), {
         onSuccess: (data) => {
-            console.log('Fetched lessons:', data);
             setLessons(data);
         },
         onError: (error) => {

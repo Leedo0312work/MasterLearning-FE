@@ -7,7 +7,9 @@ import { Menu, MenuItem } from '@mui/material';
 import { useState } from 'react';
 
 import styles from './styles.module.css';
-import { getDeleteLesson } from '~/repositories/lesson';
+import { deleteLesson, updateLesson } from '~/repositories/lesson';
+import { useNavigate } from 'react-router-dom';
+import saveAs from 'file-saver'
 
 function CardDocument({
     name,
@@ -15,12 +17,13 @@ function CardDocument({
     createdAt,
     thumbnail,
     active,
-    id,
-    onClick,
     media,
     onDeleteSuccess,
+    classId, 
+    lessonId, 
 }: any) {
-    console.log('delete id: ', id);
+    const navigate = useNavigate();
+    
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
     const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -33,13 +36,8 @@ function CardDocument({
 
     const handleView = () => {
         if (media && media.length > 0) {
-            const selectedMedia = media.find((item: any) => item.type === 3 || item.type === 2);
-            if (selectedMedia) {
-                if (selectedMedia.type === 3) {
-                    window.open(selectedMedia.url, '_blank');
-                } else if (selectedMedia.type === 2) {
-                    window.open(selectedMedia.url, '_blank');
-                }
+            if (lessonId) {
+                navigate(`/class/${classId}/content/0/view/${lessonId}`);
             }
         }
         handleMenuClose();
@@ -47,12 +45,10 @@ function CardDocument({
 
     const handleDownload = () => {
         if (media && media.length > 0) {
-            const selectedMedia = media.find((item: any) => item.type === 3 || item.type === 2);
+            const selectedMedia = media.find((item: any) => item.type === 3);
             if (selectedMedia) {
-                const link = document.createElement('a');
-                link.href = selectedMedia.url;
-                link.download = name;
-                link.click();
+                console.log('selectedMedia: ', selectedMedia);
+                saveAs(selectedMedia.url, `${name}.pdf`);
             }
         }
         handleMenuClose();
@@ -60,9 +56,9 @@ function CardDocument({
 
     const handleDelete = async () => {
         try {
-            await getDeleteLesson(id);
+            await deleteLesson(lessonId);
             if (onDeleteSuccess) {
-                onDeleteSuccess(id);
+                onDeleteSuccess(lessonId);
             }
         } catch (error) {
             console.error('Xóa lesson thất bại:', error);
@@ -72,8 +68,13 @@ function CardDocument({
         handleMenuClose();
     };
 
+    const handleEdit = () => {
+        navigate(`/class/${classId}/content/0/edit/${lessonId}`);
+        handleMenuClose();
+    };
+
     return (
-        <div onClick={() => onClick(id)} className={clsx(styles.wrap, { [styles.active]: active })}>
+        <div  className={clsx(styles.wrap, { [styles.active]: active })}>
             <div className={styles.card}>
                 <div style={{ display: 'flex', gap: '10px' }}>
                     <div className={styles.top}>
@@ -101,6 +102,7 @@ function CardDocument({
                 <MenuItem onClick={handleView}>Xem</MenuItem>
                 <MenuItem onClick={handleDownload}>Tải về</MenuItem>
                 <MenuItem onClick={handleDelete}>Xóa</MenuItem>
+                <MenuItem onClick={handleEdit}>Sửa</MenuItem>
             </Menu>
         </div>
     );
