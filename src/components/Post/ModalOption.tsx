@@ -58,11 +58,10 @@ const ModalOption = ({ post, postId, refetchPosts }: any) => {
             // Set the retrieved content and media list.
             setContent(tweetData.content || "");
             const mediaFiles = tweetData.medias.map((media: any) => ({
-
-
                 url: media.url,
                 type: media.type,
             }));
+            console.log(mediaFiles);
             setMediaList(mediaFiles); // This acts as defaultFileList
         } catch (error) {
             console.error('Error fetching tweet:', error);
@@ -130,7 +129,7 @@ const ModalOption = ({ post, postId, refetchPosts }: any) => {
             const data = {
                 postId: postId,
                 content,
-                medias: [] as Media[],
+                medias: mediaList,
                 type: TweetType.TWEET,
                 parent_id: null,
                 mentions: [],
