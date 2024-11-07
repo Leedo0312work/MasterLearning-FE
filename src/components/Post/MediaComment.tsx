@@ -1,10 +1,10 @@
-import { Image } from "antd";
-import React, { useEffect } from "react";
-import SliderPost from "./SliderPost";
-import PropTypes from "prop-types";
-import VideoHLS from "~/utils/media/videoHLS";
+import { Image } from 'antd';
+import React, { useEffect } from 'react';
+import SliderPost from './SliderPost';
+import PropTypes from 'prop-types';
+import VideoHLS from '~/utils/media/videoHLS';
 
-const MediaComment = ({ post, mediaList, updateMediaList }: any) => {
+const MediaComment = ({ post, setOldMediaList, mediaList, updateMediaList }: any) => {
     const [openSlider, setOpenSlider] = React.useState(false);
     const [mediasPost, setMediasPost] = React.useState([]);
     const { medias } = post;
@@ -20,6 +20,7 @@ const MediaComment = ({ post, mediaList, updateMediaList }: any) => {
         const updatedMedias = mediasPost.filter((_, i) => i !== index);
         setMediasPost(updatedMedias);
         updateMediaList(updatedMedias);
+        setOldMediaList && setOldMediaList(updatedMedias);
         // Optionally, you can make an API call here to update the backend with the new list of medias.
     };
 
@@ -32,25 +33,25 @@ const MediaComment = ({ post, mediaList, updateMediaList }: any) => {
             <div className="tw-grid tw-grid-cols-2 tw-gap-2">
                 {mediaFiles.map((media: any, index: any) => {
                     const isSingleInRow =
-                        mediaFiles.length % 2 !== 0 &&
-                        index === mediaFiles.length - 1;
+                        mediaFiles.length % 2 !== 0 && index === mediaFiles.length - 1;
 
                     return (
                         <div
                             key={index}
-                            className={`tw-relative ${isSingleInRow ? "tw-col-span-2" : ""}`}
+                            className={`tw-relative ${isSingleInRow ? 'tw-col-span-2' : ''}`}
                         >
                             {media?.type === 0 ? (
                                 <div
-                                    className={`${isSingleInRow ? "tw-h-[300px]" : "tw-h-[187px]"
-                                        } tw-rounded-lg tw-overflow-hidden`}
+                                    className={`${
+                                        isSingleInRow ? 'tw-h-[300px]' : 'tw-h-[187px]'
+                                    } tw-rounded-lg tw-overflow-hidden`}
                                 >
                                     <Image
                                         src={media.url}
                                         alt={`Image ${index}`}
-                                        height={isSingleInRow ? "300px" : "187px"}
-                                        width={"100%"}
-                                        style={{ objectFit: "contain" }}
+                                        height={isSingleInRow ? '300px' : '187px'}
+                                        width={'100%'}
+                                        style={{ objectFit: 'contain' }}
                                         preview={true}
                                     />
                                     {/* Delete button overlay */}
@@ -60,13 +61,14 @@ const MediaComment = ({ post, mediaList, updateMediaList }: any) => {
                                     >
                                         <i className="fa-solid fa-circle-xmark tw-text-xl"></i>
                                     </div>
-
                                 </div>
                             ) : (
                                 <div>
                                     <VideoHLS
                                         src={media?.url}
-                                        controlType={mediaCount > 4 && index === 3 ? "none" : "control"}
+                                        controlType={
+                                            mediaCount > 4 && index === 3 ? 'none' : 'control'
+                                        }
                                     />
                                     <div
                                         onClick={() => handleDeleteMedia(index)}
@@ -75,7 +77,6 @@ const MediaComment = ({ post, mediaList, updateMediaList }: any) => {
                                         <i className="fa-solid fa-circle-xmark tw-text-xl"></i>
                                     </div>
                                 </div>
-
                             )}
                             {index === 3 && remainingFilesCount > 0 && (
                                 <div

@@ -1,13 +1,13 @@
 import React, { useMemo, useEffect, useState } from 'react';
 import Post from '~/components/Post';
-import { useParams } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 import styles from './styles.module.css';
 import CreatePost from '~/components/CreatePost';
-import { Spin } from "antd";
+import { Spin } from 'antd';
 import { TweetType } from '~/enums/tweet';
 import { useQuery } from 'react-query';
 import tweetServices from '~/services/tweet';
-import InfiniteScroll from "react-infinite-scroll-component";
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 function NewsfeedContent({ classId, listPost, setListPost }: any) {
     const [pagination, setPagination] = useState({
@@ -18,7 +18,7 @@ function NewsfeedContent({ classId, listPost, setListPost }: any) {
     const class_id = useMemo(() => id?.substring(0), [id]);
     // console.log(class_id);
     const posts = useQuery({
-        queryKey: ["getNewsfeed", class_id, 10, 1],
+        queryKey: ['getNewsfeed', class_id, 10, 1],
         queryFn: async () =>
             await tweetServices.getNewFeeds({
                 class_id: class_id,
@@ -69,14 +69,10 @@ function NewsfeedContent({ classId, listPost, setListPost }: any) {
 
     return (
         <div className={styles.wrap}>
-            <div className={styles.createPost}>
-                <CreatePost class_id={class_id} refetchPosts={refetchPosts} />
-            </div>
             <div className={styles.listPost}>
                 {listPost && listPost.length > 0 && (
                     <InfiniteScroll
-
-                        height={"50vh"}
+                        height={'80vh'}
                         dataLength={listPost.length}
                         next={fetchMorePosts}
                         hasMore={pagination.page < pagination.total_page}
@@ -86,11 +82,20 @@ function NewsfeedContent({ classId, listPost, setListPost }: any) {
                             msOverflowStyle: 'none',
                         }}
                     >
+                        <div className={{ ...styles.createPost, width: '100%' }}>
+                            <CreatePost class_id={class_id} refetchPosts={refetchPosts} />
+                        </div>
                         <div className={styles.scrollContent}>
                             {listPost.map((post: any) => {
                                 if (post.type === TweetType.TWEET) {
-                                    return <Post key={post._id} post={post} listPost={listPost}
-                                        setListPost={setListPost} />;
+                                    return (
+                                        <Post
+                                            key={post._id}
+                                            post={post}
+                                            listPost={listPost}
+                                            setListPost={setListPost}
+                                        />
+                                    );
                                 }
                                 return null;
                             })}
