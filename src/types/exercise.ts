@@ -11,8 +11,8 @@ export interface FormMultipleChoiceInterface extends IExercise {
 }
 
 export interface FormMultipleChoiceAnswerItemInterface {
+    no: number;
     answer: string;
-    mark: number | string;
-    id?: string;
-    order?: number;
+    type: number;
+    point: number
 }

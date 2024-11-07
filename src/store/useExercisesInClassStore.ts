@@ -3,17 +3,17 @@ import { devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
 interface ExercisesInClassStore {
-    id: number | null | undefined;
-    setId: (id: number) => void;
+    _id: string | null | undefined;
+    setId: (id: string) => void;
 }
 
 const useExercisesInClass = create<ExercisesInClassStore>()(
     devtools(
         immer((set, get) => ({
-            id: null,
-            setId: (id: number) => {
+            _id: null,
+            setId: (_id: string) => {
                 set((state) => {
-                    state.id = id;
+                    state._id = _id;
                 });
             },
         })),

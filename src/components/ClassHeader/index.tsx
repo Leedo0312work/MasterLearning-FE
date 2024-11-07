@@ -7,7 +7,6 @@ import useAuthStore from '~/store/useAuthStore';
 
 function ClassHeader({ handleOpenJoinModal }: { handleOpenJoinModal: any }) {
     const user = useAuthStore((state) => state.user);
-    console.log("Thông tin: ", user?.role)
     
     return (
         <div className={styles.wrap}>
