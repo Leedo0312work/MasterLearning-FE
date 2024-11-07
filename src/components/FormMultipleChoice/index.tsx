@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import uniqueId from 'lodash/uniqueId';
 import { memo } from 'react';
 import { useQuery } from 'react-query';
-import { getMultipleChoiceExerciseDetail } from '~/repositories/exercise';
+import { getExercisesTeacher, getMultipleChoiceExerciseDetail } from '~/repositories/exercise';
 import { useParams } from 'react-router-dom';
 import styles from './styles.module.css';
 function FormMultipleChoice() {
@@ -27,7 +27,7 @@ function FormMultipleChoice() {
 
     const { exerciseId } = useParams();
 
-    const { data } = useQuery(['detail', exerciseId], () => getMultipleChoiceExerciseDetail(Number(exerciseId)), {
+    const { data } = useQuery(['detail', exerciseId], () => getExercisesTeacher(exerciseId), {
         onSuccess(response) {
             response?.multipleChoice.answers.forEach((item, index) => {
                 origin.current[index] = {
@@ -59,7 +59,7 @@ function FormMultipleChoice() {
 
         for (let i = 0; i < number; i++) {
             const item: FormMultipleChoiceAnswerItemInterface = origin.current[i];
-            item.mark = unit;
+            item.point = unit;
             result.push(item);
         }
 
@@ -133,6 +133,7 @@ function FormMultipleChoice() {
                             <TextField
                                 label={'Tổng điểm'}
                                 {...field}
+                                value="10"
                                 onChange={(event) => {
                                     handleChangeTotalMark(Number(event.target.value));
                                     field.onChange(event);

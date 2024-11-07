@@ -7,7 +7,7 @@ import { memo } from 'react';
 interface Prop {
     active: boolean;
     order: number;
-    emitChange: (index: number, key: 'answer' | 'mark', value: string) => void;
+    emitChange: (index: number, key: 'answer' | 'point', value: string) => void;
     setActive: (index: number) => void;
 }
 
@@ -59,7 +59,7 @@ function FormMultipleChoiceItem({ active, order, emitChange, setActive }: Prop) 
                             message: 'Điểm không hợp lệ',
                         },
                     }}
-                    name={`answers.${order}.mark`}
+                    name={`answers.${order}.point`}
                     control={control}
                     render={({ field, fieldState: { error, invalid } }) => (
                         <TextField
@@ -69,7 +69,7 @@ function FormMultipleChoiceItem({ active, order, emitChange, setActive }: Prop) 
                             fullWidth
                             size={'small'}
                             onChange={(event) => {
-                                emitChange(order, `mark`, event.target.value);
+                                emitChange(order, `point`, event.target.value);
                                 field.onChange(event);
                             }}
                             value={field.value}

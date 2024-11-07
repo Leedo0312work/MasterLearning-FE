@@ -4,7 +4,7 @@ import { SelectInputProps } from '@mui/material/Select/SelectInput';
 
 interface Option {
     text: string;
-    value: string;
+    value: string | number;
 }
 
 interface Prop {
