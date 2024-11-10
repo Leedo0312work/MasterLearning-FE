@@ -70,6 +70,7 @@ function NewsfeedContent({ classId, listPost, setListPost }: any) {
     return (
         <div className={styles.wrap}>
             <div className={styles.listPost}>
+
                 {listPost && listPost.length > 0 && (
                     <InfiniteScroll
                         height={'80vh'}
@@ -82,7 +83,7 @@ function NewsfeedContent({ classId, listPost, setListPost }: any) {
                             msOverflowStyle: 'none',
                         }}
                     >
-                        <div className={{ ...styles.createPost, width: '100%' }}>
+                        <div className={styles.createPost} style={{ width: "100%", display: "flex", justifyContent: "center" }}>
                             <CreatePost class_id={class_id} refetchPosts={refetchPosts} />
                         </div>
                         <div className={styles.scrollContent}>
@@ -102,11 +103,11 @@ function NewsfeedContent({ classId, listPost, setListPost }: any) {
                         </div>
                     </InfiniteScroll>
                 )}
-                {/* {listPost.length === 0 && (
-                    <div className={styles.createPost}>
-                        <p className="tw-text-center tw-py-10">Chưa có bài viết nào</p>
+                {listPost.length === 0 && (
+                    <div className={styles.createPost} style={{ width: "720px", display: "flex", justifyContent: "center" }}>
+                        <CreatePost class_id={class_id} refetchPosts={refetchPosts} />
                     </div>
-                )} */}
+                )}
             </div>
         </div>
     );
