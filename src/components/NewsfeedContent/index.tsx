@@ -74,7 +74,11 @@ function NewsfeedContent({ classId, listPost, setListPost }: any) {
                 {listPost && listPost.length > 0 && (
                     <InfiniteScroll
 <<<<<<< HEAD
+<<<<<<< HEAD
                         height={'80vh'}
+=======
+                        height={'100%'}
+>>>>>>> 66fd97cce0e7f051bf0c51490291b81ccf04e449
 =======
                         height={'100%'}
 >>>>>>> 66fd97cce0e7f051bf0c51490291b81ccf04e449
@@ -88,12 +92,18 @@ function NewsfeedContent({ classId, listPost, setListPost }: any) {
                         // }}
                     >
 <<<<<<< HEAD
+<<<<<<< HEAD
                         <div className={styles.createPost} style={{ width: "100%", display: "flex", justifyContent: "center" }}>
 =======
+=======
+>>>>>>> 66fd97cce0e7f051bf0c51490291b81ccf04e449
                         <div
                             className={styles.createPost}
                             style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
                         >
+<<<<<<< HEAD
+>>>>>>> 66fd97cce0e7f051bf0c51490291b81ccf04e449
+=======
 >>>>>>> 66fd97cce0e7f051bf0c51490291b81ccf04e449
                             <CreatePost class_id={class_id} refetchPosts={refetchPosts} />
                         </div>
@@ -116,12 +126,18 @@ function NewsfeedContent({ classId, listPost, setListPost }: any) {
                 )}
                 {listPost.length === 0 && (
 <<<<<<< HEAD
+<<<<<<< HEAD
                     <div className={styles.createPost} style={{ width: "720px", display: "flex", justifyContent: "center" }}>
 =======
+=======
+>>>>>>> 66fd97cce0e7f051bf0c51490291b81ccf04e449
                     <div
                         className={styles.createPost}
                         style={{ width: '720px', display: 'flex', justifyContent: 'center' }}
                     >
+<<<<<<< HEAD
+>>>>>>> 66fd97cce0e7f051bf0c51490291b81ccf04e449
+=======
 >>>>>>> 66fd97cce0e7f051bf0c51490291b81ccf04e449
                         <CreatePost class_id={class_id} refetchPosts={refetchPosts} />
                     </div>

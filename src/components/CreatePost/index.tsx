@@ -18,6 +18,10 @@ const CreatePost: React.FC<any> = ({ class_id, refetchPosts }) => {
     const [content, setContent] = useState<string>('');
     const [showFooter, setShowFooter] = useState(false);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    const userInfo = JSON.parse(localStorage.getItem('user') || '{}');
+>>>>>>> 66fd97cce0e7f051bf0c51490291b81ccf04e449
 =======
     const userInfo = JSON.parse(localStorage.getItem('user') || '{}');
 >>>>>>> 66fd97cce0e7f051bf0c51490291b81ccf04e449
@@ -82,6 +86,7 @@ const CreatePost: React.FC<any> = ({ class_id, refetchPosts }) => {
         if (isImage(file.originFileObj as any)) {
             return originNode; // Display images as usual
 <<<<<<< HEAD
+<<<<<<< HEAD
         } else if (file?.type?.startsWith("video/")) {
             // Render a video element for video files
             return (
@@ -89,6 +94,8 @@ const CreatePost: React.FC<any> = ({ class_id, refetchPosts }) => {
                     <video controls style={{ width: '177px' }}>
                         <source src={file.thumbUrl || URL.createObjectURL(file.originFileObj)} type={file.type} />
 =======
+=======
+>>>>>>> 66fd97cce0e7f051bf0c51490291b81ccf04e449
         } else if (file?.type?.startsWith('video/')) {
             // Render a video element for video files
             return (
@@ -98,6 +105,9 @@ const CreatePost: React.FC<any> = ({ class_id, refetchPosts }) => {
                             src={file.thumbUrl || URL.createObjectURL(file.originFileObj)}
                             type={file.type}
                         />
+<<<<<<< HEAD
+>>>>>>> 66fd97cce0e7f051bf0c51490291b81ccf04e449
+=======
 >>>>>>> 66fd97cce0e7f051bf0c51490291b81ccf04e449
                         Your browser does not support the video tag.
                     </video>
@@ -106,7 +116,11 @@ const CreatePost: React.FC<any> = ({ class_id, refetchPosts }) => {
                         onClick={() => handleRemove(file)}
                         className="tw-absolute tw-top-1 tw-text-gray-500 tw-border-none"
 <<<<<<< HEAD
+<<<<<<< HEAD
                         style={{ right: "-66px" }}
+=======
+                        style={{ right: '-66px' }}
+>>>>>>> 66fd97cce0e7f051bf0c51490291b81ccf04e449
 =======
                         style={{ right: '-66px' }}
 >>>>>>> 66fd97cce0e7f051bf0c51490291b81ccf04e449
