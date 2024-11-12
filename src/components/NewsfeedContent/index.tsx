@@ -70,20 +70,22 @@ function NewsfeedContent({ classId, listPost, setListPost }: any) {
     return (
         <div className={styles.wrap}>
             <div className={styles.listPost}>
-
                 {listPost && listPost.length > 0 && (
                     <InfiniteScroll
-                        height={'80vh'}
+                        height={'100%'}
                         dataLength={listPost.length}
                         next={fetchMorePosts}
                         hasMore={pagination.page < pagination.total_page}
                         loader={<Spin className="tw-w-full" spinning={true} />}
-                        style={{
-                            scrollbarWidth: 'none',
-                            msOverflowStyle: 'none',
-                        }}
+                        // style={{
+                        //     scrollbarWidth: 'none',
+                        //     msOverflowStyle: 'none',
+                        // }}
                     >
-                        <div className={styles.createPost} style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+                        <div
+                            className={styles.createPost}
+                            style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
+                        >
                             <CreatePost class_id={class_id} refetchPosts={refetchPosts} />
                         </div>
                         <div className={styles.scrollContent}>
@@ -104,7 +106,10 @@ function NewsfeedContent({ classId, listPost, setListPost }: any) {
                     </InfiniteScroll>
                 )}
                 {listPost.length === 0 && (
-                    <div className={styles.createPost} style={{ width: "720px", display: "flex", justifyContent: "center" }}>
+                    <div
+                        className={styles.createPost}
+                        style={{ width: '720px', display: 'flex', justifyContent: 'center' }}
+                    >
                         <CreatePost class_id={class_id} refetchPosts={refetchPosts} />
                     </div>
                 )}
