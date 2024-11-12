@@ -37,3 +37,14 @@
     margin: 0;
     padding-bottom: 6px;
 }
+
+.edit {
+    font-size: 14px;
+    text-align: right;
+    text-decoration: none;
+    color: #1e88e5;
+    font-weight: 500;
+    width: 100%;
+    margin-top: 5px;
+    cursor: pointer;
+}

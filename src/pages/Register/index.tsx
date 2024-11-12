@@ -117,7 +117,7 @@ export default function Register() {
                         <Button
                             href="/login"
                             variant="outlined"
-                            sx={{ px: 4, borderColor: '#1A237E', color: '#1A237E' }}
+                            sx={{ px: 4, borderColor: '#1C7DDF', color: '#1C7DDF' }}
                         >
                             Đăng nhập
                         </Button>
@@ -151,7 +151,7 @@ export default function Register() {
                                 required
                                 fullWidth
                                 id="email"
-                                label="Email Address"
+                                label="Email"
                                 value={email}
                                 {...register('email', {
                                     required: 'Vui lòng nhập địa chỉ email',
@@ -264,42 +264,13 @@ export default function Register() {
                                 sx={{
                                     mt: 3,
                                     mb: 1,
-                                    backgroundColor: '#1A237E',
+                                    backgroundColor: '#1C7DDF',
                                     color: '#fff',
-                                    borderRadius: '20px',
+                                    borderRadius: '10px',
                                 }}
                             >
                                 Đăng ký
                             </Button>
-
-                            <Grid
-                                container
-                                justifyContent="center"
-                                alignItems="center"
-                                sx={{ mt: 2 }}
-                            >
-                                <Typography variant="body2" color="textSecondary" sx={{ mx: 1 }}>
-                                    Or
-                                </Typography>
-                            </Grid>
-
-                            <Grid container spacing={2} sx={{ mt: 1 }}>
-                                <Grid item xs={4}>
-                                    <Button fullWidth sx={{ borderColor: '#ddd' }}>
-                                        <img src={googleIcon} alt="Google" width="24" />
-                                    </Button>
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <Button fullWidth sx={{ borderColor: '#ddd' }}>
-                                        <img src={appleIcon} alt="Apple" width="24" />
-                                    </Button>
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <Button fullWidth sx={{ borderColor: '#ddd' }}>
-                                        <img src={facebookIcon} alt="Facebook" width="24" />
-                                    </Button>
-                                </Grid>
-                            </Grid>
                         </Box>
                     </Box>
                 </Grid>

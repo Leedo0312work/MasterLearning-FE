@@ -56,4 +56,11 @@ export const forgotPassword = async(email:string) => {
   return response;
 }
 
+export const fetchGetMe = () => {
+  return API.get(`users/get-me`);
+};
+
+export const patchUpdateMe = (data: any) => {
+  return API.patch('/users/update-me', data)
+}
 

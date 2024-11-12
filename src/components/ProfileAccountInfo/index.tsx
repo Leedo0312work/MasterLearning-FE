@@ -1,63 +1,84 @@
-import CheckIcon from '@mui/icons-material/Check';
-import avatarDefault from '~/assets/images/avatar_default.png';
-import CameraAltIcon from '@mui/icons-material/CameraAlt';
-import ProfileInfoItem from '~/components/ProfileInfoItem';
-//@ts-ignore
+import { useState, useEffect, useMemo } from 'react';
 import styles from './styles.module.css';
-import { TextField } from '@mui/material';
-import { Label } from '@mui/icons-material';
-const data = [
-    {
-        id: 1,
-        Left_icon: 'https://shub.edu.vn/images/icons/profile-item/profile-item-username.svg',
-        title: 'Tên đăng nhập',
-        value: '097677569',
-        edit: false,
-        copy: true,
-    },
-    {
-        id: 2,
-        Left_icon: 'https://shub.edu.vn/images/icons/profile-item/profile-item-phone.svg',
-        title: 'Số điện thoại',
-        value: '097677569',
-        edit: true,
-        copy: false,
-    },
-    {
-        id: 3,
-        Left_icon: 'https://shub.edu.vn/images/icons/profile-item/profile-item-email.svg',
-        title: 'Email',
-        value: '097677569',
-        edit: true,
-        copy: false,
-    },
-    {
-        id: 4,
-        Left_icon: 'https://shub.edu.vn/images/icons/profile-item/profile-item-password.svg',
-        title: 'Mật khẩu',
-        value: '097677569',
-        edit: true,
-        copy: false,
-    },
-    {
-        id: 5,
-        Left_icon: 'https://shub.edu.vn/images/icons/profile-item/profile-item-facebook.svg',
-        title: 'Liên kết facebook',
-        value: '097677569',
-        edit: true,
-        copy: false,
-    },
-];
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import TextField from '@mui/material/TextField';
+import avatarDefault from '~/assets/images/avatar_default.png';
+import ProfileInfoItem from '~/components/ProfileInfoItem';
+import { getMe, getUpdateMe } from '~/repositories/auth';
+import ModalEditProfile from '../ModalEditProfile';
+import { toast } from 'react-toastify';
+
 const onChangeFile = (e: any) => {
-    // test thử onChange cái type của e em test nên em cho type= any
     console.log(e);
 };
-function ProfileAccountInfo({ avatar = '' }) {
+
+function ProfileAccountInfo() {
+    const [dataProfile, setDataProfile] = useState<any>(null);
+    const [openModal, setOpenModal] = useState(false);
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const res = await getMe();
+                setDataProfile(res);
+            } catch (error) {
+                console.error('Không thể lấy thông tin:', error);
+            }
+        };
+
+        fetchProfile();
+    }, []);
+
+    const data = useMemo(() => [
+        {
+            id: 1,
+            Left_icon: 'https://shub.edu.vn/images/icons/profile-item/profile-item-username.svg',
+            title: 'Tên',
+            value: dataProfile?.name || '',
+            edit: false,
+            copy: true,
+        },
+        {
+            id: 2,
+            Left_icon: 'https://shub.edu.vn/images/icons/profile-item/profile-item-birthday.svg',
+            title: 'Ngày sinh',
+            value: dataProfile?.date_of_birth ? new Date(dataProfile.date_of_birth).toLocaleDateString() : '',
+            edit: true,
+            copy: false,
+        },
+        {
+            id: 3,
+            Left_icon: 'https://shub.edu.vn/images/icons/profile-item/profile-item-email.svg',
+            title: 'Email',
+            value: dataProfile?.email || '',
+            edit: true,
+            copy: false,
+        },
+    ], [dataProfile]);
+
+    const handleOpenModal = () => setOpenModal(true);
+    const handleCloseModal = () => setOpenModal(false);
+
+    const handleSubmit = async (updatedData: { name: string; date_of_birth: string; avatar: string }) => {
+        try {
+            const response = await getUpdateMe(updatedData);
+            setDataProfile(response);
+            toast.success("Chỉnh sửa thông tin thành công")
+            handleCloseModal();
+        } catch (error) {
+            console.error('Cập nhật thông tin không thành công:', error);
+        }
+    };
+
     return (
         <div className={styles.wrap}>
             <div className={styles.wrap_avatar}>
                 <div className={styles.avatar}>
-                    <img className={styles.img} alt="avatar" src={avatar ? avatar : avatarDefault} />
+                    <img
+                        className={styles.img}
+                        alt="avatar"
+                        src={dataProfile?.avatar || avatarDefault}
+                    />
                     <label>
                         <CameraAltIcon className={styles.cameraAltIcon} />
                         <TextField type="file" className={styles.inputfile} onChange={onChangeFile} />
@@ -78,6 +99,17 @@ function ProfileAccountInfo({ avatar = '' }) {
                     />
                 ))}
             </div>
+            <div className={styles.edit} onClick={handleOpenModal}>
+               Chỉnh sửa
+            </div>
+            
+            {/* Modal component for editing profile */}
+            <ModalEditProfile
+                openAddModal={openModal}
+                title="Chỉnh sửa thông tin"
+                handleCloseAddModal={handleCloseModal}
+                subMitForm={handleSubmit}
+            />
         </div>
     );
 }

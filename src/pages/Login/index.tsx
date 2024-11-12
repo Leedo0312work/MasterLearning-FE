@@ -224,7 +224,7 @@ export default function SignInSide() {
                                 required
                                 fullWidth
                                 id="email"
-                                label="Email hoặc số điện thoại"
+                                label="Email"
                                 type="email"
                                 autoComplete="email"
                                 autoFocus
@@ -243,7 +243,7 @@ export default function SignInSide() {
                                 margin="normal"
                                 required
                                 fullWidth
-                                label="Password"
+                                label="Mật khẩu"
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
@@ -256,12 +256,7 @@ export default function SignInSide() {
                             )}
 
                             <Grid container justifyContent="space-between" alignItems="center">
-                                <Grid item>
-                                    <FormControlLabel
-                                        control={<Checkbox value="remember" color="primary" />}
-                                        label="Ghi nhớ đăng nhập"
-                                    />
-                                </Grid>
+                                <Grid item></Grid>
                                 <Grid item>
                                     <Link
                                         href="/forgot-password"
@@ -282,9 +277,9 @@ export default function SignInSide() {
                                     mt: 3,
                                     mb: 2,
                                     padding: '10px 0',
-                                    backgroundColor: '#1A237E',
+                                    backgroundColor: '#1C7DDF',
                                     color: '#fff',
-                                    borderRadius: '20px',
+                                    borderRadius: '10px',
                                 }}
                             >
                                 Đăng nhập
@@ -296,43 +291,14 @@ export default function SignInSide() {
                                 sx={{
                                     mb: 1,
                                     padding: '10px 0',
-                                    backgroundColor: '#1A237E',
+                                    backgroundColor: '#1C7DDF',
                                     color: '#fff',
-                                    borderRadius: '20px',
+                                    borderRadius: '10px',
                                 }}
                                 onClick={() => navigate('/')}
                             >
                                 Trang chủ
                             </Button>
-
-                            <Grid
-                                container
-                                justifyContent="center"
-                                alignItems="center"
-                                sx={{ mt: 2 }}
-                            >
-                                <Typography variant="body2" color="textSecondary" sx={{ mx: 1 }}>
-                                    Or
-                                </Typography>
-                            </Grid>
-
-                            <Grid container spacing={2} sx={{ mt: 1 }}>
-                                <Grid item xs={4}>
-                                    <Button fullWidth sx={{ borderColor: '#ddd' }}>
-                                        <img src={googleIcon} alt="Google" width="24" />
-                                    </Button>
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <Button fullWidth sx={{ borderColor: '#ddd' }}>
-                                        <img src={appleIcon} alt="Apple" width="24" />
-                                    </Button>
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <Button fullWidth sx={{ borderColor: '#ddd' }}>
-                                        <img src={facebookIcon} alt="Facebook" width="24" />
-                                    </Button>
-                                </Grid>
-                            </Grid>
                         </Box>
                     </Box>
                 </Grid>
@@ -370,7 +336,7 @@ export default function SignInSide() {
                         <Button
                             href="/register"
                             variant="outlined"
-                            sx={{ px: 4, borderColor: '#1A237E', color: '#1A237E' }}
+                            sx={{ px: 4, borderColor: '#1C7DDF', color: '#1C7DDF' }}
                         >
                             Đăng ký
                         </Button>
