@@ -9,15 +9,6 @@ import UseFolder from '~/hooks/useFolder';
 import ModalAddFolder from '~/components/ModalAddFolder';
 import { useParams } from 'react-router-dom';
 
-const defaultData = [
-    {
-        name: 'Sinh',
-        style: 'Trắc nghiệm',
-        type: 'pdf',
-        value: '0/0 đã làm',
-    },
-];
-
 function HomeWork() {
     const {
         handleCloseModalAddFolder,
