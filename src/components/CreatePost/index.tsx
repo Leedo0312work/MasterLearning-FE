@@ -79,9 +79,29 @@ const CreatePost: React.FC<any> = ({ class_id, refetchPosts }) => {
 
     const itemRender = (originNode: React.ReactNode, file: UploadFile) => {
         if (isImage(file.originFileObj as any)) {
-            return originNode;
+            return originNode; // Display images as usual
+        } else if (file?.type?.startsWith("video/")) {
+            // Render a video element for video files
+            return (
+                <div style={{ position: 'relative', right: "80px" }}>
+                    <video controls style={{ width: '177px' }}>
+                        <source src={file.thumbUrl || URL.createObjectURL(file.originFileObj)} type={file.type} />
+                        Your browser does not support the video tag.
+                    </video>
+
+                    <div
+                        onClick={() => handleRemove(file)}
+                        className="tw-absolute tw-top-1 tw-text-gray-500 tw-border-none"
+                        style={{ right: "-66px" }}
+                    >
+                        <i className="fa-solid fa-circle-xmark tw-text-xl"></i>
+                    </div>
+                </div>
+            );
         }
+        return originNode; // Fallback for other types
     };
+
 
     const handleCreate = async () => {
         if (!content) {
