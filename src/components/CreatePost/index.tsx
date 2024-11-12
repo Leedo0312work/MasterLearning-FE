@@ -17,6 +17,10 @@ const CreatePost: React.FC<any> = ({ class_id, refetchPosts }) => {
     const [uploadMedia, setUploadMedia] = useState(false);
     const [content, setContent] = useState<string>('');
     const [showFooter, setShowFooter] = useState(false);
+<<<<<<< HEAD
+=======
+    const userInfo = JSON.parse(localStorage.getItem('user') || '{}');
+>>>>>>> 66fd97cce0e7f051bf0c51490291b81ccf04e449
 
     useEffect(() => {
         if (content || mediaList.length > 0) {
@@ -77,19 +81,35 @@ const CreatePost: React.FC<any> = ({ class_id, refetchPosts }) => {
     const itemRender = (originNode: React.ReactNode, file: UploadFile) => {
         if (isImage(file.originFileObj as any)) {
             return originNode; // Display images as usual
+<<<<<<< HEAD
         } else if (file?.type?.startsWith("video/")) {
             // Render a video element for video files
             return (
                 <div style={{ position: 'relative', right: "80px" }}>
                     <video controls style={{ width: '177px' }}>
                         <source src={file.thumbUrl || URL.createObjectURL(file.originFileObj)} type={file.type} />
+=======
+        } else if (file?.type?.startsWith('video/')) {
+            // Render a video element for video files
+            return (
+                <div style={{ position: 'relative', right: '80px' }}>
+                    <video controls style={{ width: '177px' }}>
+                        <source
+                            src={file.thumbUrl || URL.createObjectURL(file.originFileObj)}
+                            type={file.type}
+                        />
+>>>>>>> 66fd97cce0e7f051bf0c51490291b81ccf04e449
                         Your browser does not support the video tag.
                     </video>
 
                     <div
                         onClick={() => handleRemove(file)}
                         className="tw-absolute tw-top-1 tw-text-gray-500 tw-border-none"
+<<<<<<< HEAD
                         style={{ right: "-66px" }}
+=======
+                        style={{ right: '-66px' }}
+>>>>>>> 66fd97cce0e7f051bf0c51490291b81ccf04e449
                     >
                         <i className="fa-solid fa-circle-xmark tw-text-xl"></i>
                     </div>
@@ -154,7 +174,15 @@ const CreatePost: React.FC<any> = ({ class_id, refetchPosts }) => {
         <div className={styles.wrap}>
             <Box className={styles.container} component="form">
                 <div className={styles.header}>
+<<<<<<< HEAD
                     <img src={avatarDefault} alt="" className={'tw-h-12 tw-w-12 tw-rounded-full'} />
+=======
+                    <img
+                        src={userInfo?.avatar || avatarDefault}
+                        alt=""
+                        className={'tw-h-12 tw-w-12 tw-rounded-full'}
+                    />
+>>>>>>> 66fd97cce0e7f051bf0c51490291b81ccf04e449
                     <div className={styles.input}>
                         <TextareaAutosize
                             aria-label="minimum height"

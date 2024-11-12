@@ -1168,9 +1168,13 @@
     tippy.js "^6.3.1"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> 863a879d12ea1f38a5ac31b984eba17e5f9697d4
+=======
+
+>>>>>>> 66fd97cce0e7f051bf0c51490291b81ccf04e449
 "@types/estree@^1.0.5":
   version "1.0.6"
   resolved "https://registry.npmjs.org/@types/estree/-/estree-1.0.6.tgz"
@@ -1842,7 +1846,10 @@ bn.js@^4.0.0:
   resolved "https://registry.npmjs.org/bn.js/-/bn.js-4.12.0.tgz"
   integrity sha512-c98Bf3tPniI+scsdk237ku1Dc3ujXQTSgyiPUDEOe7tRkhrqridvh8klBv0HCEso1OLOYcHuCv/cS6DNxKH+ZA==
 
+<<<<<<< HEAD
 >>>>>>> 863a879d12ea1f38a5ac31b984eba17e5f9697d4
+=======
+>>>>>>> 66fd97cce0e7f051bf0c51490291b81ccf04e449
 bn.js@^4.1.0:
   version "4.12.0"
   resolved "https://registry.npmjs.org/bn.js/-/bn.js-4.12.0.tgz"
@@ -2735,7 +2742,10 @@ es-module-lexer@^1.2.1:
   resolved "https://registry.npmjs.org/es-module-lexer/-/es-module-lexer-1.5.4.tgz"
   integrity sha512-MVNK56NiMrOwitFB7cqDwq0CQutbw+0BvLshJSse0MUNU+y1FC3bUS/AQg7oUng+/wKrrki7JfmwtVHkVfPLlw==
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 66fd97cce0e7f051bf0c51490291b81ccf04e449
 
 esbuild-android-64@0.14.48:
   version "0.14.48"
@@ -3393,7 +3403,10 @@ get-value@^2.0.3, get-value@^2.0.6:
 =======
     ggclass_react_vite "file:C:/Users/ledo2/AppData/Local/Yarn/Cache/v6/npm-ggclass-react-vite-0.0.0-d7a59134-9259-4d5c-a795-50b3b395fc8c-1730692740938/node_modules/ggclass_react_vite"
 
+<<<<<<< HEAD
 >>>>>>> 863a879d12ea1f38a5ac31b984eba17e5f9697d4
+=======
+>>>>>>> 66fd97cce0e7f051bf0c51490291b81ccf04e449
     immer "^9.0.15"
     js-cookie "^3.0.5"
     jsonwebtoken "^9.0.2"
@@ -4421,10 +4434,14 @@ ms@2.0.0:
   integrity sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 nan@^2.17.0:
 =======
 nan@^2.12.1, nan@^2.17.0:
 >>>>>>> 863a879d12ea1f38a5ac31b984eba17e5f9697d4
+=======
+nan@^2.12.1, nan@^2.17.0:
+>>>>>>> 66fd97cce0e7f051bf0c51490291b81ccf04e449
   version "2.20.0"
   resolved "https://registry.npmjs.org/nan/-/nan-2.20.0.tgz"
   integrity sha512-bk3gXBZDGILuuo/6sKtr0DQmSThYHLtNCdSdXk9YkxD/jK6X2vmCyyXBBxyqZ4XcnzTyYEAThfX3DCEnLf6igw==

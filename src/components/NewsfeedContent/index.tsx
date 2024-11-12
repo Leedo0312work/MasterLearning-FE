@@ -73,17 +73,28 @@ function NewsfeedContent({ classId, listPost, setListPost }: any) {
 
                 {listPost && listPost.length > 0 && (
                     <InfiniteScroll
+<<<<<<< HEAD
                         height={'80vh'}
+=======
+                        height={'100%'}
+>>>>>>> 66fd97cce0e7f051bf0c51490291b81ccf04e449
                         dataLength={listPost.length}
                         next={fetchMorePosts}
                         hasMore={pagination.page < pagination.total_page}
                         loader={<Spin className="tw-w-full" spinning={true} />}
-                        style={{
-                            scrollbarWidth: 'none',
-                            msOverflowStyle: 'none',
-                        }}
+                        // style={{
+                        //     scrollbarWidth: 'none',
+                        //     msOverflowStyle: 'none',
+                        // }}
                     >
+<<<<<<< HEAD
                         <div className={styles.createPost} style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+=======
+                        <div
+                            className={styles.createPost}
+                            style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
+                        >
+>>>>>>> 66fd97cce0e7f051bf0c51490291b81ccf04e449
                             <CreatePost class_id={class_id} refetchPosts={refetchPosts} />
                         </div>
                         <div className={styles.scrollContent}>
@@ -104,7 +115,14 @@ function NewsfeedContent({ classId, listPost, setListPost }: any) {
                     </InfiniteScroll>
                 )}
                 {listPost.length === 0 && (
+<<<<<<< HEAD
                     <div className={styles.createPost} style={{ width: "720px", display: "flex", justifyContent: "center" }}>
+=======
+                    <div
+                        className={styles.createPost}
+                        style={{ width: '720px', display: 'flex', justifyContent: 'center' }}
+                    >
+>>>>>>> 66fd97cce0e7f051bf0c51490291b81ccf04e449
                         <CreatePost class_id={class_id} refetchPosts={refetchPosts} />
                     </div>
                 )}

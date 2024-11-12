@@ -6,6 +6,7 @@ import AuthComposition from '~/components/AuthComposition';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { bootstrap } from '~/packages/socket';
+import { Spin } from 'antd';
 
 function App() {
     const { fetchUser, isFetchedUser } = useAuthStore((state) => state);
@@ -18,13 +19,19 @@ function App() {
     return (
         <>
             {isFetchedUser && (
-                <Suspense fallback={<div>loading</div>}>
+                <Suspense
+                    fallback={
+                        <Spin style={{ width: '100vw', marginTop: '49vh' }} spinning={true} />
+                    }
+                >
                     <BrowserRouter>
                         <Routes>
                             {routes.map((item) => {
                                 const DefaultLayout = item?.layout || Fragment;
                                 const needAuth = item.private;
-                                const Component = !needAuth ? item.component : AuthComposition(item.component);
+                                const Component = !needAuth
+                                    ? item.component
+                                    : AuthComposition(item.component);
 
                                 return (
                                     <Route
@@ -46,17 +53,22 @@ function App() {
                                                         path={child.path}
                                                         element={createElement(child.component)}
                                                     >
-                                                    {Boolean(child?.children) && Array.isArray(child?.children) && (
-                                                        <>
-                                                            {child.children.map((subChild) => (
-                                                                <Route
-                                                                    key={subChild.path}
-                                                                    path={subChild.path}
-                                                                    element={createElement(subChild.component)}
-                                                                />
-                                                            ))}
-                                                        </>
-                                                    )}
+                                                        {Boolean(child?.children) &&
+                                                            Array.isArray(child?.children) && (
+                                                                <>
+                                                                    {child.children.map(
+                                                                        (subChild) => (
+                                                                            <Route
+                                                                                key={subChild.path}
+                                                                                path={subChild.path}
+                                                                                element={createElement(
+                                                                                    subChild.component,
+                                                                                )}
+                                                                            />
+                                                                        ),
+                                                                    )}
+                                                                </>
+                                                            )}
                                                     </Route>
                                                 ))}
                                             </>
@@ -69,7 +81,9 @@ function App() {
                     </BrowserRouter>
                 </Suspense>
             )}
-            {!isFetchedUser && <div>loading user</div>}
+            {!isFetchedUser && (
+                <Spin style={{ width: '100vw', marginTop: '49vh' }} spinning={true} />
+            )}
             <ToastContainer position={'bottom-center'} />
         </>
     );

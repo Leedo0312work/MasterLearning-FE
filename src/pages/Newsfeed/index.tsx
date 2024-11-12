@@ -11,7 +11,7 @@ import { IPost } from '~/models/IPost';
 import CreatePost from '~/components/CreatePost';
 import useAuthStore from '~/store/useAuthStore';
 import { IComment } from '~/models/IComment';
-import { useParams } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 import tweetServices from '~/services/tweet';
 import { TweetType } from '~/enums/tweet';
 import CreatePostModal from '../Group/CreatePostModal';
@@ -28,11 +28,8 @@ function Newsfeed() {
         <div className={styles.wrap}>
             <div className={styles.content}>
                 <NewsfeedHeader />
-                <NewsfeedContent classId={class_id}
-                    listPost={listPost}
-                    setListPost={setListPost} />
 
-
+                <NewsfeedContent classId={class_id} listPost={listPost} setListPost={setListPost} />
             </div>
             <NewsfeedSiderBarRight />
         </div>
