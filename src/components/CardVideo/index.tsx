@@ -9,8 +9,9 @@ function CardVideo({ video, name, viewer, time, createdAt, thumbnail, active, id
         onClick(id);
     };
     return (
-        <div onClick={handleClick} className={styles.wrap}>
-            <div className={styles.card}>
+        <div onClick={handleClick} className={styles.wrap}
+        >
+            <div className={clsx(styles.card, { [styles.selected]: active })}>
                 <div style={{ display: 'flex', gap: '10px' }}>
                     <div className={styles.top}>
                         <img
