@@ -1,5 +1,5 @@
 .wrap {
-    height: 75px;
+    height: 100px;
     padding: 8px 16px;
     box-sizing: border-box;
     display: flex;
@@ -7,6 +7,7 @@
     justify-content: space-between;
     transition: all 0.2s ease-in-out 0s;
     cursor: pointer;
+    overflow: hidden;
 }
 .wrap:hover {
     background-color: rgba(239, 239, 245, 0.55);
