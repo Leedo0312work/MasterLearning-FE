@@ -7,7 +7,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import styles from './styles.module.css';
 import useFolderStore from '~/store/useFolderStore';
 import { useQuery } from 'react-query';
-import { getLessonByClassId } from '~/repositories/lesson';
+import { deleteLesson, getLessonByClassId } from '~/repositories/lesson';
 import useLessonStore from '~/store/useLessonStore';
 import { useMemo } from 'react';
 import { ILesson } from '~/models/ILesson';
@@ -32,10 +32,11 @@ const actions = [
     },
 ];
 
-function SiderbarRightLesson() {
+function SiderbarRightLesson({ onDeleteSuccess }: { onDeleteSuccess: (deletedLessonId: string) => void }) {
     const { lessons, selectedLessonId } = useLessonStore((state) => ({
         lessons: state.lessons,
-        selectedLessonId: state.selectedLessonId
+        selectedLessonId: state.selectedLessonId,
+        setLessons: state.setLessons,
     }));
     const { id: classId } = useParams();
     const navigate = useNavigate();
@@ -51,28 +52,35 @@ function SiderbarRightLesson() {
     };
 
     const handleEdit = () => {
-        console.log('selectedLessonId', selectedLessonId);
-        console.log('classId', classId);
         navigate(`/class/${classId}/content/1/edit/${selectedLessonId}`);
     };
 
     const handleDelete = () => {
+        if (!selectedLessonId) return;
         confirm({
             title: 'Xác nhận xóa',
             description: 'Bạn có chắc chắn muốn xóa bài giảng này?',
             confirmationText: 'Xóa',
             cancellationText: 'Hủy',
         })
-        .then(() => {
-            // Thực hiện xóa ở đây
-            // Bạn có thể gọi hàm onDeleteSuccess nếu có
+        .then(async () => {
+            try {
+                // Gọi API xóa bài giảng
+                await deleteLesson(String(selectedLessonId));
+
+                // Cập nhật danh sách sau khi xóa thành công
+                onDeleteSuccess(String(selectedLessonId));
+                navigate(`/class/${classId}/content/1`);
+            } catch (error) {
+                console.error('Error deleting lesson:', error);
+            }
         })
         .catch(() => {
-            // Hủy xóa
+            console.log('Hủy xóa');
         });
     };
 
-    console.log('selectedLessonId', selectedLessonId);
+    console.log('selectedLessonId: ', selectedLessonId);
 
     return (
         <div className={styles.wrap}>

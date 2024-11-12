@@ -27,3 +27,9 @@
     margin-top: 50px;
     color: rgb(180, 172, 172);
 }
+
+.selectedLesson {
+    border: 2px solid #1e88e5;
+    border-radius: 8px;
+    transition: border 0.3s ease-in-out;
+}

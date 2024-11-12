@@ -55,7 +55,7 @@ function Lesson() {
                     lessons={filteredLessons}
                     onDeleteSuccess={handleDeleteSuccess}
                 />
-                {type === '1' && <SiderbarRightLesson />}
+                {type === '1' && <SiderbarRightLesson onDeleteSuccess={handleDeleteSuccess}/>}
             </div>
         </div>
     );

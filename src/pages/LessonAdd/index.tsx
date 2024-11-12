@@ -5,13 +5,15 @@ import BoxInputLessonAdd from '~/components/BoxInputLessonAdd';
 import styles from './styles.module.css';
 import { useForm, FormProvider } from 'react-hook-form';
 import { FormLessonType } from '~/types/lesson';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getLessonById } from '~/repositories/lesson';
 
 function LessonAdd() {
     const { id: classId, lessonId } = useParams();
     const [attachedMedias, setAttachedMedias] = useState<any[]>([]);
+    const inputRef = useRef<HTMLInputElement | null>(null);
+
 
     const methods = useForm<FormLessonType>({
         defaultValues: {
@@ -25,6 +27,12 @@ function LessonAdd() {
             },
         },
     });
+
+    const resetFileInput = () => {
+        if (inputRef.current) {
+            inputRef.current.value = '';
+        }
+    };
 
     useEffect(() => {
         const fetchLessonData = async () => {
@@ -70,12 +78,14 @@ function LessonAdd() {
                         <BoxInputLessonAdd
                             attachedMedias={attachedMedias}
                             setAttachedMedias={setAttachedMedias}
+                            onRemoveMedia={resetFileInput}
                         />
                     </div>
                 </div>
                 <SiderbarLessonAddEdit
                     attachedMedias={attachedMedias}
                     setAttachedMedias={setAttachedMedias}
+                    inputRef={inputRef}
                 />
             </FormProvider>
         </div>
