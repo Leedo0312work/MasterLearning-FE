@@ -6,7 +6,7 @@ import { TimePicker, DateTimePicker } from '@mui/x-date-pickers';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import SelectMaterial from '~/components/SelectMaterial';
 import { RoleStudent } from '~/enums/role_student';
-import { ExerciseMode } from '~/enums/exercise';
+import { ExerciseMode, ExerciseStudentRole } from '~/enums/exercise';
 function FormExercise() {
     const { control } = useFormContext<FormMultipleChoiceInterface>();
 
@@ -55,7 +55,7 @@ function FormExercise() {
                                 },
                             }}
                             control={control}
-                            name={'timeToDo'}
+                            name={'time_limit'}
                             render={({ field, fieldState: { error, invalid } }) => (
                                 <TextField
                                     error={invalid}
@@ -72,7 +72,7 @@ function FormExercise() {
                     <div className={'tw-mt-5'}>
                         <Controller
                             control={control}
-                            name={'timeStart'}
+                            name={'time_to_enable'}
                             render={({ field }) => (
                                 <DateTimePicker
                                     label={'Thời gian bắt đầu'}
@@ -85,7 +85,7 @@ function FormExercise() {
                     <div className={'tw-mt-5'}>
                         <Controller
                             control={control}
-                            name={'timeEnd'}
+                            name={'deadline'}
                             render={({ field }) => (
                                 <DateTimePicker
                                     label={'Thời gian kết thúc'}
@@ -95,18 +95,18 @@ function FormExercise() {
                             )}
                         />
                     </div>
-                    <div className="tw-mt-5">
+                    {/* <div className="tw-mt-5">
                         <Controller
                             control={control}
-                            name={'isTest'}
+                            name={'is_test'}
                             render={({ field }) => (
                                 <FormGroup>
                                     <FormControlLabel control={<Switch />} label="Đây là là bài kiểm tra" />
                                 </FormGroup>
                             )}
                         />
-                    </div>
-                    <div className="tw-mt-5">
+                    </div> */}
+                    {/* <div className="tw-mt-5">
                         <Controller
                             control={control}
                             name={'preventViewQuestion'}
@@ -119,26 +119,26 @@ function FormExercise() {
                                 </FormGroup>
                             )}
                         />
-                    </div>
+                    </div> */}
                     <div className="tw-mt-5">
                         <Controller
                             control={control}
-                            name={'roleStudent'}
+                            name={'student_role'}
                             render={({ field }) => (
                                 <SelectMaterial
-                                    label={'Quền của học sinh'}
+                                    label={'Quyền của học sinh'}
                                     value={field.value}
                                     options={[
                                         {
-                                            value: RoleStudent.VIEW_MARK_AND_ANSWER.toString(),
+                                            value: ExerciseStudentRole.VIEW_MORE_ANSWER,
                                             text: 'Xem điểm và đáp án',
                                         },
                                         {
-                                            value: RoleStudent.ONLY_VIEW_MARK.toString(),
+                                            value: ExerciseStudentRole.ONLY_VIEW_SCORE,
                                             text: 'Chỉ xem điểm',
                                         },
                                         {
-                                            value: RoleStudent.PREVENT_VIEW_MARK.toString(),
+                                            value: ExerciseStudentRole.NOT_VIEW_SCORE,
                                             text: 'Không được xem điểm',
                                         },
                                     ]}
@@ -156,7 +156,7 @@ function FormExercise() {
                                 },
                             }}
                             control={control}
-                            name={'numberOfTimeToDo'}
+                            name={'times_to_do'}
                             render={({ field, fieldState: { error, invalid } }) => (
                                 <TextField
                                     error={invalid}
@@ -172,22 +172,22 @@ function FormExercise() {
                     <div className="tw-mt-5">
                         <Controller
                             control={control}
-                            name={'mode'}
+                            name={'point_type'}
                             render={({ field }) => (
                                 <SelectMaterial
                                     label={'Thiết lập bảng điểm'}
                                     value={field.value}
                                     options={[
                                         {
-                                            value: ExerciseMode.GET_MARK_FOR_FIRST_TIME_TO_DO.toString(),
+                                            value: ExerciseMode.GET_MARK_FOR_FIRST_TIME_TO_DO,
                                             text: 'Lấy điểm lần đầu tiên',
                                         },
                                         {
-                                            value: ExerciseMode.GET_MARK_FOR_NEWEST.toString(),
+                                            value: ExerciseMode.GET_MARK_FOR_NEWEST,
                                             text: 'Lấy điểm thời gian gần nhất',
                                         },
                                         {
-                                            value: ExerciseMode.GET_HIGHEST_MARK.toString(),
+                                            value: ExerciseMode.GET_HIGHEST_MARK,
                                             text: 'Lấy điểm cao nhất',
                                         },
                                     ]}

@@ -4,10 +4,12 @@ import { immer } from 'zustand/middleware/immer';
 import { ILesson } from '~/models/ILesson';
 
 interface LessonStore {
-    id: number | null;
-    lessons: ILesson[];
-    setId: (id: number) => void;
-    setLessons: (lessons: ILesson[]) => void;
+    id: number | null; // ID của lớp học
+    lessons: ILesson[]; // Danh sách các bài giảng
+    selectedLessonId: number | null; // ID bài giảng đã chọn
+    setId: (id: number) => void; // Đặt ID của lớp học
+    setLessons: (lessons: ILesson[]) => void; // Đặt danh sách bài giảng
+    setSelectedLessonId: (id: any) => void; // Đặt ID bài giảng đã chọn
 }
 
 const useLessonStore = create<LessonStore>()(
@@ -15,6 +17,7 @@ const useLessonStore = create<LessonStore>()(
         immer((set) => ({
             id: null,
             lessons: [],
+            selectedLessonId: null, // Khởi tạo selectedLessonId với giá trị null
             setId: (id: number) => {
                 set((state) => {
                     state.id = id;
@@ -23,6 +26,11 @@ const useLessonStore = create<LessonStore>()(
             setLessons: (lessons: ILesson[]) => {
                 set((state) => {
                     state.lessons = lessons;
+                });
+            },
+            setSelectedLessonId: (id: number) => {
+                set((state) => {
+                    state.selectedLessonId = id; // Cập nhật selectedLessonId khi chọn bài giảng
                 });
             },
         })),

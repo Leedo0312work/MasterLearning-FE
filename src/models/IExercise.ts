@@ -2,25 +2,24 @@ import { RoleStudent } from '~/enums/role_student';
 import { ExerciseMode, ExerciseType } from '~/enums/exercise';
 
 export declare interface IExercise {
-    id: number;
+    class_id: string;
+    _id: string;
     name: string;
     password: string;
-    timeToDo: number;
-    timeEnd?: string | null;
-    timeStart?: string | null;
-    isTest: boolean | number;
-    preventViewQuestion: boolean | number;
-    roleStudent: RoleStudent;
-    numberOfTimeToDo: number;
-    mode: ExerciseMode;
-    classId: number;
-    createdBy: number;
-    createdAt: string;
-    updatedAt: string;
-    type: ExerciseType;
-    version: number;
-    canLate: boolean;
-    exerciseCloneId: number;
-    totalMembersInClass: number;
-    totalMembersDoExercise: number;
+    created_at: string;
+    updated_at:string;
+    file:string;
+    time_limit: number;
+    times_to_do: number;
+    deadline: string;
+    time_to_enable: string;
+    is_test: boolean | number;
+    student_role: number;
+    point_type: number;
+    max_point: number;
+    created_by_info: [];
+    // student_role: RoleStudent;
+    // mode: ExerciseMode;
+    // type: ExerciseType;
+
 }

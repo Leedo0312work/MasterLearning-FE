@@ -1,8 +1,13 @@
 import {
     fetchCreateMultipleChoiceExercise,
     fetchExercisesByClass,
+    fetchExercisesStudent,
+    fetchExercisesTeacher,
+    fetchListExercisesStudent,
+    fetchListExercisesTeacher,
     fetchMultipleChoiceExerciseDetail,
     fetchUpdateMultipleChoice,
+    fetchDeleteMultipleChoice
 } from '~/services/exercise';
 import { FormMultipleChoiceInterface } from '~/types/exercise';
 import { ResponseAPI } from '~/app/response';
@@ -18,6 +23,33 @@ export const getExercisesByClass = async (classId: number): Promise<IExercise[]>
     return response.data.data;
 };
 
+//Thêm
+export const getListExercisesStudent = async (classId: number): Promise<IExercise[]> => {
+    const response = await fetchListExercisesStudent(classId);
+    return response.data.result;
+};
+
+export const getListExercisesTeacher = async (classId: number): Promise<IExercise[]> => {
+    const response = await fetchListExercisesTeacher(classId);
+    return response.data.result;
+};
+
+
+export const getExercisesStudent = async (exerciseId: string): Promise<IExercise[]> => {
+    const response = await fetchExercisesStudent(exerciseId);
+    return response.data.result;
+};
+
+export const getExercisesTeacher = async (exerciseId: string): Promise<IExercise[]> => {
+    const response = await fetchExercisesTeacher(exerciseId);
+    console.log("Response từ API:", response);
+    return response.data.result;
+};
+
+//
+
+
+
 export const getMultipleChoiceExerciseDetail = async (exerciseId: number): Promise<FormMultipleChoiceInterface> => {
     const response = await fetchMultipleChoiceExerciseDetail(exerciseId);
     const data = response.data.data;
@@ -28,7 +60,11 @@ export const getMultipleChoiceExerciseDetail = async (exerciseId: number): Promi
     };
 };
 
-export const getUpdateMultipleChoice = async (id: number, data: FormMultipleChoiceInterface): Promise<ResponseAPI> => {
-    const response = await fetchUpdateMultipleChoice(id, data);
+export const getUpdateMultipleChoice = async (data: FormMultipleChoiceInterface): Promise<ResponseAPI> => {
+    const response = await fetchUpdateMultipleChoice(data);
+    return response.data;
+};
+export const getDeleteMultipleChoice = async (_id: string): Promise<IExercise[]> => {
+    const response = await fetchDeleteMultipleChoice(_id);
     return response.data;
 };

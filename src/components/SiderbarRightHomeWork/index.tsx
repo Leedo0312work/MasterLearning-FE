@@ -4,28 +4,81 @@ import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import MouseIcon from '@mui/icons-material/Mouse';
 import { useParams } from 'react-router-dom';
-
+import { useMutation, useQueryClient } from 'react-query';
 import styles from './styles.module.css';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import SiderbarRightHomeWorkTitleItem from '~/components/SiderbarRightHomeWorkTitleItem';
 import SiderbarRightHomeWorkSettingItem from '~/components/SiderbarRightHomeWorkSettingItem';
 import useGetExerciseInClass from '~/hooks/useGetExercisesInClass';
 import useExercisesInClassStore from '~/store/useExercisesInClassStore';
 import dayjs from '~/packages/dayjs';
 import { IExercise } from '~/models/IExercise';
-import { getTextExerciseMode } from '~/enums/exercise';
+import { getExerciseStudentRole, getTextExerciseMode } from '~/enums/exercise';
 import PermissionWrapper from '~/components/PermissionWrapper';
 import { Role } from '~/enums/role';
+import { getListExercisesStudent, getDeleteMultipleChoice } from '~/repositories/exercise';
+import { Modal } from 'antd';
+import { toast } from 'react-toastify';
+import useAuthStore from '~/store/useAuthStore';
+
+const { confirm } = Modal;
+
 
 function SiderbarRightHomeWork() {
-    const { data } = useGetExerciseInClass();
-    const id = useExercisesInClassStore((state) => state.id);
+    const id = useExercisesInClassStore((state) => state._id);
+    const { id: classId, _id: exerciseId } = useParams();
+    const [data, setData] = useState<IExercise[]>([]);
 
-    const { id: classId } = useParams();
+    const user = useAuthStore((state) => state.user);
 
-    const exercise = useMemo<IExercise | undefined>(() => {
-        return data?.find((item) => Number(item.id) === Number(id));
-    }, [id, data]);
+    const queryClient = useQueryClient();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const exercises = await getListExercisesStudent(classId);
+                setData(exercises);
+            } catch (error) {
+                console.error('Không thể lấy danh sách :', error);
+            }
+        };
+        fetchData();
+    }, [classId]);
+
+    const exercise = useMemo(() => data.find((item) => item._id === id), [id, data]);
+
+    const { mutate: handleDelete } = useMutation(
+        'delete',
+        () => getDeleteMultipleChoice({
+            id: exercise?._id
+        }),
+        {
+            onSuccess: () => {
+                setData((prevData) => prevData.filter((item) => item._id !== exercise?._id));
+                console.log('Exercise deleted successfully');
+                queryClient.invalidateQueries(['exercises', classId]);
+            },
+            onError: (error) => {
+                console.error('Failed to delete exercise:', error);
+            }
+        },
+    );
+
+    const confirmDelete = () => {
+        confirm({
+            title: 'Bạn có chắc chắn muốn xóa bài tập này không?',
+            okText: 'Xóa',
+            okType: 'danger',
+            cancelText: 'Hủy',
+            onOk() {
+                handleDelete();
+                toast.success("Xoá bài tập thành công")
+            },
+            onCancel() {
+                console.log('Hủy xóa');
+            },
+        });
+    };
 
     return (
         <div className={styles.wrap}>
@@ -35,31 +88,37 @@ function SiderbarRightHomeWork() {
                 <div className={styles.top_content}>
                     <SiderbarRightHomeWorkTitleItem
                         name="Số lần làm bài"
-                        value={exercise?.numberOfTimeToDo.toString()}
+                        value={exercise?.times_to_do.toString()}
                     />
                     <SiderbarRightHomeWorkTitleItem
                         name="Lấy điểm"
-                        value={getTextExerciseMode(exercise?.mode)}
+                        value={getTextExerciseMode(exercise?.point_type)}
                     />
                     <SiderbarRightHomeWorkTitleItem
                         name="Ngày tạo"
-                        value={dayjs(exercise?.createdAt).format('DD/MM/YYYY')}
+                        value={dayjs(exercise?.created_at).format('DD/MM/YYYY')}
                     />
                     <SiderbarRightHomeWorkTitleItem
                         name="Bắt đầu"
                         value={
-                            exercise?.timeStart
-                                ? dayjs(exercise?.timeStart).format('HH:mm DD/MM/YYYY')
-                                : 'Khong co'
+                            exercise?.time_to_enable
+                                ? dayjs(exercise?.time_to_enable).format('HH:mm DD/MM/YYYY')
+                                : 'Không có'
                         }
                     />
                     <SiderbarRightHomeWorkTitleItem
                         name="Thời lượng"
-                        value={exercise?.timeToDo.toString()}
+                        value={exercise?.time_limit.toString()}
                     />
                     <SiderbarRightHomeWorkTitleItem name="Đã làm" value="0/0" />
-                    <SiderbarRightHomeWorkTitleItem name="Cho phép" value="Chỉ xem điểm" />
-                    <SiderbarRightHomeWorkTitleItem name="Hạn chót" value="Không có" />
+                    <SiderbarRightHomeWorkTitleItem
+                        name="Cho phép"
+                        value={getExerciseStudentRole(exercise?.student_role)}
+                    />
+                    <SiderbarRightHomeWorkTitleItem
+                        name="Hạn chót"
+                        value={exercise?.deadline.toString()}
+                    />
                 </div>
             </div>
             <div className={styles.bottom}>
@@ -72,19 +131,26 @@ function SiderbarRightHomeWork() {
                 </PermissionWrapper>
                 <PermissionWrapper role={Role.STUDENT}>
                     <SiderbarRightHomeWorkSettingItem
-                        to={`/class/${classId}/homework/${exercise?.id}/do`}
-                        name="Vao thi"
+                        to={`/class/${classId}/homework/${exercise?._id}/do`}
+                        name="Vào thi"
                         Icon={OndemandVideoIcon}
                     />
                 </PermissionWrapper>
-                <SiderbarRightHomeWorkSettingItem to="alo/edit" name="Chi tiết" Icon={MouseIcon} />
-                <SiderbarRightHomeWorkSettingItem to="" name="Di chuyển" Icon={FolderOpenIcon} />
-                <SiderbarRightHomeWorkSettingItem
-                    to={`/class/${classId}/homework/${exercise?.id}/edit`}
-                    name="Chỉnh sửa"
-                    Icon={BorderColorIcon}
-                />
-                <SiderbarRightHomeWorkSettingItem to="" name="Xóa" Icon={DeleteOutlineIcon} />
+                {
+                    user?.role === 2 && (
+                        <>
+                        <SiderbarRightHomeWorkSettingItem
+                            to={`/class/${classId}/homework/${exercise?._id}/edit`}
+                            name="Chỉnh sửa"
+                            Icon={BorderColorIcon}
+                        />
+                        <div className={styles.bottom_item} onClick={confirmDelete}>
+                            <h4 className={styles.name}>Xóa</h4>
+                            <DeleteOutlineIcon />
+                        </div>
+                    </>
+                    )
+                }
             </div>
         </div>
     );

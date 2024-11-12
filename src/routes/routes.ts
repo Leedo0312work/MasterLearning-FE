@@ -2,7 +2,7 @@ import React, { ExoticComponent, Fragment, lazy, ReactNode } from 'react';
 
 import DefaultLayout from '~/layout/Default';
 
-const ViewLesson = lazy(() => import('~/pages/ViewLesson'));
+
 const Home = lazy(() => import('~/pages/Home'));
 const Login = lazy(() => import('~/pages/Login'));
 const Register = lazy(() => import('~/pages/Register'));
@@ -17,7 +17,8 @@ const Member = lazy(() => import('~/pages/Member'));
 const NewMember = lazy(() => import('~/pages/NewMember'));
 const Lesson = lazy(() => import('~/pages/Lesson'));
 const LessonAdd = lazy(() => import('~/pages/LessonAdd'));
-const LessonEdit = lazy(() => import('~/pages/LessonEdit'));
+const ViewLesson = lazy(() => import('~/pages/ViewLesson'));
+const LessonEdit = lazy(() => import('~/pages/EditLesson'));
 const HomeWork = lazy(() => import('~/pages/HomeWork'));
 const ScoreTable = lazy(() => import('~/pages/ScoreTable'));
 const EditHomework = lazy(() => import('~/pages/EditHomework/index'));
@@ -149,12 +150,7 @@ const routes: Route[] = [
             {
                 path: 'content/:type',
                 component: Lesson,
-                children: [
-                    // {
-                    //     path: ':contentId/edit',
-                    //     component: LessonEdit,
-                    // },
-                ],
+                
             },
 
             {
@@ -162,8 +158,8 @@ const routes: Route[] = [
                 component: LessonAdd,
             },
             {
-                path: 'content/:type/:contentId/edit',
-                component: LessonEdit,
+                path: 'content/:type/edit/:lessonId',
+                component: LessonAdd,
             },
             {
                 path: 'content/:type/view/:lessonId',
