@@ -1,6 +1,6 @@
 import styles from './styles.module.css';
 
 function NewsfeedHeader() {
-    return <div className={styles.wrap}>Bảng tin</div>;
+    return <></>;
 }
 export default NewsfeedHeader;

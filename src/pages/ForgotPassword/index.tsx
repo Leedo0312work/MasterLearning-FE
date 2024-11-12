@@ -99,7 +99,7 @@ function ForgotPassword() {
                     sx={{
                         mb: 1,
                         padding: '10px 0',
-                        backgroundColor: '#1A237E',
+                        backgroundColor: '#1C7DDF',
                         color: '#fff',
                         borderRadius: '20px',
                     }}
@@ -115,7 +115,7 @@ function ForgotPassword() {
                     sx={{
                         mb: 1,
                         padding: '10px 0',
-                        backgroundColor: '#1A237E',
+                        backgroundColor: '#1C7DDF',
                         color: '#fff',
                         borderRadius: '20px',
                     }}
