@@ -34,7 +34,7 @@ function Newsfeed() {
 
 
             </div>
-            {/* <NewsfeedSiderBarRight /> */}
+            <NewsfeedSiderBarRight />
         </div>
     );
 }
