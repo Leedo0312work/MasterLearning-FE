@@ -46,11 +46,9 @@ function CardDocument({
     };
 
     const handleView = () => {
-        if (media && media.length > 0) {
             if (lessonId) {
                 navigate(`/class/${classId}/content/0/view/${lessonId}`);
             }
-        }
         handleMenuClose();
     };
 
@@ -96,8 +94,8 @@ function CardDocument({
     };
 
     return (
-        <div  className={clsx(styles.wrap, { [styles.active]: active })}>
-            <div className={styles.card}>
+        <div  className={styles.wrap}>
+            <div className={clsx(styles.card, { [styles.selected]: active })}>
                 <div style={{ display: 'flex', gap: '10px' }}>
                     <div className={styles.top}>
                         <img
