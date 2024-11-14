@@ -1,6 +1,6 @@
 import { LoginForm, LoginResponse } from '~/types/login';
 import { ResponseAPI } from '~/app/response';
-import { fetchLogin, fetchRegister, fetchResertPassword } from '~/services/auth';
+import { fetchGetMe, fetchLogin, fetchRegister, fetchResertPassword, patchUpdateMe } from '~/services/auth';
 import { RegisterForm, RegisterResponse } from '~/types/register';
 import { ResetForm } from '~/types/reset';
 
@@ -25,3 +25,13 @@ export const resetPassword = async (data: ResetForm): Promise<ResponseAPI<Regist
     }
     return response?.data;
 };
+
+export const getMe= async () => {
+    const response = await fetchGetMe()
+    return response.data.result
+}
+
+export const getUpdateMe= async (data: any) => {
+    const response = await patchUpdateMe(data)
+    return response.data.result
+}

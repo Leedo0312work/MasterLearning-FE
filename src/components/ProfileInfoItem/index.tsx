@@ -34,7 +34,7 @@ function ProfileInfoItem({ Left_icon, title, value, edit, copy }: profileInfoIte
                     [styles.hide]: !edit,
                 })}
             >
-                Chỉnh sửa
+               
             </div>
         </div>
     );

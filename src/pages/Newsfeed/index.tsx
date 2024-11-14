@@ -31,7 +31,7 @@ function Newsfeed() {
 
                 <NewsfeedContent classId={class_id} listPost={listPost} setListPost={setListPost} />
             </div>
-            {/* <NewsfeedSiderBarRight /> */}
+            <NewsfeedSiderBarRight />
         </div>
     );
 }
