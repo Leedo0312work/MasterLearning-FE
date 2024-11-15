@@ -9,6 +9,7 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import WorkOutlineIcon from '@mui/icons-material/WorkOutline';
 import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
 import TaskIcon from '@mui/icons-material/Task';
+import QuizIcon from '@mui/icons-material/Quiz';
 import VerticalSplitIcon from '@mui/icons-material/VerticalSplit';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import SummarizeIcon from '@mui/icons-material/Summarize';
@@ -60,6 +61,12 @@ function SidebarClass() {
                 icon: TaskIcon,
                 text: 'Bài tập',
                 to: 'homework',
+                show: true,
+            },
+            {
+                icon: QuizIcon,
+                text: 'Kiểm tra',
+                to: 'isTest/exam',
                 show: true,
             },
             {
