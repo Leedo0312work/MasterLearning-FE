@@ -31,6 +31,7 @@ const CheckEmailNoti = lazy(() => import('~/pages/CheckEmailNoti'));
 
 const NewMemberAccepted = lazy(() => import('~/components/NewMemberAccepted'));
 const NewMemberPending = lazy(() => import('~/components/NewMemberPending'));
+const Exam = lazy(() => import('~/pages/Exam'));
 
 interface Route {
     path: string;
@@ -148,6 +149,10 @@ const routes: Route[] = [
                 component: HomeWork,
             },
             {
+                path: 'isTest/exam',
+                component: Exam,
+            },
+            {
                 path: 'content/:type',
                 component: Lesson,
                 
@@ -179,6 +184,21 @@ const routes: Route[] = [
         layout: Fragment,
         private: true,
     },
+
+    {
+        path: '/class/:id/isTest/exam/add',
+        component: AddHomework,
+        layout: Fragment,
+        private: true,
+    },
+    {
+        path: '/class/:id/isTest/exam/:exerciseId/edit',
+        component: EditHomework,
+        layout: Fragment,
+        private: true,
+    },
+
+
     {
         path: '/class/:id/homework/:exerciseId/test',
         component: TestHomework,

@@ -3,7 +3,7 @@ import BorderColorIcon from '@mui/icons-material/BorderColor';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import MouseIcon from '@mui/icons-material/Mouse';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { useMutation, useQueryClient } from 'react-query';
 import styles from './styles.module.css';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -32,6 +32,10 @@ function SiderbarRightHomeWork() {
     const user = useAuthStore((state) => state.user);
 
     const queryClient = useQueryClient();
+
+    const location  = useLocation()
+
+    const isExam = location.pathname.includes('exam');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -98,14 +102,25 @@ function SiderbarRightHomeWork() {
                         name="Ngày tạo"
                         value={dayjs(exercise?.created_at).format('DD/MM/YYYY')}
                     />
-                    <SiderbarRightHomeWorkTitleItem
+                    {isExam ? <>
+                        <SiderbarRightHomeWorkTitleItem
                         name="Bắt đầu"
                         value={
                             exercise?.time_to_enable
                                 ? dayjs(exercise?.time_to_enable).format('HH:mm DD/MM/YYYY')
                                 : 'Không có'
                         }
-                    />
+                        />
+                        <SiderbarRightHomeWorkTitleItem
+                            name="Hạn chót"
+                            value={
+                                exercise?.deadline
+                                    ? dayjs(exercise?.deadline).format('HH:mm DD/MM/YYYY')
+                                    : 'Không có'
+                            }
+                        />
+                    </> : <></>}
+
                     <SiderbarRightHomeWorkTitleItem
                         name="Thời lượng"
                         value={exercise?.time_limit.toString()}
@@ -115,10 +130,7 @@ function SiderbarRightHomeWork() {
                         name="Cho phép"
                         value={getExerciseStudentRole(exercise?.student_role)}
                     />
-                    <SiderbarRightHomeWorkTitleItem
-                        name="Hạn chót"
-                        value={exercise?.deadline.toString()}
-                    />
+                   
                 </div>
             </div>
             <div className={styles.bottom}>

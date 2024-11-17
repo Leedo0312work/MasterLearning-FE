@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import { useLocation } from 'react-router-dom';
 
 function handleClick(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
     event.preventDefault();
@@ -11,6 +12,10 @@ function handleClick(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
 }
 
 export default function CustomSeparator() {
+    const location  = useLocation()
+
+    const isExam = location.pathname.includes('exam');
+
     const breadcrumbs = [
         <Link underline="hover" key="1" color="inherit" href="/" onClick={handleClick}>
             Bài tập
@@ -22,7 +27,7 @@ export default function CustomSeparator() {
             href="/material-ui/getting-started/installation/"
             onClick={handleClick}
         >
-            Tạo bài tập
+            {isExam ? 'Tạo bài kiểm tra' : 'Tạo bài tập'}
         </Link>,
         <Typography key="3" color="text.primary">
             Chọn dạng đề
