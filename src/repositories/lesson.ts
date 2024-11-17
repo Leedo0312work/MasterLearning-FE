@@ -1,6 +1,14 @@
 import { FormLessonType } from '~/types/lesson';
 import { ResponseAPI } from '~/app/response';
-import { fetchCreateLesson, fetchGetLessonByClass } from '~/services/lesson';
+import {
+    fetchCensorLesson,
+    fetchCreateLesson,
+    fetchDeleteLesson,
+    fetchGetLessonByClass,
+    fetchGetLessonById,
+    fetchNotCensoredLessons,
+    fetchUpdateLesson,
+} from '~/services/lesson';
 import { ILesson } from '~/models/ILesson';
 import API from '~/network/API';
 
@@ -28,16 +36,16 @@ export const getLessonByClassId = async (classId: string): Promise<ILesson[]> =>
 
 export const getLessonById = async (id: string): Promise<any> => {
     if (!id) return null;
-    const response = await API.get(`/lessons/${id}`);
+    const response = await fetchGetLessonById(id);
     return response.data;
 };
 
-export const updateLesson = async (id: string, data: Partial<FormLessonType>): Promise<ResponseAPI> => {
+export const updateLesson = async (
+    id: string,
+    data: Partial<FormLessonType>,
+): Promise<ResponseAPI> => {
     try {
-        const response = await API.put('/lessons/update', {
-            id, 
-            ...data 
-        });
+        const response = await fetchUpdateLesson(id, data);
         return response.data;
     } catch (error) {
         console.error('Error updating lesson:', error);
@@ -47,12 +55,38 @@ export const updateLesson = async (id: string, data: Partial<FormLessonType>): P
 
 export const deleteLesson = async (id: string): Promise<ResponseAPI> => {
     try {
-        const response = await API.delete('/lessons/delete', {
-            data: { id } 
-        });
+        const response = await fetchDeleteLesson(id);
         return response.data;
     } catch (error) {
         console.error('Error deleting lesson:', error);
+        throw error;
+    }
+};
+
+export const getNotCensoredLessons = async (type: number): Promise<ILesson[]> => {
+    try {
+        const response = await fetchNotCensoredLessons(type);
+        if (response?.data?.result) {
+            return response.data.result;
+        } else {
+            throw new Error('Unexpected response structure');
+        }
+    } catch (error) {
+        console.error('Error fetching not censored lessons:', error);
+        throw error;
+    }
+};
+
+export const censorLesson = async (lessonId: string): Promise<void> => {
+    try {
+        const response = await fetchCensorLesson(lessonId);
+        if (response?.data?.success) {
+            console.log('Lesson censored successfully');
+        } else {
+            throw new Error('Failed to censor lesson');
+        }
+    } catch (error) {
+        console.error('Error censoring lesson:', error);
         throw error;
     }
 };

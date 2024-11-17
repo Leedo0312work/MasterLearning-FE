@@ -31,10 +31,10 @@ function Lesson() {
         },
     });
 
-    const handleDeleteSuccess = (deletedLessonId:any) => {
+    const handleDeleteSuccess = (deletedLessonId: any) => {
         const updatedLessons = lessons.filter((lesson) => lesson.id !== deletedLessonId);
         setLessons(updatedLessons);
-        queryClient.invalidateQueries(['lessons', classId]); 
+        queryClient.invalidateQueries(['lessons', classId]);
     };
 
     if (isLoading) {
@@ -51,11 +51,8 @@ function Lesson() {
         <div className={styles.wrap}>
             <LessonHeader name={type === '0' ? 'Tài liệu' : 'Bài giảng'} />
             <div className={styles.content}>
-                <LesssonContent
-                    lessons={filteredLessons}
-                    onDeleteSuccess={handleDeleteSuccess}
-                />
-                {type === '1' && <SiderbarRightLesson onDeleteSuccess={handleDeleteSuccess}/>}
+                <LesssonContent lessons={filteredLessons} onDeleteSuccess={handleDeleteSuccess} />
+                {type === '1' && <SiderbarRightLesson onDeleteSuccess={handleDeleteSuccess} />}
             </div>
         </div>
     );
