@@ -10,6 +10,7 @@ import { useQuery } from 'react-query';
 
 function HomeWorkContent() {
     const { _id, setId } = useExercisesInClassStore((state) => state);
+    console.log('check id', _id);
     const { id }: any = useParams();
     const [data, setData] = useState<IExercise[]>([]);
     const location = useLocation();
@@ -24,7 +25,7 @@ function HomeWorkContent() {
         },
         {
             onSuccess(response) {
-                console.log("list ex:", response);
+                console.log('list ex:', response);
                 setData(response);
             },
         },

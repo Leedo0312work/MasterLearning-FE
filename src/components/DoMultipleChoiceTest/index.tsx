@@ -7,71 +7,60 @@ import clsx from 'clsx';
 import { Button } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import dayjs from '~/packages/dayjs';
+import { getExecireDetail } from '~/repositories/execire';
+import { ExecireAnswerType } from '~/enums/exercise';
+import FormMultipleChoice from '../FormMultipleChoice';
+import FormMultipleChoiceItem from '../FormMultipleChoiceItem';
+import FormMultipleChoiceItemDo from '../FormMultipleChoiceItemDo';
 
+interface Ianswer {
+    no: number;
+    point: number;
+    type: ExecireAnswerType;
+}
+interface IExercise {
+    name?: string;
+    time_limit?: number;
+    answers?: Ianswer[];
+    file?: string;
+}
 function DoMultipleChoiceTest() {
     const { exerciseId, id } = useParams();
-
-    const init = useMultipleChoiceTestStore((state) => state.init);
-    const setTimeLeft = useMultipleChoiceTestStore((state) => state.setTimeLeft);
-    const isSubmit = useMultipleChoiceTestStore((state) => state.isSubmit);
-    const idInterval = useRef<NodeJS.Timer | null>(null);
-    const answers = useMultipleChoiceTestStore((state) => state.answers);
-    const [active, setActive] = useState<number>(0);
-    const changeAnswer = useMultipleChoiceTestStore((state) => state.changeAnswer);
-    const leave = useMultipleChoiceTestStore((state) => state.leave);
-    const timeLeft = useMultipleChoiceTestStore((state) => state.timeLeft);
+    const [execire, setExecire] = useState<IExercise>({});
+    const [answers, setAnswers] = useState([]);
     const submit = useMultipleChoiceTestStore((state) => state.submit);
-    const assigmentId = useMultipleChoiceTestStore((state) => state.assignmentId);
-    const reset = useMultipleChoiceTestStore((state) => state.reset);
-    const isInit = useMultipleChoiceTestStore((state) => state.isInit);
     const navigate = useNavigate();
-
+    const onUpdate = () => {};
     useEffect(() => {
-        if (!exerciseId) return;
-        init(Number(exerciseId), false);
+        console.log('exerciseId', exerciseId);
+        if (exerciseId) {
+            const fetchData = async () => {
+                const res = await getExecireDetail(exerciseId);
+                setExecire(res.result);
+            };
+            fetchData();
+        }
+        // if (!exerciseId) return;
+        // init(Number(exerciseId), false);
     }, [exerciseId]);
-
+    console.log(execire);
     useEffect(() => {
-        const id = setInterval(() => setTimeLeft(), 1000);
-        idInterval.current = id;
+        // const id = setInterval(() => setTimeLeft(), 1000);
+        // idInterval.current = id;
         return () => {
             clearInterval(id);
         };
     }, []);
 
-    useEffect(() => {
-        if (isSubmit && !!idInterval.current) {
-            clearInterval(idInterval.current);
-        }
-        if (isSubmit) {
-            console.log('true', isSubmit);
-            navigate(`/class/${id}/assignment/${assigmentId}/detail`);
-            reset();
-        }
-    }, [isSubmit]);
-
-    useEffect(() => {
-        // if (timeLeft === 0) {
-        //     if (!!idInterval.current) {
-        //         clearInterval(idInterval.current);
-        //     }
-        // }
-        if (timeLeft === 0 && !isSubmit && isInit) {
-            if (!!idInterval.current) {
-                clearInterval(idInterval.current);
-            }
-        }
-    }, [timeLeft, isSubmit, isInit]);
-
     const handleLeave = () => {
-        leave();
+        // leave();
         navigate(`/class/${id}/homework`);
     };
 
     return (
         <div className={'tw-grid tw-grid-cols-12 tw-h-screen'}>
             <div className={'tw-col-span-7'}>
-                <PreviewFileMultipleChoice isFullScreen />
+                <PreviewFileMultipleChoice name={execire.name} pdfUrl={execire.file} />
             </div>
             <div className="tw-col-span-5">
                 <div className={'tw-flex tw-flex-col tw-justify-between tw-h-full'}>
@@ -81,39 +70,37 @@ function DoMultipleChoiceTest() {
                         <div>
                             <div>Thoi gian con lai</div>
                             <div className={'tw-flex tw-justify-center'}>
-                                <TimeLeftMultipleChoice />
+                                <TimeLeftMultipleChoice time={execire.time_limit} />
                             </div>
                         </div>
                     </div>
                     <div>
                         <div className={'tw-w-full tw-text-center tw-font-bold'}>
-                            Cau {active + 1}
+                            {/* Cau {active + 1} */}
                         </div>
                         <div className={'tw-flex tw-mt-10'}>
-                            <div className="tw-flex tw-justify-center tw-w-full">
-                                {answers.map((item, index) => (
-                                    <div
-                                        onClick={() => setActive(index)}
-                                        className={clsx([
-                                            'tw-border-2 tw-border-solid tw-border-gray-300  tw-mx-2 tw-w-4 tw-h-4 tw-p-2 tw-cursor-pointer',
-                                            {
-                                                'tw-border-blue-800 tw-border-3': active === index,
-                                            },
-                                        ])}
-                                        key={item.id}
-                                    >
-                                        <div className={'tw-text-center'}>{index + 1}</div>
-                                    </div>
-                                ))}
+                            <div className="tw-flex tw-flex-wrap">
+                                {execire &&
+                                    execire?.answers?.map((item, index) => (
+                                        <div style={{ width: '50%' }}>
+                                            <FormMultipleChoiceItemDo
+                                                type={item.type}
+                                                no={item.no}
+                                                key={index}
+                                                onUpdate={onUpdate}
+                                            />
+                                        </div>
+                                    ))}
                             </div>
                         </div>
-                        <div className={'tw-flex tw-justify-center tw-mt-5'}>
+                        {/* <div className={'tw-flex tw-justify-center tw-mt-5'}>
                             <TextField
                                 value={answers[active]?.answer}
                                 onChange={(event) => changeAnswer(active, event.target.value)}
                             />
-                        </div>
+                        </div> */}
                     </div>
+                    <div></div>
                     <div className={'tw-flex tw-justify-center tw-mb-10'}>
                         <Button variant={'outlined'} onClick={handleLeave}>
                             Roi khoi

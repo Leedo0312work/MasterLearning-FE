@@ -23,17 +23,16 @@ import useAuthStore from '~/store/useAuthStore';
 
 const { confirm } = Modal;
 
-
 function SiderbarRightHomeWork() {
     const id = useExercisesInClassStore((state) => state._id);
     const { id: classId, _id: exerciseId } = useParams();
     const [data, setData] = useState<IExercise[]>([]);
 
     const user = useAuthStore((state) => state.user);
-
+    console.log('check user', user);
     const queryClient = useQueryClient();
 
-    const location  = useLocation()
+    const location = useLocation();
 
     const isExam = location.pathname.includes('exam');
 
@@ -41,6 +40,7 @@ function SiderbarRightHomeWork() {
         const fetchData = async () => {
             try {
                 const exercises = await getListExercisesStudent(classId);
+                console.log('checex', exercises);
                 setData(exercises);
             } catch (error) {
                 console.error('Không thể lấy danh sách :', error);
@@ -48,14 +48,15 @@ function SiderbarRightHomeWork() {
         };
         fetchData();
     }, [classId]);
-
+    console.log('check', Role);
     const exercise = useMemo(() => data.find((item) => item._id === id), [id, data]);
 
     const { mutate: handleDelete } = useMutation(
         'delete',
-        () => getDeleteMultipleChoice({
-            id: exercise?._id
-        }),
+        () =>
+            getDeleteMultipleChoice({
+                id: exercise?._id,
+            }),
         {
             onSuccess: () => {
                 setData((prevData) => prevData.filter((item) => item._id !== exercise?._id));
@@ -64,7 +65,7 @@ function SiderbarRightHomeWork() {
             },
             onError: (error) => {
                 console.error('Failed to delete exercise:', error);
-            }
+            },
         },
     );
 
@@ -76,7 +77,7 @@ function SiderbarRightHomeWork() {
             cancelText: 'Hủy',
             onOk() {
                 handleDelete();
-                toast.success("Xoá bài tập thành công")
+                toast.success('Xoá bài tập thành công');
             },
             onCancel() {
                 console.log('Hủy xóa');
@@ -102,24 +103,28 @@ function SiderbarRightHomeWork() {
                         name="Ngày tạo"
                         value={dayjs(exercise?.created_at).format('DD/MM/YYYY')}
                     />
-                    {isExam ? <>
-                        <SiderbarRightHomeWorkTitleItem
-                        name="Bắt đầu"
-                        value={
-                            exercise?.time_to_enable
-                                ? dayjs(exercise?.time_to_enable).format('HH:mm DD/MM/YYYY')
-                                : 'Không có'
-                        }
-                        />
-                        <SiderbarRightHomeWorkTitleItem
-                            name="Hạn chót"
-                            value={
-                                exercise?.deadline
-                                    ? dayjs(exercise?.deadline).format('HH:mm DD/MM/YYYY')
-                                    : 'Không có'
-                            }
-                        />
-                    </> : <></>}
+                    {isExam ? (
+                        <>
+                            <SiderbarRightHomeWorkTitleItem
+                                name="Bắt đầu"
+                                value={
+                                    exercise?.time_to_enable
+                                        ? dayjs(exercise?.time_to_enable).format('HH:mm DD/MM/YYYY')
+                                        : 'Không có'
+                                }
+                            />
+                            <SiderbarRightHomeWorkTitleItem
+                                name="Hạn chót"
+                                value={
+                                    exercise?.deadline
+                                        ? dayjs(exercise?.deadline).format('HH:mm DD/MM/YYYY')
+                                        : 'Không có'
+                                }
+                            />
+                        </>
+                    ) : (
+                        <></>
+                    )}
 
                     <SiderbarRightHomeWorkTitleItem
                         name="Thời lượng"
@@ -130,7 +135,6 @@ function SiderbarRightHomeWork() {
                         name="Cho phép"
                         value={getExerciseStudentRole(exercise?.student_role)}
                     />
-                   
                 </div>
             </div>
             <div className={styles.bottom}>
@@ -141,16 +145,14 @@ function SiderbarRightHomeWork() {
                         Icon={OndemandVideoIcon}
                     />
                 </PermissionWrapper>
-                <PermissionWrapper role={Role.STUDENT}>
-                    <SiderbarRightHomeWorkSettingItem
-                        to={`/class/${classId}/homework/${exercise?._id}/do`}
-                        name="Vào thi"
-                        Icon={OndemandVideoIcon}
-                    />
-                </PermissionWrapper>
-                {
-                    user?.role === 2 && (
-                        <>
+                {/* <PermissionWrapper role={Role.STUDENT}></PermissionWrapper> */}
+                <SiderbarRightHomeWorkSettingItem
+                    to={`/class/${classId}/homework/${exercise?._id}/do`}
+                    name="Vào thi"
+                    Icon={OndemandVideoIcon}
+                />
+                {user?.role === 2 && (
+                    <>
                         <SiderbarRightHomeWorkSettingItem
                             to={`/class/${classId}/homework/${exercise?._id}/edit`}
                             name="Chỉnh sửa"
@@ -161,8 +163,7 @@ function SiderbarRightHomeWork() {
                             <DeleteOutlineIcon />
                         </div>
                     </>
-                    )
-                }
+                )}
             </div>
         </div>
     );

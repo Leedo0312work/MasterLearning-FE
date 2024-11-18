@@ -3,7 +3,6 @@ import { devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 import API from '~/network/API';
 import { IUser } from '~/models/IUser';
-
 interface AuthStore {
     user: IUser | null;
     setUser: (user: IUser) => void;
@@ -12,7 +11,6 @@ interface AuthStore {
     logOut: () => void;
     getAvatar: () => string | undefined;
 }
-
 const useAuthStore = create<AuthStore>()(
     devtools(
         immer((set, get) => ({
