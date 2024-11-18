@@ -34,12 +34,7 @@ function SidebarClass() {
                 to: 'newsfeed',
                 show: true,
             },
-            // {
-            //     icon: EventNoteIcon,
-            //     text: 'Lịch học',
-            //     to: 'schedule',
-            //     show: true,
-            // },
+
             {
                 icon: PersonOutlineIcon,
                 text: 'Thành viên',
@@ -47,16 +42,21 @@ function SidebarClass() {
                 // show: role == Role.ADMIN,
                 show: true,
             },
-            // {
-            //     icon: WorkOutlineIcon,
-            //     text: 'Vai trò lớp',
-            //     to: 'assistance',
-            // },
-            // {
-            //     icon: PeopleOutlineIcon,
-            //     text: 'Nhóm hoc tập',
-            //     to: 'group',
-            // },
+
+            {
+                icon: PersonOutlineIcon,
+                text: 'Cuộc họp',
+                to: 'meeting',
+                // show: role == Role.ADMIN,
+                show: true,
+            },
+            {
+                icon: PersonOutlineIcon,
+                text: 'Thảo luận',
+                to: 'chat',
+                // show: role == Role.ADMIN,
+                show: true,
+            },
             {
                 icon: TaskIcon,
                 text: 'Bài tập',
