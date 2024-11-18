@@ -1,22 +1,11 @@
 import styles from './styles.module.css';
-import React, { useState } from "react";
-import { Media } from "~/enums/media";
-import {
-    Avatar,
-    Form,
-    Modal,
-    Input,
-    Upload,
-    Image,
-    message,
-    Tooltip,
-    UploadFile,
-} from "antd";
-import { useSelector } from "react-redux";
-import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
-import { TweetType } from "~/enums/tweet";
-import tweetServices from "~/services/tweet";
-import mediaServices from "~/services/media";
+import React, { useEffect, useState } from 'react';
+import { Media } from '~/enums/media';
+import { Avatar, Form, Modal, Input, Upload, Image, message, Tooltip, UploadFile } from 'antd';
+import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
+import { TweetType } from '~/enums/tweet';
+import tweetServices from '~/services/tweet';
+import mediaServices from '~/services/media';
 import avatarDefault from '~/assets/images/avatar_default.png';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 import { Box, Button } from '@mui/material';
@@ -26,10 +15,20 @@ import { memo } from 'react';
 const CreatePost: React.FC<any> = ({ class_id, refetchPosts }) => {
     const [mediaList, setMediaList] = useState<UploadFile[]>([]);
     const [uploadMedia, setUploadMedia] = useState(false);
-    const [content, setContent] = useState<string>("");
+    const [content, setContent] = useState<string>('');
+    const [showFooter, setShowFooter] = useState(false);
+    const userInfo = JSON.parse(localStorage.getItem('user') || '{}');
+
+    useEffect(() => {
+        if (content || mediaList.length > 0) {
+            setShowFooter(true);
+        } else {
+            setShowFooter(false);
+        }
+    }, [content, mediaList]);
 
     const handleCancel = () => {
-        setContent("");
+        setContent('');
         setMediaList([]);
         setUploadMedia(false);
     };
@@ -51,9 +50,9 @@ const CreatePost: React.FC<any> = ({ class_id, refetchPosts }) => {
                     [...prev, ...updatedList].map((item) => [
                         item.originFileObj?.name || item.uid,
                         item,
-                    ])
-                ).values()
-            )
+                    ]),
+                ).values(),
+            ),
         );
     };
 
@@ -67,13 +66,12 @@ const CreatePost: React.FC<any> = ({ class_id, refetchPosts }) => {
 
     const customIsImageUrl = (file: UploadFile) => {
         return (
-            file?.type?.startsWith("image/") ||
-            /\.(jpg|jpeg|png|gif)$/i.test(file.thumbUrl || "")
+            file?.type?.startsWith('image/') || /\.(jpg|jpeg|png|gif)$/i.test(file.thumbUrl || '')
         );
     };
 
     const isImage = (file: any) => {
-        const imageTypes = ["image/jpeg", "image/png", "image/gif"];
+        const imageTypes = ['image/jpeg', 'image/png', 'image/gif'];
         return imageTypes.includes(file.type);
     };
 
@@ -94,14 +92,36 @@ const CreatePost: React.FC<any> = ({ class_id, refetchPosts }) => {
     // };
     const itemRender = (originNode: React.ReactNode, file: UploadFile) => {
         if (isImage(file.originFileObj as any)) {
-            return originNode;
+            return originNode; // Display images as usual
+        } else if (file?.type?.startsWith('video/')) {
+            // Render a video element for video files
+            return (
+                <div style={{ position: 'relative', right: '80px' }}>
+                    <video controls style={{ width: '177px' }}>
+                        <source
+                            src={file.thumbUrl || URL.createObjectURL(file.originFileObj)}
+                            type={file.type}
+                        />
+                        Your browser does not support the video tag.
+                    </video>
+
+                    <div
+                        onClick={() => handleRemove(file)}
+                        className="tw-absolute tw-top-1 tw-text-gray-500 tw-border-none"
+                        style={{ right: '-66px' }}
+                    >
+                        <i className="fa-solid fa-circle-xmark tw-text-xl"></i>
+                    </div>
+                </div>
+            );
         }
+        return originNode; // Fallback for other types
     };
 
 
     const handleCreate = async () => {
         if (!content) {
-            message.error("Vui lòng nhập nội dung bài viết!");
+            message.error('Vui lòng nhập nội dung bài viết!');
             return;
         }
         const data = {
@@ -124,11 +144,7 @@ const CreatePost: React.FC<any> = ({ class_id, refetchPosts }) => {
             if (images.length > 0 && videos.length > 0) {
                 const [imagesRes, videosRes] = await Promise.all([
                     mediaServices.uploadImage(images),
-                    Promise.all(
-                        videos.map((video) =>
-                            mediaServices.uploadVideoHLS(video)
-                        )
-                    ),
+                    Promise.all(videos.map((video) => mediaServices.uploadVideoHLS(video))),
                 ]);
                 data.medias = [
                     ...imagesRes.result.map((item: any) => item),
@@ -139,20 +155,16 @@ const CreatePost: React.FC<any> = ({ class_id, refetchPosts }) => {
                 data.medias = imagesRes.result.map((item: any) => item);
             } else if (images.length === 0 && videos.length > 0) {
                 const videosRes = await Promise.all(
-                    videos.map((video) =>
-                        mediaServices.uploadVideoHLS(video)
-                    )
+                    videos.map((video) => mediaServices.uploadVideoHLS(video)),
                 );
 
                 data.medias = videosRes.map((item: any) => item?.result[0]);
             }
         }
-
         const create = await tweetServices.createTweet(data);
-        console.log(create);
         if (create && create.status === 200) {
             handleCancel();
-            message.success("Tạo bài viết thành công!");
+            message.success('Tạo bài viết thành công!');
             refetchPosts();
         }
     };
@@ -162,7 +174,7 @@ const CreatePost: React.FC<any> = ({ class_id, refetchPosts }) => {
             <Box className={styles.container} component="form">
                 <div className={styles.header}>
                     <img
-                        src={avatarDefault}
+                        src={userInfo?.avatar || avatarDefault}
                         alt=""
                         className={'tw-h-12 tw-w-12 tw-rounded-full'}
                     />
@@ -209,55 +221,33 @@ const CreatePost: React.FC<any> = ({ class_id, refetchPosts }) => {
                             </div>
                         </Upload>
                     </Button>
-                    {/* <div className="tw-flex tw-flex-wrap">
-                        {mediaList.length > 0 &&
-                            mediaList.map((file) => {
-                                if (file?.type?.startsWith("video/")) {
-                                    return (
-                                        <div
-                                            key={file.uid}
-                                            style={{
-                                                position: "relative",
-                                                margin: "10px",
-                                            }}
-                                        >
-                                            <video
-                                                width="200px"
-                                                height="100px"
-                                                controls
-                                            >
-                                                <source
-                                                    src={file.thumbUrl}
-                                                    type={file.type}
-                                                />
-                                                Your browser does not support the
-                                                video tag.
-                                            </video>
-                                            <div
-                                                style={{
-                                                    position: "absolute",
-                                                    top: 8,
-                                                    right: 8,
-                                                    display: "flex",
-                                                    flexDirection: "column",
-                                                }}
-                                            >
-                                                <Button
-                                                    icon={<DeleteOutlined />}
-                                                    onClick={() =>
-                                                        handleRemove(file)
-                                                    }
-                                                    style={{
-                                                        background:
-                                                            "rgba(255, 255, 255, 0.8)",
-                                                    }}
-                                                />
-                                            </div>
-                                        </div>
+                    {/* {uploadMedia && (
+                        <Upload
+                            multiple
+                            listType="picture-card"
+                            fileList={mediaList}
+                            onChange={handleUploadChange}
+                            itemRender={itemRender}
+                            onRemove={handleRemove}
+                            isImageUrl={customIsImageUrl}
+                            beforeUpload={(file) => {
+                                const isImageOrVideo =
+                                    file.type.startsWith("image/") ||
+                                    file.type.startsWith("video/");
+                                if (!isImageOrVideo) {
+                                    message.error(
+                                        "Bạn chỉ có thể upload file ảnh hoặc video!"
                                     );
                                 }
-                            })}
-                    </div> */}
+                                return false;
+                            }}
+                        >
+                            <div>
+                                <PlusOutlined />
+                                <div style={{ marginTop: 8 }}>Tải ảnh/video</div>
+                            </div>
+                        </Upload>
+                    )} */}
                     <Button
                         onClick={handleCreate}
 
@@ -270,6 +260,6 @@ const CreatePost: React.FC<any> = ({ class_id, refetchPosts }) => {
             </Box>
         </div>
     );
-}
+};
 
 export default CreatePost;

@@ -11,40 +11,26 @@ import {
 import clsx from 'clsx';
 import avatarDefault from '~/assets/images/avatar_default.png';
 import { TweetType } from '~/enums/tweet';
-import { Media } from "~/enums/media";
+import { Media } from '~/enums/media';
 import MediaPost from './MediaPost';
 import MediaComment from './MediaComment';
-import {
-    Avatar,
-    Form,
-    Modal,
-    Input,
-    Upload,
-    Image,
-    message,
-    Tooltip,
-    UploadFile,
-} from "antd";
-import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
+import { Avatar, Form, Modal, Input, Upload, Image, message, Tooltip, UploadFile } from 'antd';
+import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import tweetServices from '~/services/tweet';
 import styles from './styles.module.css';
-import mediaServices from "~/services/media";
+import mediaServices from '~/services/media';
 import { useState } from 'react';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 import { Box, Button } from '@mui/material';
+import { omit } from 'lodash';
 
 const ModalOption = ({ post, postId, refetchPosts }: any) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [mediaList, setMediaList] = useState<UploadFile[]>([]);
     const [uploadMedia, setUploadMedia] = useState(false);
-    const [content, setContent] = useState<string>("");
-
-    // const handleCancel = () => {
-    //     setContent("");
-    //     setMediaList([]);
-    //     setUploadMedia(false);
-    // };
+    const [content, setContent] = useState<string>('');
+    const [oldMediaList, setOldMediaList] = useState<UploadFile[]>([]);
 
     const handleEditClick = async () => {
         setIsEditModalOpen(true);
@@ -54,23 +40,16 @@ const ModalOption = ({ post, postId, refetchPosts }: any) => {
         try {
             const response = await tweetServices.getTweet(postId);
             const tweetData = response.result;
-            console.log(tweetData);
-            // Set the retrieved content and media list.
-            setContent(tweetData.content || "");
-            const mediaFiles = tweetData.medias.map((media: any) => ({
 
-
-                url: media.url,
-                type: media.type,
-            }));
-            setMediaList(mediaFiles); // This acts as defaultFileList
+            setContent(tweetData.content || '');
+            const mediaFiles = tweetData.medias; // This acts as defaultFileList
+            setOldMediaList(mediaFiles);
         } catch (error) {
             console.error('Error fetching tweet:', error);
         }
     };
 
     // Fetch tweet data when the edit modal opens.
-
 
     const handleUploadChange = ({ fileList }: { fileList: any[] }) => {
         const updatedList = fileList.map((file) => {
@@ -89,9 +68,9 @@ const ModalOption = ({ post, postId, refetchPosts }: any) => {
                     [...prev, ...updatedList].map((item) => [
                         item.originFileObj?.name || item.uid,
                         item,
-                    ])
-                ).values()
-            )
+                    ]),
+                ).values(),
+            ),
         );
     };
 
@@ -105,18 +84,14 @@ const ModalOption = ({ post, postId, refetchPosts }: any) => {
 
     const customIsImageUrl = (file: UploadFile) => {
         const fileType = typeof file?.type === 'string' ? file?.type : '';
-        return (
-            fileType.startsWith("image/") ||
-            /\.(jpg|jpeg|png|gif)$/i.test(file.thumbUrl || "")
-        );
+        return fileType.startsWith('image/') || /\.(jpg|jpeg|png|gif)$/i.test(file.thumbUrl || '');
     };
-
 
     const isImage = (file: any) => {
         // Check if file.type is a string before calling startsWith
         const fileType = typeof file?.type === 'string' ? file?.type : '';
-        const imageTypes = ["image/jpeg", "image/png", "image/gif"];
-        return fileType.startsWith("image/") || imageTypes.includes(fileType);
+        const imageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        return fileType.startsWith('image/') || imageTypes.includes(fileType);
     };
 
     const itemRender = (originNode: React.ReactNode, file: UploadFile) => {
@@ -127,77 +102,87 @@ const ModalOption = ({ post, postId, refetchPosts }: any) => {
 
     const handleEditPost = async () => {
         try {
+            console.log('oldMediaList', oldMediaList);
+            const oldImages = oldMediaList
+                .filter((item) => item.type === 0)
+                .map((item) => omit(item, 'uid'));
+            const oldVideos = oldMediaList
+                .filter((item) => item.type === 2)
+                .map((item) => omit(item, 'uid'));
+            console.log('oldImages', oldImages);
+            console.log('oldVideos', oldVideos);
             const data = {
                 postId: postId,
                 content,
-                medias: [] as Media[],
+                medias: [...oldImages, ...oldVideos],
                 type: TweetType.TWEET,
                 parent_id: null,
                 mentions: [],
             };
-
             if (uploadMedia) {
                 const images = mediaList
                     .filter((item) => isImage(item))
-                    .map((item) => item.originFileObj as File);
+                    .map((item) => item.originFileObj as File)
+                    .filter((item) => item !== undefined);
                 const videos = mediaList
                     .filter((item) => !isImage(item))
-                    .map((item) => item.originFileObj as File);
-
+                    .map((item) => item.originFileObj as File)
+                    .filter((item) => item !== undefined);
+                console.log('images', images);
+                console.log('videos', videos);
                 if (images.length > 0 && videos.length > 0) {
                     const [imagesRes, videosRes] = await Promise.all([
                         mediaServices.uploadImage(images),
-                        Promise.all(
-                            videos.map((video) =>
-                                mediaServices.uploadVideoHLS(video)
-                            )
-                        ),
+                        Promise.all(videos.map((video) => mediaServices.uploadVideoHLS(video))),
                     ]);
                     data.medias = [
+                        ...data.medias,
                         ...imagesRes.result.map((item: any) => item),
                         ...videosRes.map((item: any) => item?.result[0]),
                     ];
                 } else if (images.length > 0 || videos.length === 0) {
                     const imagesRes = await mediaServices.uploadImage(images);
-                    data.medias = imagesRes.result.map((item: any) => item);
+                    data.medias = [...data.medias, ...imagesRes.result.map((item: any) => item)];
                 } else if (images.length === 0 && videos.length > 0) {
                     const videosRes = await Promise.all(
-                        videos.map((video) =>
-                            mediaServices.uploadVideoHLS(video)
-                        )
+                        videos.map((video) => mediaServices.uploadVideoHLS(video)),
                     );
 
-                    data.medias = videosRes.map((item: any) => item?.result[0]);
+                    data.medias = [
+                        ...data.medias,
+                        ...videosRes.map((item: any) => item?.result[0]),
+                    ];
                 }
             }
-
+            console.log('data', data);
             const updatedPost = await tweetServices.updateTweet(data, postId);
             if (updatedPost) {
-                message.success("Cập nhật bài viết thành công!");
+                message.success('Cập nhật bài viết thành công!');
                 refetchPosts();
             }
         } catch (error) {
-            message.error("Đã xảy ra lỗi khi chỉnh sửa bài viết.");
-
+            message.error('Đã xảy ra lỗi khi chỉnh sửa bài viết.');
         } finally {
-            setIsEditModalOpen(false)
+            setUploadMedia(false);
+            setIsEditModalOpen(false);
         }
     };
-
+    const updateMediaList = (updatedMediaList: any) => {
+        setMediaList(updatedMediaList);
+    };
     const handleDeletePost = async () => {
         try {
             const deletePost = await tweetServices.deleteTweet(postId);
             if (deletePost.message === 'Delete tweet suscess') {
-                message.success("Xóa bài viết thành công!");
+                message.success('Xóa bài viết thành công!');
                 refetchPosts();
             }
         } catch (error) {
-            message.error("Đã xảy ra lỗi khi xóa bài viết.");
+            message.error('Đã xảy ra lỗi khi xóa bài viết.');
         } finally {
             setIsModalOpen(false);
         }
     };
-
 
     return (
         <Menu as="div" className="tw-relative tw-inline-block tw-text-left">
@@ -230,7 +215,13 @@ const ModalOption = ({ post, postId, refetchPosts }: any) => {
                 </div>
             </MenuItems>
             {/* Confirmation Delete Modal */}
-            <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)}>
+            <Dialog
+                open={isModalOpen}
+                onClose={() => {
+                    setUploadMedia(false);
+                    setIsModalOpen(false);
+                }}
+            >
                 <div className="tw-fixed tw-inset-0 tw-bg-black/30" aria-hidden="true">
                     <DialogBackdrop className="tw-fixed tw-inset-0 tw-bg-black/30" />
                 </div>
@@ -264,8 +255,13 @@ const ModalOption = ({ post, postId, refetchPosts }: any) => {
                     <DialogBackdrop className="tw-fixed tw-inset-0 tw-bg-black/30" />
                 </div>
                 <div className="tw-fixed tw-inset-0 tw-flex tw-items-center tw-justify-center">
-                    <DialogPanel className="tw-w-full tw-max-w-md tw-rounded tw-bg-white tw-p-6">
-                        <DialogTitle className="tw-text-lg tw-font-bold">Chỉnh sửa bài viết</DialogTitle>
+                    <DialogPanel
+                        className="tw-w-full tw-rounded tw-bg-white tw-p-6"
+                        style={{ maxWidth: '40rem' }}
+                    >
+                        <DialogTitle className="tw-text-lg tw-font-bold">
+                            Chỉnh sửa bài viết
+                        </DialogTitle>
                         <div className={styles.wrap}>
                             <Box className={styles.container} component="form">
                                 <div className={styles.header}>
@@ -284,15 +280,19 @@ const ModalOption = ({ post, postId, refetchPosts }: any) => {
                                             onChange={(e) => setContent(e.target.value)}
                                         />
                                     </div>
-
                                 </div>
-                                <MediaComment post={post} />
+                                <MediaComment
+                                    post={post}
+                                    setOldMediaList={setOldMediaList}
+                                    mediaList={mediaList}
+                                    updateMediaList={updateMediaList}
+                                />
 
                                 <div className={styles.footer}>
                                     <Button
                                         sx={{ fontSize: 14 }}
                                         className={clsx(styles.button, styles.addImg)}
-                                        onClick={() => setUploadMedia(!uploadMedia)}
+                                        onClick={() => setUploadMedia(true)}
                                     >
                                         <Upload
                                             multiple
@@ -305,25 +305,24 @@ const ModalOption = ({ post, postId, refetchPosts }: any) => {
                                             isImageUrl={customIsImageUrl}
                                             beforeUpload={(file) => {
                                                 const isImageOrVideo =
-                                                    file.type.startsWith("image/") ||
-                                                    file.type.startsWith("video/");
+                                                    file.type.startsWith('image/') ||
+                                                    file.type.startsWith('video/');
                                                 if (!isImageOrVideo) {
                                                     message.error(
-                                                        "Bạn chỉ có thể upload file ảnh hoặc video!"
+                                                        'Bạn chỉ có thể upload file ảnh hoặc video!',
                                                     );
                                                 }
                                                 return false;
                                             }}
                                         >
-                                            <div>
-                                                <PlusOutlined />
+                                            <div style={{ flexWrap: 'nowrap' }}>
+                                                <PlusOutlined style={{ flexWrap: 'nowrap' }} />
                                                 <div style={{ marginTop: 8 }}>Thêm hình</div>
                                             </div>
                                         </Upload>
                                     </Button>
                                     <Button
                                         onClick={handleEditPost}
-
                                         sx={{ fontSize: 14 }}
                                         className={clsx(styles.button, styles.post)}
                                     >

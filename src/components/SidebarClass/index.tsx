@@ -63,12 +63,6 @@ function SidebarClass() {
                 show: true,
             },
             {
-                icon: VerticalSplitIcon,
-                text: 'Bảng điểm',
-                to: 'scoretable',
-                show: true,
-            },
-            {
                 icon: PlayCircleOutlineIcon,
                 text: 'Bài giảng',
                 to: 'content/1',

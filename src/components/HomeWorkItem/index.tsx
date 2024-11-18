@@ -23,7 +23,7 @@ interface Prop {
     active?: boolean;
     id: string;
     onClick: (id: string) => void;
-    created: string
+    created: string;
 }
 
 function HomeWorkItem({ active = true, name, id, onClick, created }: Prop) {
@@ -40,16 +40,21 @@ function HomeWorkItem({ active = true, name, id, onClick, created }: Prop) {
                 [styles.active]: active,
             })}
         >
-            <div className={styles.icon}>
-                {<img className={styles.img} src={typeCurrent?.url} alt="file" />}
+            <div>
+                {
+                    <img
+                        width={200}
+                        src={
+                            'https://st4.depositphotos.com/2219414/20715/v/1600/depositphotos_207156018-stock-illustration-flat-design-concept-people-education.jpg'
+                        }
+                    />
+                }
             </div>
             <div className={styles.mid}>
                 <h6 className={styles.name}>{name}</h6>
                 {/*<div className={styles.loading}></div>*/}
                 <div className={styles.line}>
-                    <LinearProgress
-                        variant={'determinate'}
-                    />
+                    <LinearProgress variant={'determinate'} />
                 </div>
                 <h6 className={styles.title}>{created}</h6>
                 {/* <div className={styles.title}>Trắc nghiệm</div> */}

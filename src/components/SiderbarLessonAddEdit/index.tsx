@@ -15,9 +15,11 @@ import BoxInputLessonAdd from '../BoxInputLessonAdd';
 function SiderbarLessonAddEdit({
     attachedMedias,
     setAttachedMedias,
+    inputRef,
 }: {
     attachedMedias: File[];
     setAttachedMedias: React.Dispatch<React.SetStateAction<File[]>>;
+    inputRef: any;
 }) {
     const { control, handleSubmit } = useFormContext<FormLessonType>();
     const { id:classId, lessonId, type } = useParams();
@@ -39,64 +41,49 @@ function SiderbarLessonAddEdit({
         },
     );
 
-    const handleVideoUpload = async () => {
-        if (attachedMedias.length === 0) return null;
+    console.log("attachedMedias upload: ", attachedMedias)
 
+    const handleMediaUpload = async () => {
+        if (attachedMedias.length !== 1) return null;
+    
         try {
-            const uploadResponse = await mediaServices.uploadVideoHLS(attachedMedias);
-            const uploadResult = uploadResponse?.result?.[0];
-
-            if (!uploadResult) {
-                throw new Error('No upload result found');
+            const file = attachedMedias[0];
+            if (file instanceof File) {
+                
+                if (type === '1') {
+                    const uploadResponse = await mediaServices.uploadVideoHLS([file]);
+                    return uploadResponse?.result;
+                } else {
+                    const uploadResponse = await mediaServices.uploadPDF([file]);
+                    return uploadResponse?.result;
+                }
+            } else {
+                return attachedMedias[0]; 
             }
-
-            const uploadId = uploadResult.url.split('/').pop();
-            let uploadStatus;
-            do {
-                uploadStatus = await mediaServices.getStatusUploadVideoHLS(uploadId);
-                await new Promise((resolve) => setTimeout(resolve, 2000));
-            } while (uploadStatus.result !== 'Uploaded');
-
-            return { type: uploadResult.type, url: uploadResult.url };
         } catch (error) {
-            console.error('Video upload error:', error);
+            console.error('Upload error:', error);
             return null;
-        }
-    };
-
-    const handlePDFUpload = async () => {
-        if (attachedMedias.length === 0) return null;
-        try {
-            const uploadResponse = await mediaServices.uploadPDF(attachedMedias);
-            return uploadResponse?.result || [];
-        } catch (error) {
-            console.error('PDF upload error:', error);
-            return [];
         }
     };
 
     const submit = async (data: FormLessonType) => {
 
         try {
-            
-            const uploadedMedia =
-                type === '1' ? await handleVideoUpload() : await handlePDFUpload();
+            const uploadedMedia = attachedMedias.length > 0 ? await handleMediaUpload() : null;
 
-            const mediaToSubmit = lessonId ? attachedMedias[0] : uploadedMedia;
+            console.log("uploadedMedia: ", uploadedMedia)
 
             const lessonData = lessonId ? {
                 name: data.name,
                 id: lessonId as string,
-                media: attachedMedias,
+                media: uploadedMedia ? [uploadedMedia] : [],
                 description: data.description,
             }:{
                 ...data,
                 class_id: classId as string,
-                media: mediaToSubmit,
+                media: uploadedMedia,
                 type: parseInt(type as string),
             };
-
-            
 
             if (lessonId) {
                 mutateEdit(lessonData as FormLessonType);
@@ -105,6 +92,17 @@ function SiderbarLessonAddEdit({
             }
         } catch (error) {
             console.error('Error uploading files: ', error);
+        }
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (attachedMedias.length > 0) {
+            alert('Bạn cần xóa file hiện tại trước khi upload file mới.');
+            return;
+        }
+        const files = e.target.files ? Array.from(e.target.files) : [];
+        if (files.length > 0) {
+            setAttachedMedias(files);
         }
     };
 
@@ -181,18 +179,14 @@ function SiderbarLessonAddEdit({
                                     }}
                                 />
                                 <input
+                                    ref={inputRef}
                                     style={{
                                         cursor: 'pointer',
                                     }}
                                     type="file"
                                     accept={type === '1' ? 'video/*' : 'application/pdf'}
-                                    onChange={(e) =>
-                                        setAttachedMedias([
-                                            ...attachedMedias,
-                                            ...(e.target.files ? Array.from(e.target.files) : []),
-                                        ])
-                                    }
-                                    disabled={!!lessonId}
+                                    onChange={handleFileChange}
+                                    disabled={attachedMedias.length > 0}
                                 />
                             </div>
                         </div>
