@@ -41,7 +41,7 @@ function HeaderRight() {
             {/*      </div>*/}
             {/*</div>*/}
             {/* </a> */}
-            <Tippy
+            {/* <Tippy
                 onMount={(tippy) => {
                     instance.current = tippy;
                 }}
@@ -59,7 +59,7 @@ function HeaderRight() {
                         </div>
                     )}
                 </div>
-            </Tippy>
+            </Tippy> */}
 
             <HeaderUser />
         </div>

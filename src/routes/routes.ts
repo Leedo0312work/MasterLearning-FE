@@ -2,8 +2,9 @@ import React, { ExoticComponent, Fragment, lazy, ReactNode } from 'react';
 
 import DefaultLayout from '~/layout/Default';
 
-
+const Chats = lazy(() => import('~/pages/Chats'));
 const Home = lazy(() => import('~/pages/Home'));
+const Meeting = lazy(() => import('~/pages/Meeting'));
 const Login = lazy(() => import('~/pages/Login'));
 const Register = lazy(() => import('~/pages/Register'));
 const Class = lazy(() => import('~/pages/Class'));
@@ -31,6 +32,7 @@ const CheckEmailNoti = lazy(() => import('~/pages/CheckEmailNoti'));
 
 const NewMemberAccepted = lazy(() => import('~/components/NewMemberAccepted'));
 const NewMemberPending = lazy(() => import('~/components/NewMemberPending'));
+const Exam = lazy(() => import('~/pages/Exam'));
 
 interface Route {
     path: string;
@@ -148,9 +150,24 @@ const routes: Route[] = [
                 component: HomeWork,
             },
             {
+                path: 'meeting',
+                component: Meeting,
+            },
+            {
+                path: 'chat',
+                component: Chats,
+            },
+            {
+                path: 'chat',
+                component: HomeWork,
+            },
+            {
+                path: 'isTest/exam',
+                component: Exam,
+            },
+            {
                 path: 'content/:type',
                 component: Lesson,
-                
             },
 
             {
@@ -179,6 +196,20 @@ const routes: Route[] = [
         layout: Fragment,
         private: true,
     },
+
+    {
+        path: '/class/:id/isTest/exam/add',
+        component: AddHomework,
+        layout: Fragment,
+        private: true,
+    },
+    {
+        path: '/class/:id/isTest/exam/:exerciseId/edit',
+        component: EditHomework,
+        layout: Fragment,
+        private: true,
+    },
+
     {
         path: '/class/:id/homework/:exerciseId/test',
         component: TestHomework,

@@ -9,6 +9,7 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import WorkOutlineIcon from '@mui/icons-material/WorkOutline';
 import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
 import TaskIcon from '@mui/icons-material/Task';
+import QuizIcon from '@mui/icons-material/Quiz';
 import VerticalSplitIcon from '@mui/icons-material/VerticalSplit';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import SummarizeIcon from '@mui/icons-material/Summarize';
@@ -33,12 +34,7 @@ function SidebarClass() {
                 to: 'newsfeed',
                 show: true,
             },
-            // {
-            //     icon: EventNoteIcon,
-            //     text: 'Lịch học',
-            //     to: 'schedule',
-            //     show: true,
-            // },
+
             {
                 icon: PersonOutlineIcon,
                 text: 'Thành viên',
@@ -46,20 +42,31 @@ function SidebarClass() {
                 // show: role == Role.ADMIN,
                 show: true,
             },
-            // {
-            //     icon: WorkOutlineIcon,
-            //     text: 'Vai trò lớp',
-            //     to: 'assistance',
-            // },
-            // {
-            //     icon: PeopleOutlineIcon,
-            //     text: 'Nhóm hoc tập',
-            //     to: 'group',
-            // },
+
+            {
+                icon: PersonOutlineIcon,
+                text: 'Cuộc họp',
+                to: 'meeting',
+                // show: role == Role.ADMIN,
+                show: true,
+            },
+            {
+                icon: PersonOutlineIcon,
+                text: 'Thảo luận',
+                to: 'chat',
+                // show: role == Role.ADMIN,
+                show: true,
+            },
             {
                 icon: TaskIcon,
                 text: 'Bài tập',
                 to: 'homework',
+                show: true,
+            },
+            {
+                icon: QuizIcon,
+                text: 'Kiểm tra',
+                to: 'isTest/exam',
                 show: true,
             },
             {

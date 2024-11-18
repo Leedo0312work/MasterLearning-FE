@@ -33,3 +33,17 @@
     color: #202227;
     margin-left: 10px;
 }
+
+.back_link {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    width: 205px;
+}
+.back_link:hover {
+    color: #1E88E5;
+}
+.icon {
+    color: #1E88E5;
+    font-size: 22px;
+}

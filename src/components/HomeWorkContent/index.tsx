@@ -1,50 +1,30 @@
 import HomeWorkContentHeader from '~/components/HomeWorkContentHeader';
-
 import styles from './styles.module.css';
 import HomeWorkItem from '~/components/HomeWorkItem';
-import useGetExerciseInClass from '~/hooks/useGetExercisesInClass';
 import useExercisesInClassStore from '~/store/useExercisesInClassStore';
-import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useParams, useLocation } from 'react-router-dom';
+import { useState } from 'react';
 import { getListExercisesStudent } from '~/repositories/exercise';
 import { IExercise } from '~/models/IExercise';
 import { useQuery } from 'react-query';
 
 function HomeWorkContent() {
-    // const { data } = useGetExerciseInClass();
-
     const { _id, setId } = useExercisesInClassStore((state) => state);
-
-    const handleClickItem = (item: string) => {
-        setId(item);
-    };
-
     const { id }: any = useParams();
-
     const [data, setData] = useState<IExercise[]>([]);
+    const location = useLocation();
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const exercises = await getListExercisesStudent(id);
-    //             setData(exercises);
-    //         } catch (error) {
-    //             console.error('Không thể lấy danh sách :', error);
-    //         }
-    //     };
-
-    //     fetchData();
-    // }, []);
+    const isExam = location.pathname.includes('exam');
 
     const fetchData = useQuery(
         ['exercises', id],
         async () => {
             const exercises = await getListExercisesStudent(id);
-            return exercises
+            return exercises;
         },
         {
             onSuccess(response) {
-                console.log("list ex:", response)
+                console.log("list ex:", response);
                 setData(response);
             },
         },
@@ -55,16 +35,36 @@ function HomeWorkContent() {
             <HomeWorkContentHeader />
 
             <div className={styles.list_card}>
-                {data?.map((item) => (
-                    <HomeWorkItem
-                        onClick={handleClickItem}
-                        id={item._id}
-                        name={item.name}
-                        key={item._id}
-                        active={_id === item._id}
-                        created={item.created_at}
-                    />
-                ))}
+                {data?.map((item) => {
+                    if (isExam && item.is_test) {
+                        return (
+                            <HomeWorkItem
+                                onClick={() => setId(item._id)}
+                                id={item._id}
+                                name={`Bài kiểm tra: ${item.name}`}
+                                key={item._id}
+                                active={_id === item._id}
+                                created={item.created_at}
+                            />
+                        );
+                    }
+
+                    // Kiểm tra nếu route không phải exam và là bài tập (is_test = false)
+                    if (!isExam && !item.is_test) {
+                        return (
+                            <HomeWorkItem
+                                onClick={() => setId(item._id)}
+                                id={item._id}
+                                name={`Bài tập: ${item.name}`}
+                                key={item._id}
+                                active={_id === item._id}
+                                created={item.created_at}
+                            />
+                        );
+                    }
+
+                    return null;
+                })}
             </div>
         </div>
     );

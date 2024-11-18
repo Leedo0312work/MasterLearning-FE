@@ -7,7 +7,9 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { ConfirmProvider } from 'material-ui-confirm';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import AgoraRTC, { AgoraRTCProvider } from 'agora-rtc-react';
 
+const client = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' });
 ReactDOM.createRoot(document?.getElementById('root')).render(
     // <React.StrictMode>
     <QueryClientProvider
@@ -23,10 +25,12 @@ ReactDOM.createRoot(document?.getElementById('root')).render(
     >
         <ConfirmProvider>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <App />
+                <AgoraRTCProvider client={client}>
+                    <App />
+                </AgoraRTCProvider>
             </LocalizationProvider>
         </ConfirmProvider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
     // {/* </React.StrictMode>, */}
 );
 

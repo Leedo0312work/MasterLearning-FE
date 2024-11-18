@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Paper from '@mui/material/Paper';
 import MenuList from '@mui/material/MenuList';
@@ -19,6 +20,7 @@ interface Prop {
 }
 
 export default function HeaderMenuUser({ onClick }: Prop) {
+    const navigate = useNavigate();
     const logOut = useAuthStore((state) => state.logOut);
 
     const configs = useMemo(() => {
@@ -26,6 +28,9 @@ export default function HeaderMenuUser({ onClick }: Prop) {
             {
                 text: 'Thông tin cá nhân',
                 icon: PersonIcon,
+                onClick: () => {
+                    navigate('/profile');
+                },
             },
             {
                 text: 'Đăng xuất',
@@ -36,13 +41,13 @@ export default function HeaderMenuUser({ onClick }: Prop) {
                 },
             },
         ];
-    }, []);
+    }, [logOut, navigate]);
 
     return (
         <Paper className={styles.menu} sx={{ width: 320, maxWidth: '100%' }}>
             <MenuList>
                 {configs.map((config, index) => (
-                    <MenuItem onClick={onClick} key={index} {...config}>
+                    <MenuItem onClick={() => { config.onClick(); onClick(); }} key={index}>
                         <ListItemIcon>
                             <Avatar className={styles.user}>
                                 <config.icon className={styles.user_icon} />

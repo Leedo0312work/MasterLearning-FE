@@ -16,7 +16,7 @@ function Profile() {
                             tiện cho việc đăng nhập và lấy lại mật khẩu.
                         </p>
                     </div>
-                    <ProfileUserInfo />
+                    {/* <ProfileUserInfo /> */}
                 </div>
             </div>
         </div>

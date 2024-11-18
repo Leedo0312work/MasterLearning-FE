@@ -7,8 +7,13 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import SelectMaterial from '~/components/SelectMaterial';
 import { RoleStudent } from '~/enums/role_student';
 import { ExerciseMode, ExerciseStudentRole } from '~/enums/exercise';
+import { useLocation } from 'react-router-dom';
 function FormExercise() {
     const { control } = useFormContext<FormMultipleChoiceInterface>();
+
+    const location  = useLocation()
+
+    const isExam = location.pathname.includes('exam');
 
     return (
         <div className={styles.wrapper}>
@@ -69,7 +74,8 @@ function FormExercise() {
                             )}
                         />
                     </div>
-                    <div className={'tw-mt-5'}>
+                    {isExam ? <>
+                        <div className={'tw-mt-5'}>
                         <Controller
                             control={control}
                             name={'time_to_enable'}
@@ -95,6 +101,7 @@ function FormExercise() {
                             )}
                         />
                     </div>
+                    </> : <></>}
                     {/* <div className="tw-mt-5">
                         <Controller
                             control={control}

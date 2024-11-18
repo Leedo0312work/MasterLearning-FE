@@ -1,18 +1,23 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import clsx from 'clsx';
-import { FormMultipleChoiceAnswerItemInterface, FormMultipleChoiceInterface } from '~/types/exercise';
+import { FormMultipleChoiceInterface } from '~/types/exercise';
 import TextField from '@mui/material/TextField';
-import { memo } from 'react';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import { memo, useEffect } from 'react';
 
 interface Prop {
     active: boolean;
     order: number;
-    emitChange: (index: number, key: 'answer' | 'point', value: string) => void;
+    emitChange: (index: number, key: 'answer' | 'point' | 'type', value: string | number) => void;
     setActive: (index: number) => void;
 }
 
 function FormMultipleChoiceItem({ active, order, emitChange, setActive }: Prop) {
-    const { control } = useFormContext<FormMultipleChoiceInterface>();
+    const { control, watch } = useFormContext<FormMultipleChoiceInterface>();
+
+    // Sử dụng watch để lấy giá trị hiện tại của type
+    const type = watch(`answers.${order}.type`);
 
     const handleClick = () => {
         setActive(order);
@@ -27,29 +32,56 @@ function FormMultipleChoiceItem({ active, order, emitChange, setActive }: Prop) 
             ])}
         >
             <div>Câu {order + 1}</div>
+
             <div className={'tw-mt-4'}>
                 <Controller
-                    rules={{
-                        required: 'Không được để trống',
-                    }}
-                    name={`answers.${order}.answer`}
+                    name={`answers.${order}.type`}
                     control={control}
-                    render={({ field, fieldState: { error, invalid } }) => (
-                        <TextField
-                            error={invalid}
-                            helperText={error?.message}
+                    defaultValue={0}  // Đặt giá trị mặc định là 0
+                    render={({ field }) => (
+                        <Select
+                            value={field.value ?? 0}
                             fullWidth
-                            size={'small'}
-                            label={'Đáp án'}
-                            value={field.value}
                             onChange={(event) => {
-                                emitChange(order, `answer`, event.target.value);
-                                field.onChange(event);
+                                const newValue = Number(event.target.value);
+                                emitChange(order, 'type', newValue);
+                                field.onChange(newValue);
                             }}
-                        />
+                        >
+                            <MenuItem value={0}>Trắc nghiệm</MenuItem>
+                            <MenuItem value={1}>Câu trả lời ngắn</MenuItem>
+                            <MenuItem value={2}>Tự luận</MenuItem>
+                        </Select>
                     )}
                 />
             </div>
+
+            {type !== 2 && (
+                <div className={'tw-mt-4'}>
+                    <Controller
+                        rules={{
+                            required: 'Không được để trống',
+                        }}
+                        name={`answers.${order}.answer`}
+                        control={control}
+                        render={({ field, fieldState: { error, invalid } }) => (
+                            <TextField
+                                error={invalid}
+                                helperText={error?.message}
+                                fullWidth
+                                size="small"
+                                label="Đáp án"
+                                value={field.value}
+                                onChange={(event) => {
+                                    emitChange(order, 'answer', event.target.value);
+                                    field.onChange(event);
+                                }}
+                            />
+                        )}
+                    />
+                </div>
+            )}
+
             <div className={'tw-mt-4'}>
                 <Controller
                     rules={{
@@ -65,15 +97,15 @@ function FormMultipleChoiceItem({ active, order, emitChange, setActive }: Prop) 
                         <TextField
                             error={invalid}
                             helperText={error?.message}
-                            type={'number'}
+                            type="number"
                             fullWidth
-                            size={'small'}
+                            size="small"
                             onChange={(event) => {
-                                emitChange(order, `point`, event.target.value);
+                                emitChange(order, 'point', event.target.value);
                                 field.onChange(event);
                             }}
                             value={field.value}
-                            label={'Điểm'}
+                            label="Điểm"
                         />
                     )}
                 />

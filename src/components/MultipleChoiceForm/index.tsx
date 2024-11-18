@@ -16,11 +16,15 @@ import {
     getMultipleChoiceExerciseDetail,
     getUpdateMultipleChoice,
 } from '~/repositories/exercise';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 function MultipleChoiceForm() {
     const { step, previous, next } = useStep();
+
+    const location  = useLocation()
+
+    const isExam = location.pathname.includes('exam');
 
     const navigate = useNavigate();
     const { mutate: mutateCreate } = useMutation(
@@ -30,7 +34,7 @@ function MultipleChoiceForm() {
         },
         {
             onSuccess() {
-                navigate(`/class/${id}/homework`);
+                isExam ? navigate(`/class/${id}/isTest/exam`) : navigate(`/class/${id}/homework`);
                 toast.success('Thêm mới bài tập thành công');
             },
             onError() {
@@ -44,7 +48,7 @@ function MultipleChoiceForm() {
         (data: FormMultipleChoiceInterface) => getUpdateMultipleChoice(data),
         {
             onSuccess() {
-                navigate(`/class/${id}/homework`);
+                isExam ? navigate(`/class/${id}/isTest/exam`) : navigate(`/class/${id}/homework`);
                 toast.success('Chỉnh sửa bài tập thành công');
             }
         },
@@ -52,17 +56,6 @@ function MultipleChoiceForm() {
 
     const { id, exerciseId } = useParams();
 
-    // const { data } = useQuery(['detail', exerciseId], () => getExercisesTeacher(exerciseId), {
-    //     onSuccess(response) {
-    //         methods.reset({
-    //             ...response,
-    //             answers: response.multipleChoice.answers,
-    //         });
-    //         console.log("Thông tin bài tập nhận được:", response);
-    //     },
-    // });
-
-    // console.log('dữ liệu bài tập', data)
 
     useEffect(() => {
         const fetchExerciseDetails = async () => {
@@ -92,28 +85,6 @@ function MultipleChoiceForm() {
     }, [exerciseId]);
 
 
-
-    // const handleComplete = useCallback((data: FormMultipleChoiceInterface) => {
-    //     data.class_id = id;
-    //     data.multipleChoice.answers = data.answers;
-    //     data.multipleChoice.mark = Number(data.multipleChoice.mark);
-    //     data.multipleChoice.numberOfQuestions = Number(data.multipleChoice.numberOfQuestions);
-    //     data.multipleChoice.answers = data.answers.map((item, index) => ({
-    //         ...item,
-    //         order: index + 1,
-    //     }));
-    //     // data.preventViewQuestion = data.preventViewQuestion ? 1 : 0;
-    //     data.is_test = data.is_test ? 1 : 0;
-    //     data.student_role = Number(data.student_role);
-    //     data.point_type = Number(data.point_type);
-
-    //     if (Boolean(data?._id)) {
-    //         mutateUpdate(data);
-    //     } else {
-    //         mutate(data);
-    //     }
-    // }, []);
-
     const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
     const handleFileUpload = (url: string) => {
@@ -130,8 +101,8 @@ function MultipleChoiceForm() {
             file: pdfUrl || "",
             password: data.password || "",
             time_limit: data.time_limit,
-            deadline: data.deadline || null,
-            time_to_enable: data.time_to_enable || null,
+            deadline: data.deadline || undefined,
+            time_to_enable: data.time_to_enable || undefined,
             is_test: Boolean(data.is_test),
             student_role: data.student_role,
             times_to_do: data.times_to_do,
@@ -161,7 +132,7 @@ function MultipleChoiceForm() {
                 numberOfQuestions: '',
             },
             answers: [],
-            is_test: false,
+            is_test: isExam ? true : false,
             student_role: RoleStudent.ONLY_VIEW_MARK,
             times_to_do: 1,
             point_type: 1,
