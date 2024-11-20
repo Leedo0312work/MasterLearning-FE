@@ -18,7 +18,7 @@ function SiderbarClassitem({
     Icon = Fragment,
     text = '',
     to = '',
-}: Prop) {
+}: any) {
     return (
         <Link
             to={to}
