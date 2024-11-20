@@ -2,6 +2,7 @@ import React, { ExoticComponent, Fragment, lazy, ReactNode } from 'react';
 
 import DefaultLayout from '~/layout/Default';
 
+
 const Chats = lazy(() => import('~/pages/Chats'));
 const Home = lazy(() => import('~/pages/Home'));
 const Meeting = lazy(() => import('~/pages/Meeting'));
@@ -28,6 +29,7 @@ const DoHomework = lazy(() => import('~/pages/DoHomework/index'));
 const VerifyEmail = lazy(() => import('~/pages/VerifyEmail/index'));
 const ForgotPassword = lazy(() => import('~/pages/ForgotPassword'));
 const ResetPassword = lazy(() => import('~/pages/ResetPassword'));
+const AdminLayout = lazy(() => import('~/pages/AdminLayout'));
 const CheckEmailNoti = lazy(() => import('~/pages/CheckEmailNoti'));
 
 const NewMemberAccepted = lazy(() => import('~/components/NewMemberAccepted'));
@@ -40,6 +42,7 @@ interface Route {
     layout?: any;
     private?: boolean;
     children?: RouteChildren[];
+    role?: any;
 }
 
 interface RouteChildren {
@@ -111,6 +114,34 @@ const routes: Route[] = [
     {
         path: '/verify-email',
         component: VerifyEmail,
+    },
+    {
+        path: '/admin',
+        component: AdminLayout,
+        private: true,
+        layout: DefaultLayout,
+        children: [
+            {
+                path: 'censorPost',
+                component: Newsfeed,
+            },
+            {
+                path: 'manageAccount',
+                component: Profile,
+            },
+            {
+                path: 'manageMember',
+                component: Member
+            },
+            {
+                path: 'manageClass',
+                component: Class
+            },
+            {
+                path: 'manageLesson',
+                component: Lesson
+            }
+        ]
     },
     {
         path: '/class/:id',
