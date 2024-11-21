@@ -9,15 +9,15 @@ function MemberTableContentHeader() {
             <div className={styles.item}>
                 <div className={styles.path_1}>
                     <div className={styles.left_path_1}></div>
-                    Họ và tên
+                    Tên tài liệu
                     <div className={styles.right_path_1}>
                         <ArrowUpwardIcon sx={{ fontSize: 18, color: '#65697B' }} />
                     </div>
                 </div>
-                <div className={styles.path_2}></div>
-                <div className={styles.path_3}>Trường</div>
+                <div className={styles.path_2}>Mô tả</div>
+                <div className={styles.path_3}>Giáo viên</div>
                 <div className={styles.path_4}>lớp</div>
-                <div className={styles.path_5}>Số điện thoại</div>
+                <div className={styles.path_5}>Hành động</div>
                 <div className={styles.path_6}></div>
             </div>
         </div>

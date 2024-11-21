@@ -65,9 +65,18 @@ function SidebarClassAdmin() {
                 show: true,
             },
 
-
-
-
+            {
+                icon: NewspaperIcon,
+                text: 'Kiểm duyệt bài giảng',
+                to: 'censorLesson',
+                show: true,
+            },
+            {
+                icon: NewspaperIcon,
+                text: 'Kiểm duyệt tài liệu',
+                to: 'censorDocument',
+                show: true,
+            },
         ];
     }, [role]);
 
@@ -100,12 +109,11 @@ function SidebarClassAdmin() {
                                     Icon={item?.icon}
                                     to={item?.to}
                                     text={item?.text}
-                                // footer={Boolean(item?.footer)}
+                                    // footer={Boolean(item?.footer)}
                                 />
                             )}
                         </div>
                     );
-
                 })}
             </div>
             {/* <div

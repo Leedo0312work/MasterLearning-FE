@@ -1,5 +1,5 @@
 export interface ILesson {
-    id: number;
+    id: string;
     name: string;
     description: string;
     youtubeLink: string;
@@ -8,4 +8,6 @@ export interface ILesson {
     type?: number;
     viewer?: number;
     time?: string;
+    media: { url: string; type: number }[];
+    censored: boolean;
 }
