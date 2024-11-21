@@ -37,6 +37,7 @@ export default function HeaderMenuUser({ onClick }: Prop) {
                 icon: LogoutIcon,
                 onClick: () => {
                     logOut();
+                    navigate('/login');
                     toast.success('Đăng xuất thành công');
                 },
             },
@@ -47,7 +48,13 @@ export default function HeaderMenuUser({ onClick }: Prop) {
         <Paper className={styles.menu} sx={{ width: 320, maxWidth: '100%' }}>
             <MenuList>
                 {configs.map((config, index) => (
-                    <MenuItem onClick={() => { config.onClick(); onClick(); }} key={index}>
+                    <MenuItem
+                        onClick={() => {
+                            config.onClick();
+                            onClick();
+                        }}
+                        key={index}
+                    >
                         <ListItemIcon>
                             <Avatar className={styles.user}>
                                 <config.icon className={styles.user_icon} />

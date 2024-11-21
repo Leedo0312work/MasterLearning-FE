@@ -14,6 +14,7 @@ interface Prop {
 }
 
 function FormMultipleChoiceItem({ active, order, emitChange, setActive }: Prop) {
+    console.log('check', active, order, emitChange, setActive);
     const { control, watch } = useFormContext<FormMultipleChoiceInterface>();
 
     // Sử dụng watch để lấy giá trị hiện tại của type
@@ -37,7 +38,7 @@ function FormMultipleChoiceItem({ active, order, emitChange, setActive }: Prop) 
                 <Controller
                     name={`answers.${order}.type`}
                     control={control}
-                    defaultValue={0}  // Đặt giá trị mặc định là 0
+                    defaultValue={0} // Đặt giá trị mặc định là 0
                     render={({ field }) => (
                         <Select
                             value={field.value ?? 0}
