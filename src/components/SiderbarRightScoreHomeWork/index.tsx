@@ -23,7 +23,7 @@ import useAuthStore from '~/store/useAuthStore';
 
 const { confirm } = Modal;
 
-function SiderbarRightHomeWork() {
+function SiderbarRightScoreHomeWork() {
     const id = useExercisesInClassStore((state) => state._id);
     const { id: classId, _id: exerciseId } = useParams();
     const [data, setData] = useState<IExercise[]>([]);
@@ -128,7 +128,7 @@ function SiderbarRightHomeWork() {
                     <SiderbarRightHomeWorkTitleItem
                         name="Đã làm"
                         value={
-                            exercise?.done_count != undefined
+                            exercise?.done_count
                                 ? `${exercise?.done_count}/${exercise?.times_to_do}`
                                 : ''
                         }
@@ -141,7 +141,6 @@ function SiderbarRightHomeWork() {
             </div>
         );
     }, [exercise]);
-    console.log('check exercise', exercise);
     return (
         <div className={styles.wrap}>
             {renderSiderRight}
@@ -193,4 +192,4 @@ function SiderbarRightHomeWork() {
     );
 }
 
-export default SiderbarRightHomeWork;
+export default SiderbarRightScoreHomeWork;

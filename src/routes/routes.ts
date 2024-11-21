@@ -12,6 +12,8 @@ const Resource = lazy(() => import('~/pages/Resource'));
 const DetailClass = lazy(() => import('~/pages/DetailClass'));
 const Newsfeed = lazy(() => import('~/pages/Newsfeed'));
 const AddHomework = lazy(() => import('~/pages/AddHomework'));
+const ScoreHomework = lazy(() => import('~/pages/ScoreHomework'));
+const ScoreExecireItem = lazy(() => import('~/components/ScoreExecireItem'));
 const Schedule = lazy(() => import('~/pages/Schedule'));
 const Profile = lazy(() => import('~/pages/Profile'));
 const Member = lazy(() => import('~/pages/Member'));
@@ -150,6 +152,14 @@ const routes: Route[] = [
                 component: HomeWork,
             },
             {
+                path: 'homework/:id/score',
+                component: ScoreHomework,
+            },
+            {
+                path: 'homework/:id/score/:itemId',
+                component: ScoreExecireItem,
+            },
+            {
                 path: 'meeting',
                 component: Meeting,
             },
@@ -196,6 +206,12 @@ const routes: Route[] = [
         layout: Fragment,
         private: true,
     },
+    // {
+    //     path: '/class/:id/homework/:exerciseId/score',
+    //     component: ScoreHomework,
+    //     layout: DefaultLayout,
+    //     private: true,
+    // },
 
     {
         path: '/class/:id/isTest/exam/add',

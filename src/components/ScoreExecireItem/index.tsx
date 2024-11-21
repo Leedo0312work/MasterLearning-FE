@@ -14,24 +14,26 @@ import {
 } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import dayjs from '~/packages/dayjs';
-import { getExecireDetail } from '~/repositories/execire';
+import { getExecireDetail, getExecireDetailItem } from '~/repositories/execire';
 import { ExecireAnswerType } from '~/enums/exercise';
 import FormMultipleChoice from '../FormMultipleChoice';
 import FormMultipleChoiceItem from '../FormMultipleChoiceItem';
 import FormMultipleChoiceItemDo from '../FormMultipleChoiceItemDo';
 import styles from './style.module.scss';
 import mediaServices from '~/services/media';
-import { Ianswer, IExercise, ISubmit } from '~/types/exercise';
-import { fetchSubmitExecireByStudent } from '~/services/exercise';
+import { Ianswer, IExercise, IExerciseDetail, ISubmit, ISubmitScore } from '~/types/exercise';
+import { fetchScoreExecireByTeacher, fetchSubmitExecireByStudent } from '~/services/exercise';
 import { useMutation } from 'react-query';
 import { toast } from 'react-toastify';
+import FormMultipleChoiceItemScore from '../FormMultipleChoiceItemScore';
 
-function DoMultipleChoiceTest() {
-    const { exerciseId, id } = useParams();
-    const [execire, setExecire] = useState<IExercise>({});
+function ScoreExecireItem() {
+    const { id, itemId } = useParams();
+    const [execire, setExecire] = useState<IExerciseDetail>({});
     const [answers, setAnswers] = useState<any>([]);
     const [fileUrl, setFileUrl] = useState<string>('');
     const [fileName, setFileName] = useState<string>('');
+    const [questionUrl, setQuestionUrl] = useState<string>('');
     const [open, setOpen] = useState(false);
     // const submit = useMultipleChoiceTestStore((state) => state.submit);
     const navigate = useNavigate();
@@ -50,51 +52,36 @@ function DoMultipleChoiceTest() {
             }
         });
     };
-    const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        console.log('vo dya', file);
-        if (!file) return;
-        try {
-            const response = await mediaServices.uploadPDF(file);
-            const uploadedUrl = response.result?.[0]?.url;
-            if (uploadedUrl) {
-                console.log('check', uploadedUrl);
-                setFileUrl(uploadedUrl);
-                setFileName(file.name);
-                console.log('check file name', file.name);
-            }
-        } catch (error) {
-            console.error('Upload failed:', error);
-        }
-    };
 
     useEffect(() => {
-        if (execire.answers) {
-            const data = execire.answers.map((item, index) => {
-                if (item.type == ExecireAnswerType.ESSAY) {
-                    return item;
-                } else {
-                    return { ...item, answer: '' };
-                }
-            });
+        // if (execire.answers) {
+        //     const data = execire.answers.map((item, index) => {
+        //         if (item.type == ExecireAnswerType.ESSAY) {
+        //             return item;
+        //         } else {
+        //             return { ...item, answer: '' };
+        //         }
+        //     });
 
-            setAnswers(data);
-        }
+        // }
+        setAnswers(execire.answers);
         // if (!exerciseId) return;
         // init(Number(exerciseId), false);
     }, [execire]);
     useEffect(() => {
-        console.log('exerciseId', exerciseId);
-        if (exerciseId) {
+        console.log('itemId', itemId);
+        if (itemId) {
             const fetchData = async () => {
-                const res = await getExecireDetail(exerciseId);
+                const res = await getExecireDetailItem(itemId);
+                console.log('res', res);
                 setExecire(res.result);
+                setQuestionUrl(res.result.question_file);
             };
             fetchData();
         }
         // if (!exerciseId) return;
         // init(Number(exerciseId), false);
-    }, [exerciseId]);
+    }, [itemId]);
     console.log(execire);
     useEffect(() => {
         // const id = setInterval(() => setTimeLeft(), 1000);
@@ -113,17 +100,16 @@ function DoMultipleChoiceTest() {
         setOpen(false);
     };
     const handleSubmit = async () => {
-        const data: ISubmit = {
-            excirse_id: exerciseId,
-            file: fileUrl,
+        const data: ISubmitScore = {
+            exercise_answer_id: itemId,
             answers: answers,
         };
-        const res = await fetchSubmitExecireByStudent(data);
+        const res = await fetchScoreExecireByTeacher(data);
         if (res.status == 200) {
-            toast.success('Nộp bài tập thành công');
+            toast.success('Gửi kết quả thành công');
             navigate(`/class/${id}/homework`);
         } else {
-            toast.error('Nộp bài không thành công');
+            toast.error('Gửi kết quả không thành công');
         }
         handleClose();
         console.log('ress', res);
@@ -133,29 +119,28 @@ function DoMultipleChoiceTest() {
         // leave();
         navigate(`/class/${id}/homework`);
     };
-    const renderChooseFile = useMemo(() => {
+    const renderViewQuestion = useMemo(() => {
+        const handleOpenUrl = () => {
+            if (questionUrl) {
+                window.open(questionUrl, '_blank');
+            } else {
+                alert('URL đề bài không tồn tại.');
+            }
+        };
         return (
-            <div className={styles.btnChooseFile}>
-                <label>
-                    {!fileUrl ? 'Gửi đáp án tự luận( PDF)' : `Đã tải lên thành công: ${fileName}`}{' '}
-                </label>
-                <input
-                    type="file"
-                    accept="application/pdf"
-                    id="fileUpload"
-                    onChange={handleFileUpload}
-                />
+            <div className={styles.btnChooseFile} onClick={handleOpenUrl}>
+                <label>Giáo viên xem lại đề bài</label>
             </div>
         );
-    }, [fileUrl, fileName]);
+    }, [questionUrl]);
     return (
         <div className={'tw-grid tw-grid-cols-12 tw-h-screen'}>
             <div className={'tw-col-span-7'}>
-                <PreviewFileMultipleChoice name={execire.name} pdfUrl={execire.file} />
+                <PreviewFileMultipleChoice name={'Kết quả phần tự luận'} pdfUrl={execire.file} />
             </div>
             <div className="tw-col-span-5">
                 <div className={'tw-flex tw-flex-col tw-justify-between tw-h-full'}>
-                    <div
+                    {/* <div
                         className={'tw-bg-blue-900 tw-py-5 tw-flex tw-justify-center tw-text-white'}
                     >
                         <div>
@@ -167,7 +152,7 @@ function DoMultipleChoiceTest() {
                                 />
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                     <div>
                         <div className={'tw-w-full tw-text-center tw-font-bold'}>
                             {/* Cau {active + 1} */}
@@ -177,12 +162,16 @@ function DoMultipleChoiceTest() {
                                 {execire &&
                                     execire?.answers?.map((item, index) => (
                                         <div style={{ width: '50%' }}>
-                                            <FormMultipleChoiceItemDo
+                                            <FormMultipleChoiceItemScore
                                                 type={item.type}
                                                 no={item.no}
                                                 key={index}
                                                 point={item.point}
                                                 onUpdate={onUpdate}
+                                                mark={true}
+                                                result={item.answer}
+                                                correct={item.correct}
+                                                maxPoint={item.max_point}
                                             />
                                         </div>
                                     ))}
@@ -195,14 +184,14 @@ function DoMultipleChoiceTest() {
                             />
                         </div> */}
                     </div>
-                    <div>{renderChooseFile}</div>
+                    <div>{renderViewQuestion}</div>
                     <div className={'tw-flex tw-justify-center tw-mb-10'}>
                         <Button variant={'outlined'} onClick={handleLeave}>
                             Roi khoi
                         </Button>
                         <div className="tw-ml-4">
                             <Button onClick={handleClickOpen} variant={'contained'}>
-                                Nop bai
+                                Gửi kết quả
                             </Button>
                         </div>
                     </div>
@@ -217,7 +206,7 @@ function DoMultipleChoiceTest() {
                 <DialogTitle id="alert-dialog-title">{'Xác nhận nộp bài?'}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Bạn có chắc chắn muốn nộp bài không!
+                        Bạn có chắc chắn muốn gửi kết quả không?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -231,4 +220,4 @@ function DoMultipleChoiceTest() {
     );
 }
 
-export default DoMultipleChoiceTest;
+export default ScoreExecireItem;

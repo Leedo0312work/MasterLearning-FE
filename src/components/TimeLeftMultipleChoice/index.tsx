@@ -1,26 +1,34 @@
 import useMultipleChoiceTestStore from '~/store/useMultipleChoiceTestStore';
 import { useEffect, useMemo, useState } from 'react';
+import { toast } from 'react-toastify';
 
-function TimeLeftMultipleChoice(time?: any) {
+interface Props {
+    time: number;
+    onEnd: () => Promise<void>;
+}
+function TimeLeftMultipleChoice({ time, onEnd }: Props) {
     // const timeLeft = useMultipleChoiceTestStore((state) => state.timeLeft);
-    const [timeLeftSecond, setTimeLeft] = useState(0);
+    const [timeLeftSecond, setTimeLeft] = useState<number>(10);
     useEffect(() => {
-        setTimeLeft(time.time * 60);
+        setTimeLeft(time * 60);
     }, [time]);
+    console.log('cj', timeLeftSecond);
     const timeLeftConvert = useMemo<string>(() => {
         // const timeLenght = time.time;
 
         if (!timeLeftSecond) return '';
-        console.log('check time', timeLeftSecond);
 
         const hour = Math.floor(timeLeftSecond / 3600);
         const minute = Math.floor((timeLeftSecond - hour * 3600) / 60);
         const second = timeLeftSecond - hour * 3600 - minute * 60;
-        console.log('minute', hour, minute);
         return `${hour}h:${minute}:${second}`;
     }, [timeLeftSecond]);
     useEffect(() => {
-        if (timeLeftSecond <= 0) return;
+        if (timeLeftSecond <= 0) {
+            onEnd();
+            toast.success('Hết thời gian bạn đã tự động nộp bài');
+            return;
+        }
 
         // Cài đặt interval để đếm ngược
         const timerId = setInterval(() => {
@@ -30,7 +38,6 @@ function TimeLeftMultipleChoice(time?: any) {
         // Dọn dẹp interval khi component unmount hoặc khi timeLeft thay đổi
         return () => clearInterval(timerId);
     }, [timeLeftSecond]);
-    console.log('chjeck', timeLeftSecond);
     return <div>{timeLeftConvert}</div>;
 }
 

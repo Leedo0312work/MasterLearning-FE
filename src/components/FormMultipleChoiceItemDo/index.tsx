@@ -4,15 +4,18 @@ import { FormMultipleChoiceInterface } from '~/types/exercise';
 import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import styles from './style.module.scss';
+
 import { memo, useEffect, useMemo } from 'react';
+import mediaServices from '~/services/media';
 
 interface Props {
     type: number;
     no: number;
+    point: number;
+    onUpdate: (data: any) => void;
 }
 
-function FormMultipleChoiceItemDo({ type, no }: Props) {
+function FormMultipleChoiceItemDo({ type, no, onUpdate, point }: Props) {
     // const { control, watch } = useFormContext<FormMultipleChoiceInterface>();
     let order = 1;
     // Sử dụng watch để lấy giá trị hiện tại của type
@@ -21,6 +24,18 @@ function FormMultipleChoiceItemDo({ type, no }: Props) {
     const handleClick = () => {
         // setActive(order);
     };
+    const handleUpdate = (event: any) => {
+        console.log('checl e', event.target.value);
+        const data = {
+            no: no,
+            type: type,
+            answer: event.target.value,
+            point: point,
+        };
+        console.log('data', data);
+        onUpdate(data);
+    };
+
     const renderType = useMemo(() => {
         if (type == 0) {
             return <p className="tw-text-sm tw-my-2">Trắc nghiệm</p>;
@@ -36,17 +51,12 @@ function FormMultipleChoiceItemDo({ type, no }: Props) {
                 <p className="tw-text-sm">câu {no}</p>
                 {renderType}
                 {type != 2 ? (
-                    <input className="tw-p-2 tw-w-3/4" placeholder="Đáp án" />
+                    <input
+                        className="tw-p-2 tw-w-3/4"
+                        placeholder="Đáp án"
+                        onChange={handleUpdate}
+                    />
                 ) : (
-                    // <div className={styles.btnChooseFile}>
-                    //     <input
-                    //         type="file"
-                    //         accept="application/pdf"
-                    //         id="fileUpload"
-                    //         // onChange={handleFileUpload}
-                    //     />
-                    //     <label htmlFor="fileUpload">Chọn tệp PDF</label>
-                    // </div>
                     <input className="tw-p-2 tw-w-3/4" placeholder="Đáp án" disabled />
                 )}
             </div>

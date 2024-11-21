@@ -6,10 +6,9 @@ function PermissionWrapper({
     role,
 }: {
     children: JSX.Element | JSX.Element[];
-    role: Role;
+    role: any;
 }) {
     const currentRole = useRoleInClass();
-    console.log('chjeck cure', currentRole);
     return <>{currentRole === role && children}</>;
 }
 
