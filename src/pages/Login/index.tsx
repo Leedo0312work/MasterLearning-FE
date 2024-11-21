@@ -26,6 +26,7 @@ import { LoginForm, LoginResponse } from '~/types/login';
 import { getLogin } from '~/repositories/auth';
 import { ResponseAPI } from '~/app/response';
 import { AxiosError } from 'axios';
+import axiosIns from '~/services/axios';
 
 function Copyright(props: any) {
     return (
@@ -58,16 +59,27 @@ export default function SignInSide() {
 
     const navigate = useNavigate();
 
+
     const { mutate } = useMutation<ResponseAPI<LoginResponse>, AxiosError<ResponseAPI>, LoginForm>(
         'submit',
         async (data) => getLogin(data),
         {
             onSuccess(data) {
                 localStorage.setItem('accessToken', data.result.accessToken);
-                console.log('data: ', data);
-                setUser(data.result.user);
-                window.location.href = '/class';
-                toast.success('Chào mừng bạn trở lại');
+                axiosIns.getAuth("/users/get-me").then((response) => {
+                    const roleUser = response?.data.result.role;
+                    console.log('data: ', data);
+                    if (roleUser == 2) {
+                        window.location.href = '/admin';
+                    } else {
+                        setUser(data.result.user);
+                        window.location.href = '/class';
+                    }
+                    toast.success('Chào mừng bạn trở lại');
+                })
+
+                // console.log('respone: ', roleUser);
+
             },
             onError(error) {
                 console.error('Lỗi khi đăng nhập:', error);

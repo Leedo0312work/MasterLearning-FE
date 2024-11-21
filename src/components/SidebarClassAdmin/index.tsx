@@ -15,87 +15,66 @@ import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import SummarizeIcon from '@mui/icons-material/Summarize';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useLocation, useParams } from 'react-router-dom';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import useDetailClass from '~/hooks/useDetailClass';
 import useRoleInClass from '~/hooks/useRoleInClass';
 import { Role } from '~/enums/role';
 import ClassModalAddEdit from '~/components/ClassModalAddEdit';
 import useModal from '~/hooks/useModal';
-function SidebarClass() {
+function SidebarClassAdmin() {
     const location = useLocation();
-    const [idEx, setIdEx] = useState<string>('');
+
     const role = useRoleInClass();
 
     const menu = useMemo(() => {
         return [
             {
+                icon: PersonOutlineIcon,
+                text: 'Quản lý tài khoản',
+                to: 'manageAccount',
+                // show: role == Role.ADMIN,
+                show: true,
+            },
+            {
                 icon: NewspaperIcon,
-                text: 'Bảng tin',
-                to: 'newsfeed',
+                text: 'Kiểm duyệt bài đăng',
+                to: 'censorPost',
                 show: true,
             },
 
             {
                 icon: PersonOutlineIcon,
-                text: 'Thành viên',
-                to: 'member',
+                text: 'Quản lý thành viên',
+                to: 'manageMember',
                 // show: role == Role.ADMIN,
                 show: true,
             },
 
             {
                 icon: PersonOutlineIcon,
-                text: 'Cuộc họp',
-                to: 'meeting',
+                text: 'Quản lý lớp học',
+                to: 'manageClass',
                 // show: role == Role.ADMIN,
                 show: true,
             },
-            {
-                icon: PersonOutlineIcon,
-                text: 'Thảo luận',
-                to: 'chat',
-                // show: role == Role.ADMIN,
-                show: true,
-            },
+
             {
                 icon: TaskIcon,
-                text: 'Bài tập',
-                to: 'homework',
+                text: 'Quản lý bài giảng',
+                to: 'manageLesson',
                 show: true,
             },
-            {
-                icon: QuizIcon,
-                text: 'Kiểm tra',
-                to: 'isTest/exam',
-                show: true,
-            },
-            {
-                icon: PlayCircleOutlineIcon,
-                text: 'Bài giảng',
-                to: 'content/1',
-                show: true,
-            },
-            {
-                icon: SummarizeIcon,
-                text: 'Tài liệu',
-                to: 'content/0',
-                show: true,
-            },
-            {
-                icon: SettingsIcon,
-                text: 'Cài đặt lớp học',
-                to: '',
-                footer: true,
-                show: true,
-            },
+
+
+
+
         ];
     }, [role]);
 
     const active = useMemo(() => {
         const { pathname } = location;
+
         const result = menu.find((item) => pathname.includes(item.to));
-        setIdEx(pathname.split('/')[2]);
-        console.log('check result');
         return result?.to;
     }, [location]);
     const {
@@ -106,31 +85,30 @@ function SidebarClass() {
 
     return (
         <div className={styles.wrap}>
-            <div className={styles.header}>
+            {/* <div className={styles.header}>
                 <SiderbarClassHeader />
-            </div>
-            <div className={styles.infor}>Danh mục</div>
+            </div> */}
+            {/* <div className={styles.infor}>Danh mục</div> */}
             <div className={styles.list}>
                 {menu.map((item, index) => {
-                    if (!item?.footer) {
-                        return (
-                            <div key={item.to}>
-                                {item?.show && (
-                                    <SiderbarClassItem
-                                        active={item.to === active}
-                                        key={index}
-                                        Icon={item?.icon}
-                                        to={`/class/${idEx}/${item?.to}`}
-                                        text={item?.text}
-                                        footer={Boolean(item?.footer)}
-                                    />
-                                )}
-                            </div>
-                        );
-                    }
+                    return (
+                        <div key={item.to}>
+                            {item?.show && (
+                                <SiderbarClassItem
+                                    active={item.to === active}
+                                    key={index}
+                                    Icon={item?.icon}
+                                    to={item?.to}
+                                    text={item?.text}
+                                // footer={Boolean(item?.footer)}
+                                />
+                            )}
+                        </div>
+                    );
+
                 })}
             </div>
-            <div
+            {/* <div
                 className={styles.footer}
                 onClick={() => {
                     handleOpenAddEditModal();
@@ -155,9 +133,9 @@ function SidebarClass() {
                 openAddModal={openAddEditModal}
                 handleCloseAddModal={handleCloseAddEditModal}
                 title="Chỉnh sửa lớp học hiện tại"
-            />
+            /> */}
         </div>
     );
 }
 
-export default SidebarClass;
+export default SidebarClassAdmin;
