@@ -3,7 +3,9 @@ import React, { ExoticComponent, Fragment, lazy, ReactNode } from 'react';
 import DefaultLayout from '~/layout/Default';
 
 
+const Chats = lazy(() => import('~/pages/Chats'));
 const Home = lazy(() => import('~/pages/Home'));
+const Meeting = lazy(() => import('~/pages/Meeting'));
 const Login = lazy(() => import('~/pages/Login'));
 const Register = lazy(() => import('~/pages/Register'));
 const Class = lazy(() => import('~/pages/Class'));
@@ -11,6 +13,8 @@ const Resource = lazy(() => import('~/pages/Resource'));
 const DetailClass = lazy(() => import('~/pages/DetailClass'));
 const Newsfeed = lazy(() => import('~/pages/Newsfeed'));
 const AddHomework = lazy(() => import('~/pages/AddHomework'));
+const ScoreHomework = lazy(() => import('~/pages/ScoreHomework'));
+const ScoreExecireItem = lazy(() => import('~/components/ScoreExecireItem'));
 const Schedule = lazy(() => import('~/pages/Schedule'));
 const Profile = lazy(() => import('~/pages/Profile'));
 const Member = lazy(() => import('~/pages/Member'));
@@ -27,6 +31,7 @@ const DoHomework = lazy(() => import('~/pages/DoHomework/index'));
 const VerifyEmail = lazy(() => import('~/pages/VerifyEmail/index'));
 const ForgotPassword = lazy(() => import('~/pages/ForgotPassword'));
 const ResetPassword = lazy(() => import('~/pages/ResetPassword'));
+const AdminLayout = lazy(() => import('~/pages/AdminLayout'));
 const CheckEmailNoti = lazy(() => import('~/pages/CheckEmailNoti'));
 
 const NewMemberAccepted = lazy(() => import('~/components/NewMemberAccepted'));
@@ -39,6 +44,7 @@ interface Route {
     layout?: any;
     private?: boolean;
     children?: RouteChildren[];
+    role?: any;
 }
 
 interface RouteChildren {
@@ -112,6 +118,34 @@ const routes: Route[] = [
         component: VerifyEmail,
     },
     {
+        path: '/admin',
+        component: AdminLayout,
+        private: true,
+        layout: DefaultLayout,
+        children: [
+            {
+                path: 'censorPost',
+                component: Newsfeed,
+            },
+            {
+                path: 'manageAccount',
+                component: Profile,
+            },
+            {
+                path: 'manageMember',
+                component: Member
+            },
+            {
+                path: 'manageClass',
+                component: Class
+            },
+            {
+                path: 'manageLesson',
+                component: Lesson
+            }
+        ]
+    },
+    {
         path: '/class/:id',
         component: DetailClass,
         layout: DefaultLayout,
@@ -149,13 +183,32 @@ const routes: Route[] = [
                 component: HomeWork,
             },
             {
+                path: 'homework/:id/score',
+                component: ScoreHomework,
+            },
+            {
+                path: 'homework/:id/score/:itemId',
+                component: ScoreExecireItem,
+            },
+            {
+                path: 'meeting',
+                component: Meeting,
+            },
+            {
+                path: 'chat',
+                component: Chats,
+            },
+            {
+                path: 'chat',
+                component: HomeWork,
+            },
+            {
                 path: 'isTest/exam',
                 component: Exam,
             },
             {
                 path: 'content/:type',
                 component: Lesson,
-                
             },
 
             {
@@ -184,6 +237,12 @@ const routes: Route[] = [
         layout: Fragment,
         private: true,
     },
+    // {
+    //     path: '/class/:id/homework/:exerciseId/score',
+    //     component: ScoreHomework,
+    //     layout: DefaultLayout,
+    //     private: true,
+    // },
 
     {
         path: '/class/:id/isTest/exam/add',
@@ -197,7 +256,6 @@ const routes: Route[] = [
         layout: Fragment,
         private: true,
     },
-
 
     {
         path: '/class/:id/homework/:exerciseId/test',

@@ -22,14 +22,14 @@ import { toast } from 'react-toastify';
 function MultipleChoiceForm() {
     const { step, previous, next } = useStep();
 
-    const location  = useLocation()
+    const location = useLocation();
 
     const isExam = location.pathname.includes('exam');
 
     const navigate = useNavigate();
     const { mutate: mutateCreate } = useMutation(
         (data: FormMultipleChoiceInterface) => {
-            console.log("Data sent to getCreateMultipleChoice:", data);
+            console.log('Data sent to getCreateMultipleChoice:', data);
             return getCreateMultipleChoice(data);
         },
         {
@@ -39,8 +39,8 @@ function MultipleChoiceForm() {
             },
             onError() {
                 toast.error('Bạn không phải là giáo viên của lớp học này');
-            }
-        }
+            },
+        },
     );
 
     const { mutate: mutateUpdate } = useMutation(
@@ -50,18 +50,17 @@ function MultipleChoiceForm() {
             onSuccess() {
                 isExam ? navigate(`/class/${id}/isTest/exam`) : navigate(`/class/${id}/homework`);
                 toast.success('Chỉnh sửa bài tập thành công');
-            }
+            },
         },
     );
 
     const { id, exerciseId } = useParams();
 
-
     useEffect(() => {
         const fetchExerciseDetails = async () => {
             try {
                 const response = await getExercisesTeacher(exerciseId);
-                console.log("Assignment details received:", response);
+                console.log('Assignment details received:', response);
 
                 // Setting fetched PDF file URL to state
                 setPdfUrl(response.file);
@@ -72,10 +71,10 @@ function MultipleChoiceForm() {
                         fileQuestionUrl: response.file, // Set the file URL here
                         numberOfQuestions: response.answers.length,
                         totalMark: response.max_point,
-                    }
+                    },
                 });
             } catch (error) {
-                console.error("Error while fetching assignment details:", error);
+                console.error('Error while fetching assignment details:', error);
             }
         };
 
@@ -84,45 +83,46 @@ function MultipleChoiceForm() {
         }
     }, [exerciseId]);
 
-
     const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
     const handleFileUpload = (url: string) => {
         setPdfUrl(url);
     };
 
+    const handleComplete = useCallback(
+        (data: FormMultipleChoiceInterface) => {
+            const formattedData = {
+                excirse_id: exerciseId,
+                class_id: id,
+                name: data.name,
+                // file: data.multipleChoice.fileQuestionUrl || "",
+                file: pdfUrl || '',
+                password: data.password || '',
+                time_limit: data.time_limit,
+                deadline: data.deadline || undefined,
+                time_to_enable: data.time_to_enable || undefined,
+                is_test: Boolean(data.is_test),
+                student_role: data.student_role,
+                times_to_do: data.times_to_do,
+                point_type: data.point_type,
 
-    const handleComplete = useCallback((data: FormMultipleChoiceInterface) => {
-        const formattedData = {
-            excirse_id: exerciseId,
-            class_id: id,
-            name: data.name,
-            // file: data.multipleChoice.fileQuestionUrl || "", 
-            file: pdfUrl || "",
-            password: data.password || "",
-            time_limit: data.time_limit,
-            deadline: data.deadline || undefined,
-            time_to_enable: data.time_to_enable || undefined,
-            is_test: Boolean(data.is_test),
-            student_role: data.student_role,
-            times_to_do: data.times_to_do,
-            point_type: data.point_type,
+                max_point: Number(data.multipleChoice.mark) || 0,
+                answers: data.answers.map((item, index) => ({
+                    no: item.no || index + 1,
+                    type: item.type,
+                    answer: item.answer || '',
+                    point: item.point || 0,
+                })),
+            };
 
-            max_point: Number(data.multipleChoice.mark) || 0,
-            answers: data.answers.map((item, index) => ({
-                no: item.no || index + 1,
-                type: item.type,
-                answer: item.answer || "",
-                point: item.point || 0,
-            })),
-        };
-
-        if (Boolean(data?._id)) {
-            mutateUpdate(formattedData);
-        } else {
-            mutateCreate(formattedData);
-        }
-    }, [id, pdfUrl, mutateCreate, mutateUpdate]);
+            if (Boolean(data?._id)) {
+                mutateUpdate(formattedData);
+            } else {
+                mutateCreate(formattedData);
+            }
+        },
+        [id, pdfUrl, mutateCreate, mutateUpdate],
+    );
 
     const methods = useForm<FormMultipleChoiceInterface>({
         defaultValues: {
@@ -146,8 +146,8 @@ function MultipleChoiceForm() {
         mode: 'onChange',
     });
     const { getValues } = methods;
-    const numberOfQuestions = getValues("answers").length;
-    const totalMark = Number(getValues("multipleChoice.mark") || 10);
+    const numberOfQuestions = getValues('answers').length;
+    const totalMark = Number(getValues('multipleChoice.mark') || 10);
 
     const handleNext = useCallback(async () => {
         if (step === 1) {
@@ -167,8 +167,6 @@ function MultipleChoiceForm() {
         next();
     }, [step, methods, next]);
 
-
-
     return (
         <FormProvider {...methods}>
             <HeaderHomework
@@ -181,13 +179,21 @@ function MultipleChoiceForm() {
             <div>
                 <div className={'tw-grid tw-grid-cols-12 tw-gap-3'}>
                     <div className="tw-col-span-6">
-                        <PreviewFileMultipleChoice pdfUrl={pdfUrl} onFileUpload={handleFileUpload} />
+                        <PreviewFileMultipleChoice
+                            pdfUrl={pdfUrl}
+                            onFileUpload={handleFileUpload}
+                        />
                     </div>
                     <div className={'tw-col-span-6'}>
+                        <div>{/* <HeaderStepHomework step={step} /> */}</div>
                         <div>
-                            <HeaderStepHomework step={step} />
+                            {step === 1 && (
+                                <FormMultipleChoice
+                                    numberOfQuestions={numberOfQuestions}
+                                    totalMark={totalMark}
+                                />
+                            )}
                         </div>
-                        <div>{step === 1 && <FormMultipleChoice numberOfQuestions={numberOfQuestions} totalMark={totalMark} />}</div>
                         {step === 2 && <FormExercise />}
                     </div>
                 </div>

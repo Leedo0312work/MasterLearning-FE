@@ -15,7 +15,7 @@ import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import SummarizeIcon from '@mui/icons-material/Summarize';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useLocation, useParams } from 'react-router-dom';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import useDetailClass from '~/hooks/useDetailClass';
 import useRoleInClass from '~/hooks/useRoleInClass';
 import { Role } from '~/enums/role';
@@ -23,7 +23,7 @@ import ClassModalAddEdit from '~/components/ClassModalAddEdit';
 import useModal from '~/hooks/useModal';
 function SidebarClass() {
     const location = useLocation();
-
+    const [idEx, setIdEx] = useState<string>('');
     const role = useRoleInClass();
 
     const menu = useMemo(() => {
@@ -34,12 +34,7 @@ function SidebarClass() {
                 to: 'newsfeed',
                 show: true,
             },
-            // {
-            //     icon: EventNoteIcon,
-            //     text: 'Lịch học',
-            //     to: 'schedule',
-            //     show: true,
-            // },
+
             {
                 icon: PersonOutlineIcon,
                 text: 'Thành viên',
@@ -47,16 +42,21 @@ function SidebarClass() {
                 // show: role == Role.ADMIN,
                 show: true,
             },
-            // {
-            //     icon: WorkOutlineIcon,
-            //     text: 'Vai trò lớp',
-            //     to: 'assistance',
-            // },
-            // {
-            //     icon: PeopleOutlineIcon,
-            //     text: 'Nhóm hoc tập',
-            //     to: 'group',
-            // },
+
+            {
+                icon: PersonOutlineIcon,
+                text: 'Cuộc họp',
+                to: 'meeting',
+                // show: role == Role.ADMIN,
+                show: true,
+            },
+            {
+                icon: PersonOutlineIcon,
+                text: 'Thảo luận',
+                to: 'chat',
+                // show: role == Role.ADMIN,
+                show: true,
+            },
             {
                 icon: TaskIcon,
                 text: 'Bài tập',
@@ -93,8 +93,9 @@ function SidebarClass() {
 
     const active = useMemo(() => {
         const { pathname } = location;
-
         const result = menu.find((item) => pathname.includes(item.to));
+        setIdEx(pathname.split('/')[2]);
+        console.log('check result');
         return result?.to;
     }, [location]);
     const {
@@ -119,7 +120,7 @@ function SidebarClass() {
                                         active={item.to === active}
                                         key={index}
                                         Icon={item?.icon}
-                                        to={item?.to}
+                                        to={`/class/${idEx}/${item?.to}`}
                                         text={item?.text}
                                         footer={Boolean(item?.footer)}
                                     />
@@ -150,7 +151,7 @@ function SidebarClass() {
                 })}
             </div>
             <ClassModalAddEdit
-                subMitForm={() => {}}
+                subMitForm={() => { }}
                 openAddModal={openAddEditModal}
                 handleCloseAddModal={handleCloseAddEditModal}
                 title="Chỉnh sửa lớp học hiện tại"

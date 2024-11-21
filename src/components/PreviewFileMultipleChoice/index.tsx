@@ -3,14 +3,14 @@ import styles from './style.module.scss';
 import clsx from 'clsx';
 import mediaServices from '~/services/media';
 
-
 interface Prop {
     isFullScreen?: boolean;
     pdfUrl?: string | null; // Add pdfUrl prop
     onFileUpload?: (url: string) => void;
+    name?: string | null;
 }
 
-function PreviewFileMultipleChoice({ isFullScreen = false, pdfUrl, onFileUpload }: Prop) {
+function PreviewFileMultipleChoice({ isFullScreen = false, pdfUrl, name, onFileUpload }: Prop) {
     const [fileName, setFileName] = useState<string | null>(null);
 
     const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,16 +54,21 @@ function PreviewFileMultipleChoice({ isFullScreen = false, pdfUrl, onFileUpload 
             {pdfUrl && (
                 <div>
                     <div className={styles.mediaItem}>
-                        <embed
-                            src={pdfUrl}
-                            type="application/pdf"
-                            width="100%"
-                            height="600px"
-                        />
-                        <div className={styles.mediaInfo}>
-                            <span>{fileName || "No name available"}</span>
-                            <button onClick={removePdf} className={styles.removeButton}>Xóa</button>
-                        </div>
+                        <embed src={pdfUrl} type="application/pdf" width="100%" height="660px" />
+                        {!name ? (
+                            <div className={styles.mediaInfo}>
+                                <div>
+                                    <span>{fileName || 'No name available'}</span>
+                                    <button onClick={removePdf} className={styles.removeButton}>
+                                        Xóa
+                                    </button>
+                                </div>
+                            </div>
+                        ) : (
+                            <span style={{ marginLeft: 12, paddingTop: 6, color: '#333' }}>
+                                {name}
+                            </span>
+                        )}
                     </div>
                 </div>
             )}

@@ -7,10 +7,8 @@ import ProfileInfoItem from '~/components/ProfileInfoItem';
 import { getMe, getUpdateMe } from '~/repositories/auth';
 import ModalEditProfile from '../ModalEditProfile';
 import { toast } from 'react-toastify';
+import mediaServices from '~/services/media';
 
-const onChangeFile = (e: any) => {
-    console.log(e);
-};
 
 function ProfileAccountInfo() {
     const [dataProfile, setDataProfile] = useState<any>(null);
@@ -69,6 +67,29 @@ function ProfileAccountInfo() {
             console.error('Cập nhật thông tin không thành công:', error);
         }
     };
+
+    const onChangeFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+    
+        try {
+            const response = await mediaServices.uploadImage(file);
+            const avatarUrl = response?.result?.[0]?.url;
+
+            console.log("avatar", avatarUrl)
+            if (avatarUrl) {
+                await handleSubmit({
+                    name: dataProfile?.name || '',
+                    date_of_birth: dataProfile?.date_of_birth || '',
+                    avatar: avatarUrl,
+                });
+            }
+        } catch (error) {
+            console.error('Lỗi khi tải ảnh lên:', error);
+            toast.error('Tải ảnh lên không thành công');
+        }
+    };
+    
 
     return (
         <div className={styles.wrap}>

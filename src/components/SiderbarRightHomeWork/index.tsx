@@ -15,7 +15,7 @@ import dayjs from '~/packages/dayjs';
 import { IExercise } from '~/models/IExercise';
 import { getExerciseStudentRole, getTextExerciseMode } from '~/enums/exercise';
 import PermissionWrapper from '~/components/PermissionWrapper';
-import { Role } from '~/enums/role';
+import { Role, RoleInClass } from '~/enums/role';
 import { getListExercisesStudent, getDeleteMultipleChoice } from '~/repositories/exercise';
 import { Modal } from 'antd';
 import { toast } from 'react-toastify';
@@ -23,17 +23,15 @@ import useAuthStore from '~/store/useAuthStore';
 
 const { confirm } = Modal;
 
-
 function SiderbarRightHomeWork() {
     const id = useExercisesInClassStore((state) => state._id);
     const { id: classId, _id: exerciseId } = useParams();
     const [data, setData] = useState<IExercise[]>([]);
-
+    const [disable, setDisable] = useState<boolean>(false);
     const user = useAuthStore((state) => state.user);
-
     const queryClient = useQueryClient();
 
-    const location  = useLocation()
+    const location = useLocation();
 
     const isExam = location.pathname.includes('exam');
 
@@ -48,23 +46,22 @@ function SiderbarRightHomeWork() {
         };
         fetchData();
     }, [classId]);
-
     const exercise = useMemo(() => data.find((item) => item._id === id), [id, data]);
 
     const { mutate: handleDelete } = useMutation(
         'delete',
-        () => getDeleteMultipleChoice({
-            id: exercise?._id
-        }),
+        () =>
+            getDeleteMultipleChoice({
+                id: exercise?._id,
+            }),
         {
             onSuccess: () => {
                 setData((prevData) => prevData.filter((item) => item._id !== exercise?._id));
-                console.log('Exercise deleted successfully');
                 queryClient.invalidateQueries(['exercises', classId]);
             },
             onError: (error) => {
                 console.error('Failed to delete exercise:', error);
-            }
+            },
         },
     );
 
@@ -76,16 +73,15 @@ function SiderbarRightHomeWork() {
             cancelText: 'Hủy',
             onOk() {
                 handleDelete();
-                toast.success("Xoá bài tập thành công")
+                toast.success('Xoá bài tập thành công');
             },
             onCancel() {
                 console.log('Hủy xóa');
             },
         });
     };
-
-    return (
-        <div className={styles.wrap}>
+    const renderSiderRight = useMemo(() => {
+        return (
             <div className={styles.top}>
                 <h3 className={styles.header_top}>{exercise?.name}</h3>
                 <div className={styles.share}></div>
@@ -102,68 +98,97 @@ function SiderbarRightHomeWork() {
                         name="Ngày tạo"
                         value={dayjs(exercise?.created_at).format('DD/MM/YYYY')}
                     />
-                    {isExam ? <>
-                        <SiderbarRightHomeWorkTitleItem
-                        name="Bắt đầu"
-                        value={
-                            exercise?.time_to_enable
-                                ? dayjs(exercise?.time_to_enable).format('HH:mm DD/MM/YYYY')
-                                : 'Không có'
-                        }
-                        />
-                        <SiderbarRightHomeWorkTitleItem
-                            name="Hạn chót"
-                            value={
-                                exercise?.deadline
-                                    ? dayjs(exercise?.deadline).format('HH:mm DD/MM/YYYY')
-                                    : 'Không có'
-                            }
-                        />
-                    </> : <></>}
+                    {isExam ? (
+                        <>
+                            <SiderbarRightHomeWorkTitleItem
+                                name="Bắt đầu"
+                                value={
+                                    exercise?.time_to_enable
+                                        ? dayjs(exercise?.time_to_enable).format('HH:mm DD/MM/YYYY')
+                                        : 'Không có'
+                                }
+                            />
+                            <SiderbarRightHomeWorkTitleItem
+                                name="Hạn chót"
+                                value={
+                                    exercise?.deadline
+                                        ? dayjs(exercise?.deadline).format('HH:mm DD/MM/YYYY')
+                                        : 'Không có'
+                                }
+                            />
+                        </>
+                    ) : (
+                        <></>
+                    )}
 
                     <SiderbarRightHomeWorkTitleItem
                         name="Thời lượng"
                         value={exercise?.time_limit.toString()}
                     />
-                    <SiderbarRightHomeWorkTitleItem name="Đã làm" value="0/0" />
+                    <SiderbarRightHomeWorkTitleItem
+                        name="Đã làm"
+                        value={
+                            exercise?.done_count != undefined
+                                ? `${exercise?.done_count}/${exercise?.times_to_do}`
+                                : ''
+                        }
+                    />
                     <SiderbarRightHomeWorkTitleItem
                         name="Cho phép"
                         value={getExerciseStudentRole(exercise?.student_role)}
                     />
-                   
                 </div>
             </div>
-            <div className={styles.bottom}>
-                <PermissionWrapper role={Role.ADMIN}>
-                    <SiderbarRightHomeWorkSettingItem
-                        to=""
-                        name="Làm thử"
-                        Icon={OndemandVideoIcon}
-                    />
-                </PermissionWrapper>
-                <PermissionWrapper role={Role.STUDENT}>
-                    <SiderbarRightHomeWorkSettingItem
-                        to={`/class/${classId}/homework/${exercise?._id}/do`}
-                        name="Vào thi"
-                        Icon={OndemandVideoIcon}
-                    />
-                </PermissionWrapper>
-                {
-                    user?.role === 2 && (
-                        <>
+        );
+    }, [exercise]);
+    console.log('check exercise', exercise);
+    return (
+        <div className={styles.wrap}>
+            {renderSiderRight}
+            {id && (
+                <div className={styles.bottom}>
+                    <PermissionWrapper role={RoleInClass.Teacher}>
                         <SiderbarRightHomeWorkSettingItem
-                            to={`/class/${classId}/homework/${exercise?._id}/edit`}
-                            name="Chỉnh sửa"
-                            Icon={BorderColorIcon}
+                            to=""
+                            name="Làm thử"
+                            Icon={OndemandVideoIcon}
                         />
-                        <div className={styles.bottom_item} onClick={confirmDelete}>
-                            <h4 className={styles.name}>Xóa</h4>
-                            <DeleteOutlineIcon />
-                        </div>
-                    </>
-                    )
-                }
-            </div>
+                    </PermissionWrapper>
+                    <PermissionWrapper role={RoleInClass.Teacher}>
+                        <SiderbarRightHomeWorkSettingItem
+                            to={`/class/${classId}/homework/${exercise?._id}/score`}
+                            name="Chấm điểm"
+                            Icon={OndemandVideoIcon}
+                        />
+                    </PermissionWrapper>
+                    <PermissionWrapper role={RoleInClass.Student}>
+                        <SiderbarRightHomeWorkSettingItem
+                            disable={
+                                typeof exercise?.done_count === 'number' &&
+                                typeof exercise?.times_to_do === 'number' &&
+                                exercise.done_count >= exercise.times_to_do
+                            }
+                            to={`/class/${classId}/homework/${exercise?._id}/do`}
+                            name="Vào thi"
+                            Icon={OndemandVideoIcon}
+                        />
+                    </PermissionWrapper>
+
+                    {user?.role === 2 && (
+                        <>
+                            <SiderbarRightHomeWorkSettingItem
+                                to={`/class/${classId}/homework/${exercise?._id}/edit`}
+                                name="Chỉnh sửa"
+                                Icon={BorderColorIcon}
+                            />
+                            <div className={styles.bottom_item} onClick={confirmDelete}>
+                                <h4 className={styles.name}>Xóa</h4>
+                                <DeleteOutlineIcon />
+                            </div>
+                        </>
+                    )}
+                </div>
+            )}
         </div>
     );
 }

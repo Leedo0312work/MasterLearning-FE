@@ -8,7 +8,7 @@ class UserServices {
         const response = await axiosIns.getAuth("/users/get-me", (res) => {
             const user = res.data.result;
             localStorage.setItem("user", JSON.stringify(user));
-            
+
         });
         return response;
     }

@@ -9,7 +9,7 @@ import { bootstrap } from '~/packages/socket';
 import { Spin } from 'antd';
 
 function App() {
-    const { fetchUser, isFetchedUser } = useAuthStore((state) => state);
+    const { fetchUser, isFetchedUser }: any = useAuthStore((state) => state);
 
     useEffect(() => {
         bootstrap();
@@ -76,7 +76,7 @@ function App() {
                                     </Route>
                                 );
                             })}
-                            )
+
                         </Routes>
                     </BrowserRouter>
                 </Suspense>

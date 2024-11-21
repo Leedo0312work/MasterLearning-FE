@@ -75,6 +75,21 @@ const CreatePost: React.FC<any> = ({ class_id, refetchPosts }) => {
         return imageTypes.includes(file.type);
     };
 
+    // const itemRender = (originNode: React.ReactNode, file: UploadFile) => {
+    //     if (isImage(file.originFileObj as any)) {
+    //         return originNode; // Display images as usual
+    //     } 
+    //     else if (file?.type?.startsWith("video/")) {
+    //         // Render a video element for video files
+    //         return (
+    //             <video width="100%" controls>
+    //                 <source src={file.thumbUrl || URL.createObjectURL(file.originFileObj)} type={file.type} />
+    //                 Your browser does not support the video tag.
+    //             </video>
+    //         );
+    //     }
+    //     return originNode; // Fallback for other types
+    // };
     const itemRender = (originNode: React.ReactNode, file: UploadFile) => {
         if (isImage(file.originFileObj as any)) {
             return originNode; // Display images as usual
@@ -102,6 +117,7 @@ const CreatePost: React.FC<any> = ({ class_id, refetchPosts }) => {
         }
         return originNode; // Fallback for other types
     };
+
 
     const handleCreate = async () => {
         if (!content) {
@@ -173,38 +189,39 @@ const CreatePost: React.FC<any> = ({ class_id, refetchPosts }) => {
                         />
                     </div>
                 </div>
-                {showFooter && (
-                    <div className={styles.footer}>
-                        <Button
-                            sx={{ fontSize: 14 }}
-                            className={clsx(styles.button, styles.addImg)}
-                            onClick={() => setUploadMedia(!uploadMedia)}
+                <div className={styles.footer}>
+                    <Button
+                        sx={{ fontSize: 14 }}
+                        className={clsx(styles.button, styles.addImg)}
+                        onClick={() => setUploadMedia(!uploadMedia)}
+                    >
+                        <Upload
+                            multiple
+                            listType="picture-card"
+                            fileList={mediaList}
+                            onChange={handleUploadChange}
+                            itemRender={itemRender}
+                            onRemove={handleRemove}
+                            isImageUrl={customIsImageUrl}
+                            beforeUpload={(file) => {
+                                const isImageOrVideo =
+                                    file.type.startsWith("image/") ||
+                                    file.type.startsWith("video/");
+                                if (!isImageOrVideo) {
+                                    message.error(
+                                        "Bạn chỉ có thể upload file ảnh hoặc video!"
+                                    );
+                                }
+                                return false;
+                            }}
                         >
-                            <Upload
-                                multiple
-                                listType="picture-card"
-                                fileList={mediaList}
-                                onChange={handleUploadChange}
-                                itemRender={itemRender}
-                                onRemove={handleRemove}
-                                isImageUrl={customIsImageUrl}
-                                beforeUpload={(file) => {
-                                    const isImageOrVideo =
-                                        file.type.startsWith('image/') ||
-                                        file.type.startsWith('video/');
-                                    if (!isImageOrVideo) {
-                                        message.error('Bạn chỉ có thể upload file ảnh hoặc video!');
-                                    }
-                                    return false;
-                                }}
-                            >
-                                <div>
-                                    <PlusOutlined />
-                                    <div style={{ marginTop: 8 }}>Thêm hình</div>
-                                </div>
-                            </Upload>
-                        </Button>
-                        {/* {uploadMedia && (
+                            <div>
+                                <PlusOutlined />
+                                <div style={{ marginTop: 8 }}>Thêm hình</div>
+                            </div>
+                        </Upload>
+                    </Button>
+                    {/* {uploadMedia && (
                         <Upload
                             multiple
                             listType="picture-card"
@@ -231,15 +248,15 @@ const CreatePost: React.FC<any> = ({ class_id, refetchPosts }) => {
                             </div>
                         </Upload>
                     )} */}
-                        <Button
-                            onClick={handleCreate}
-                            sx={{ fontSize: 14 }}
-                            className={clsx(styles.button, styles.post)}
-                        >
-                            Đăng tin
-                        </Button>
-                    </div>
-                )}
+                    <Button
+                        onClick={handleCreate}
+
+                        sx={{ fontSize: 14 }}
+                        className={clsx(styles.button, styles.post)}
+                    >
+                        Đăng tin
+                    </Button>
+                </div>
             </Box>
         </div>
     );
