@@ -15,14 +15,21 @@ function DocumentTableHeader() {
                     <div className={styles.table_header_left_icon}>
                         <GroupAddIcon sx={{ fontSize: 16 }} />
                     </div>
-                    <div className={styles.table_header_left_text}>Tài liệu kiểm duyệt</div>
+                    <div className={styles.table_header_left_text}>Tổng tài liệu</div>
                 </div>
 
                 <div className={styles.table_header_left}>
                     <div className={styles.table_header_left_icon}>
                         <GroupAddIcon sx={{ fontSize: 16 }} />
                     </div>
-                    <div className={styles.table_header_left_text}>Tài liệu chưa kiểm duyệt</div>
+                    <div className={styles.table_header_left_text}>Chưa kiểm duyệt</div>
+                </div>
+
+                <div className={styles.table_header_left}>
+                    <div className={styles.table_header_left_icon}>
+                        <GroupAddIcon sx={{ fontSize: 16 }} />
+                    </div>
+                    <div className={styles.table_header_left_text}>Đã kiểm duyệt</div>
                 </div>
 
                 <div className={styles.table_header_mid}>

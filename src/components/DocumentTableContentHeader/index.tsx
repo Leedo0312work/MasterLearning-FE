@@ -14,11 +14,11 @@ function MemberTableContentHeader() {
                         <ArrowUpwardIcon sx={{ fontSize: 18, color: '#65697B' }} />
                     </div>
                 </div>
-                <div className={styles.path_2}>Mô tả</div>
-                <div className={styles.path_3}>Giáo viên</div>
-                <div className={styles.path_4}>lớp</div>
-                <div className={styles.path_5}>Hành động</div>
-                <div className={styles.path_6}></div>
+                <div className={styles.path_2}></div>
+                <div className={styles.path_3}>Thời gian tạo</div>
+                <div className={styles.path_4}>Lớp</div>
+                <div className={styles.path_5}>Giáo viên</div>
+                <div className={styles.path_6}>Hành động</div>
             </div>
         </div>
     );

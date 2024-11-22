@@ -5,16 +5,7 @@ import Avatar from '@mui/material/Avatar';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import PropTypes from 'prop-types';
 import { memo } from 'react';
-function DocumentTableContentItem({
-    avatar,
-    name,
-    school,
-    classes,
-    phone,
-    id,
-    handleOpenModalEdit = () => {},
-    handleDelete,
-}) {
+function DocumentTableContentItem({ avatar, name, school, classes, phone }) {
     return (
         <div className={styles.wrap}>
             <div className={styles.item}>
@@ -26,7 +17,7 @@ function DocumentTableContentItem({
                     <div className={styles.right_path_1}></div>
                 </div>
                 <div className={styles.path_2}>
-                    <div className={styles.icon} onClick={handleOpenModalEdit}>
+                    <div className={styles.icon}>
                         <EditIcon sx={{ fontSize: 22, color: '#65697B', margin: 'auto' }} />
                     </div>
                 </div>
@@ -34,10 +25,7 @@ function DocumentTableContentItem({
                 <div className={styles.path_4}>{classes}</div>
                 <div className={styles.path_5}>{phone}</div>
                 <div className={styles.path_6}>
-                    <div
-                        className={styles.icon}
-                        onClick={({ a = name, idUser = id }) => handleDelete(a, idUser)}
-                    >
+                    <div className={styles.icon}>
                         <DeleteOutlineIcon
                             sx={{ fontSize: 22, color: '#65697B', margin: 'auto' }}
                         />

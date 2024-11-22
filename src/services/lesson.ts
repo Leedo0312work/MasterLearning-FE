@@ -26,6 +26,7 @@ export const fetchDeleteLesson = (id: string) => {
 };
 
 export const fetchNotCensoredLessons = (type: number) => {
+    console.log('type: ', type);
     return API.get('/lessons/not-censored', {
         data: { type },
     });

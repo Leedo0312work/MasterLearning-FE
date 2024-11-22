@@ -7,24 +7,18 @@ import styles from './styles.module.css';
 import { ConfirmProvider } from 'material-ui-confirm';
 import DocumentTableContentItem from '~/components/DocumentTableContentItem';
 import DocumentTableHeader from '~/components/DocumentTableHeader';
-// interface ILesson {
-//     _id: string;
-//     name: string;
-//     description: string;
-//     media: { url: string, type: number }[];
-//     censored: boolean;
-// }
+import SiderbarRightMember from '~/components/SiderbarRightMember';
+import DocumentSiderbarRight from '~/components/DocumentRightSideBar';
 
 const CensorDocumentUI: React.FC = () => {
     const [lessons, setLessons] = useState<ILesson[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
 
-    console.log('access!!!');
     // Lấy danh sách tài liệu chưa kiểm duyệt
     const fetchLessons = async () => {
         setLoading(true);
         try {
-            const lessons = await getNotCensoredLessons(0); // Giả sử type = 0 là tài liệu chưa kiểm duyệt
+            const lessons = await getNotCensoredLessons();
             setLessons(lessons);
         } catch (error) {
             console.error('Error fetching lessons:', error);
@@ -54,9 +48,9 @@ const CensorDocumentUI: React.FC = () => {
                 <div className={styles.table}>
                     <DocumentTableHeader />
                     <DocumentTableContentHeader />
-                    {/* <ConfirmProvider>
+                    <ConfirmProvider>
                         <div className={styles.listStudent}>
-                            {listStudent?.map((item: any, index: any) => (
+                            {lessons?.map((item: any, index: any) => (
                                 <DocumentTableContentItem
                                     key={item?.id}
                                     avatar={item?.profile?.avatar}
@@ -64,19 +58,12 @@ const CensorDocumentUI: React.FC = () => {
                                     classes={item?.classes}
                                     school={item?.school}
                                     phone={item?.phone}
-                                    id={item?.id}
-                                    handleOpenModalEdit={handleOpenModalEdit}
-                                    handleDelete={handleDelete}
                                 />
                             ))}
                         </div>
-                    </ConfirmProvider> */}
+                    </ConfirmProvider>
                 </div>
-                {/* <SiderbarRightMember
-                    handleAcceptAll={handleAcceptAll}
-                    data={listPendingMember}
-                    handleAcceptMember={handleAcceptMember}
-                /> */}
+                <DocumentSiderbarRight />
             </div>
         </div>
     );

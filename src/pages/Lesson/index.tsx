@@ -16,8 +16,6 @@ function Lesson() {
     const { lessons, setLessons } = useLessonStore((state) => state); // lấy `lessons` từ `useLessonStore`
     const queryClient = useQueryClient();
 
-    console.log('Class ID from URL:', classId);
-
     const {
         data: fetchedLessons,
         isLoading,

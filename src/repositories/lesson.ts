@@ -63,9 +63,11 @@ export const deleteLesson = async (id: string): Promise<ResponseAPI> => {
     }
 };
 
-export const getNotCensoredLessons = async (type: number): Promise<ILesson[]> => {
+export const getNotCensoredLessons = async (): Promise<ILesson[]> => {
     try {
-        const response = await fetchNotCensoredLessons(type);
+        const response = await fetchNotCensoredLessons(0);
+
+        console.log('response: ', response);
         if (response?.data?.result) {
             return response.data.result;
         } else {
