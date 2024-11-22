@@ -9,7 +9,6 @@ import { censorLesson } from '~/repositories/lesson';
 function DocumentSiderbarRightItem({ name, classId, censorData, onReject }) {
     const [data, setData] = useState<any>();
     const [openModal, setOpenModal] = useState(false);
-    const [selectedCensorData, setSelectedCensorData] = useState<any>(censorData);
 
     const fetchClass = async () => {
         try {
@@ -28,17 +27,18 @@ function DocumentSiderbarRightItem({ name, classId, censorData, onReject }) {
     const handleCloseModal = () => setOpenModal(false);
 
     const handleCensor = async () => {
-        try {
-            await censorLesson(selectedCensorData.id);
-            alert('Tài liệu đã được kiểm duyệt.');
-            handleCloseModal();
-        } catch (error) {
-            console.error('Lỗi khi kiểm duyệt tài liệu:', error);
-            alert('Đã xảy ra lỗi khi kiểm duyệt tài liệu.');
-        }
+        console.log('id censor: ', censorData.id);
+        // try {
+        //     await censorLesson(censorData.id);
+        //     alert('Tài liệu đã được kiểm duyệt.');
+        //     handleCloseModal();
+        // } catch (error) {
+        //     console.error('Lỗi khi kiểm duyệt tài liệu:', error);
+        //     alert('Đã xảy ra lỗi khi kiểm duyệt tài liệu.');
+        // }
     };
 
-    console.log('selectedCensorData', selectedCensorData);
+    console.log('censorData', censorData);
 
     const handleReject = () => {
         // Hiển thị thông báo xác nhận khi nhấn Từ chối
@@ -48,12 +48,10 @@ function DocumentSiderbarRightItem({ name, classId, censorData, onReject }) {
             okText: 'Xác nhận',
             cancelText: 'Hủy',
             onOk: () => {
-                // Khi nhấn xác nhận từ chối, xóa tài liệu khỏi danh sách
-                onReject(selectedCensorData.id); // Gọi hàm từ component cha để xóa tài liệu
+                onReject(censorData.id);
                 handleCloseModal();
             },
             onCancel: () => {
-                // Khi hủy, không làm gì cả
                 console.log('Từ chối hủy bỏ');
             },
         });
@@ -92,45 +90,30 @@ function DocumentSiderbarRightItem({ name, classId, censorData, onReject }) {
                     </Button>,
                 ]}
             >
-                {selectedCensorData && (
+                {censorData && (
                     <div className={styles.modalBody}>
                         {/* Hiển thị dữ liệu được chọn */}
-                        <Typography.Text strong>Tên tài liệu:</Typography.Text>{' '}
-                        {selectedCensorData?.name}
+                        <Typography.Text strong>Tên tài liệu:</Typography.Text> {censorData?.name}
                         <br />
-                        <Typography.Text strong>Mô tả:</Typography.Text>{' '}
-                        {selectedCensorData?.description}
+                        <Typography.Text strong>Mô tả:</Typography.Text> {censorData?.description}
                         <br />
                         <Typography.Text strong>Thời gian tạo:</Typography.Text>{' '}
-                        {selectedCensorData?.created_at}
+                        {censorData?.created_at}
                         <br />
                         <div>
                             <Typography.Text strong>Media:</Typography.Text>
                             <div style={{ width: '100%', height: '50vh' }}>
                                 <iframe
-                                    src={selectedCensorData?.media[0]?.url}
+                                    src={censorData?.media[0]?.url}
                                     width="100%"
                                     height="100%"
                                     style={{ border: 'none' }}
                                     title="PDF Viewer"
                                 />
                             </div>
-                            {/* <ul>
-                                {selectedCensorData?.media?.map((media: any, index: number) => (
-                                    <li key={index}>
-                                        <a
-                                            href={media?.url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            {media?.url}
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul> */}
                         </div>
                         {/* Hiển thị thông tin lớp và giáo viên từ `data` */}
-                        <Typography.Text strong>Lớp:</Typography.Text> {data?.name}
+                        <Typography.Text strong>Loại:</Typography.Text> {data?.name}
                         <br />
                         <Typography.Text strong>Giáo viên:</Typography.Text>{' '}
                         {data?.teacher_info[0]?.name}

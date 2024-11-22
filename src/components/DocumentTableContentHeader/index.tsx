@@ -3,7 +3,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import EditIcon from '@mui/icons-material/Edit';
 import Avatar from '@mui/material/Avatar';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-function MemberTableContentHeader() {
+function DocumentTableContentHeader() {
     return (
         <div className={styles.wrap}>
             <div className={styles.item}>
@@ -24,4 +24,4 @@ function MemberTableContentHeader() {
     );
 }
 
-export default MemberTableContentHeader;
+export default DocumentTableContentHeader;
