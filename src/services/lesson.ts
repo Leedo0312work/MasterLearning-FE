@@ -25,10 +25,11 @@ export const fetchDeleteLesson = (id: string) => {
     });
 };
 
-export const fetchNotCensoredLessons = (type: number) => {
+export const fetchNotCensoredLessons = (type: number, isAll: boolean) => {
     console.log('type: ', type);
-    return API.get('/lessons/not-censored', {
-        data: { type },
+    return API.post('/lessons/not-censored', {
+        type,
+        isAll,
     });
 };
 

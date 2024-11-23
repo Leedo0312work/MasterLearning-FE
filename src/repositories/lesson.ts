@@ -63,9 +63,9 @@ export const deleteLesson = async (id: string): Promise<ResponseAPI> => {
     }
 };
 
-export const getNotCensoredLessons = async (): Promise<ILesson[]> => {
+export const getNotCensoredLessons = async (type: number, isAll: boolean): Promise<ILesson[]> => {
     try {
-        const response = await fetchNotCensoredLessons(0);
+        const response = await fetchNotCensoredLessons(type, isAll);
 
         console.log('response: ', response);
         if (response?.data?.result) {
@@ -82,7 +82,8 @@ export const getNotCensoredLessons = async (): Promise<ILesson[]> => {
 export const censorLesson = async (lessonId: string): Promise<void> => {
     try {
         const response = await fetchCensorLesson(lessonId);
-        if (response?.data?.success) {
+        console.log('response: ', response);
+        if (response?.status === 200) {
             console.log('Lesson censored successfully');
         } else {
             throw new Error('Failed to censor lesson');

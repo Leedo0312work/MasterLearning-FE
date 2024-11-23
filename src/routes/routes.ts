@@ -2,6 +2,9 @@ import React, { ExoticComponent, Fragment, lazy, ReactNode } from 'react';
 
 import DefaultLayout from '~/layout/Default';
 
+const CensorLessonUI = lazy(() => import('~/pages/Admin/LessonManagementUI'));
+const CensorDocumentUI = lazy(() => import('~/pages/Admin/DocumentManagementUI'));
+
 const Chats = lazy(() => import('~/pages/Chats'));
 const Home = lazy(() => import('~/pages/Home'));
 const Meeting = lazy(() => import('~/pages/Meeting'));
@@ -32,8 +35,6 @@ const ForgotPassword = lazy(() => import('~/pages/ForgotPassword'));
 const ResetPassword = lazy(() => import('~/pages/ResetPassword'));
 const AdminLayout = lazy(() => import('~/pages/AdminLayout'));
 const CheckEmailNoti = lazy(() => import('~/pages/CheckEmailNoti'));
-
-const CensorDocumentUI = lazy(() => import('~/pages/Admin/DocumentManagement'));
 
 const NewMemberAccepted = lazy(() => import('~/components/NewMemberAccepted'));
 const NewMemberPending = lazy(() => import('~/components/NewMemberPending'));
@@ -142,16 +143,20 @@ const routes: Route[] = [
             },
             {
                 path: 'manageLesson',
-                component: Lesson,
+                component: CensorLessonUI,
             },
             {
-                path: 'censorLesson',
-                component: Lesson,
-            },
-            {
-                path: 'censorDocument',
+                path: 'manageDocument',
                 component: CensorDocumentUI,
             },
+            // {
+            //     path: 'censorLesson',
+            //     component: Lesson,
+            // },
+            // {
+            //     path: 'censorDocument',
+            //     component: CensorDocumentUI,
+            // },
         ],
     },
     {
