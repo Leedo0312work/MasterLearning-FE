@@ -2,6 +2,8 @@ import React, { ExoticComponent, Fragment, lazy, ReactNode } from 'react';
 
 import DefaultLayout from '~/layout/Default';
 
+const CensorLessonUI = lazy(() => import('~/pages/Admin/LessonManagementUI'));
+const CensorDocumentUI = lazy(() => import('~/pages/Admin/DocumentManagementUI'));
 
 const Chats = lazy(() => import('~/pages/Chats'));
 const Home = lazy(() => import('~/pages/Home'));
@@ -133,17 +135,29 @@ const routes: Route[] = [
             },
             {
                 path: 'manageMember',
-                component: Member
+                component: Member,
             },
             {
                 path: 'manageClass',
-                component: Class
+                component: Class,
             },
             {
                 path: 'manageLesson',
-                component: Lesson
-            }
-        ]
+                component: CensorLessonUI,
+            },
+            {
+                path: 'manageDocument',
+                component: CensorDocumentUI,
+            },
+            // {
+            //     path: 'censorLesson',
+            //     component: Lesson,
+            // },
+            // {
+            //     path: 'censorDocument',
+            //     component: CensorDocumentUI,
+            // },
+        ],
     },
     {
         path: '/class/:id',
