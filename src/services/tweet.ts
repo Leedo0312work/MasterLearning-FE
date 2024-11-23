@@ -47,6 +47,14 @@ class TweetServices {
         const response = await axiosIns.postAuth(`/tweets/update/${postId}`, data);
         return response?.data;
     }
+    async getListNotCensor(data: any) {
+        const response = await axiosIns.getAuth(`/tweets/not-censored?limit=${data.limit}&page=${data.page}`);
+        return response?.data;
+    }
+    async postCensor(tweet_id: string) {
+        const response = await axiosIns.postAuth(`/tweets/censor`, tweet_id);
+        return response?.data;
+    }
 }
 
 const tweetServices = new TweetServices();

@@ -1,0 +1,55 @@
+.wrap {
+    display: flex;
+    height: calc(100vh - 64px);
+    box-sizing: border-box;
+}
+.content {
+    flex: 1;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+.wrap {
+    background-color: rgb(240, 242, 245);
+    font-size: 14px;
+    color: #202227;
+    box-sizing: border-box;
+    display: flex;
+    font-weight: 500;
+    border-bottom: 1px solid #d8dcf0;
+    height: 100%;
+    overflow-y: auto;
+    flex-direction: column;
+    align-items: center;
+}
+.createPost {
+    width: 70%;
+    margin-bottom: 20px;
+}
+.listPost {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 28px;
+    align-items: center;
+    /* width: 74% !important; */
+}
+.postItem {
+    margin-top: 20px;
+    display: flex;
+    width: 70%;
+    display: inline-block;
+}
+.scrollContent {
+    display: flex;
+    flex-direction: column;
+    width: 750px;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.scrollContent::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
+}
+

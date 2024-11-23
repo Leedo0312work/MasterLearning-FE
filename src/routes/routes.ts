@@ -31,6 +31,7 @@ const ForgotPassword = lazy(() => import('~/pages/ForgotPassword'));
 const ResetPassword = lazy(() => import('~/pages/ResetPassword'));
 const AdminLayout = lazy(() => import('~/pages/AdminLayout'));
 const CheckEmailNoti = lazy(() => import('~/pages/CheckEmailNoti'));
+const CensorPost = lazy(() => import('~/pages/CensorPost'));
 
 const NewMemberAccepted = lazy(() => import('~/components/NewMemberAccepted'));
 const NewMemberPending = lazy(() => import('~/components/NewMemberPending'));
@@ -123,7 +124,7 @@ const routes: Route[] = [
         children: [
             {
                 path: 'censorPost',
-                component: Newsfeed,
+                component: CensorPost,
             },
             {
                 path: 'manageAccount',
