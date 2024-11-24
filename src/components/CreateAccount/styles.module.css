@@ -1,0 +1,14 @@
+.btnAdd {
+    background-color: rgb(74, 128, 252);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    display: flex;
+    align-items: center;
+}
+
+.btnAdd:hover {
+    cursor: pointer;
+    background-color: rgb(71, 120, 235);
+}

@@ -39,6 +39,8 @@ const CheckEmailNoti = lazy(() => import('~/pages/CheckEmailNoti'));
 const NewMemberAccepted = lazy(() => import('~/components/NewMemberAccepted'));
 const NewMemberPending = lazy(() => import('~/components/NewMemberPending'));
 const Exam = lazy(() => import('~/pages/Exam'));
+const ManageAccount = lazy(() => import('~/pages/ManageAccount'));
+
 
 interface Route {
     path: string;
@@ -131,7 +133,7 @@ const routes: Route[] = [
             },
             {
                 path: 'manageAccount',
-                component: Profile,
+                component: ManageAccount,
             },
             {
                 path: 'manageMember',
