@@ -69,7 +69,7 @@ export default function SignInSide() {
                 axiosIns.getAuth("/users/get-me").then((response) => {
                     const roleUser = response?.data.result.role;
                     console.log('data: ', data);
-                    if (roleUser == 2) {
+                    if (roleUser == 3) {
                         window.location.href = '/admin';
                     } else {
                         setUser(data.result.user);
