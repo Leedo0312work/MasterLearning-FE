@@ -10,7 +10,8 @@ function AdminLayout() {
                 {/* <Header /> */}
                 <SidebarClassAdmin />
             </div>
-            <div className={"tw-ml-[240px]"}>
+
+            <div className={'tw-ml-[240px]'}>
                 <Outlet />
             </div>
         </div>
