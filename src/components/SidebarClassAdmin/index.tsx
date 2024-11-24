@@ -21,6 +21,8 @@ import useRoleInClass from '~/hooks/useRoleInClass';
 import { Role } from '~/enums/role';
 import ClassModalAddEdit from '~/components/ClassModalAddEdit';
 import useModal from '~/hooks/useModal';
+import CastForEducationIcon from '@mui/icons-material/CastForEducation';
+
 function SidebarClassAdmin() {
     const location = useLocation();
 
@@ -64,10 +66,12 @@ function SidebarClassAdmin() {
                 to: 'manageLesson',
                 show: true,
             },
-
-
-
-
+            {
+                icon: CastForEducationIcon,
+                text: 'Quản lý tài liệu',
+                to: 'manageDocument',
+                show: true,
+            },
         ];
     }, [role]);
 
@@ -100,12 +104,11 @@ function SidebarClassAdmin() {
                                     Icon={item?.icon}
                                     to={item?.to}
                                     text={item?.text}
-                                // footer={Boolean(item?.footer)}
+                                    // footer={Boolean(item?.footer)}
                                 />
                             )}
                         </div>
                     );
-
                 })}
             </div>
             {/* <div

@@ -1,6 +1,6 @@
 services:
-  app:
-    image: 
-    ports:
-      - "3000:80"
-    restart: unless-stopped
+    app:
+        image: leedo312/masterlearning-fe:latest
+        ports:
+            - '3000:80'
+        restart: unless-stopped
