@@ -59,14 +59,13 @@ export default function SignInSide() {
 
     const navigate = useNavigate();
 
-
     const { mutate } = useMutation<ResponseAPI<LoginResponse>, AxiosError<ResponseAPI>, LoginForm>(
         'submit',
         async (data) => getLogin(data),
         {
             onSuccess(data) {
                 localStorage.setItem('accessToken', data.result.accessToken);
-                axiosIns.getAuth("/users/get-me").then((response) => {
+                axiosIns.getAuth('/users/get-me').then((response) => {
                     const roleUser = response?.data.result.role;
                     console.log('data: ', data);
                     if (roleUser == 3) {
@@ -76,10 +75,9 @@ export default function SignInSide() {
                         window.location.href = '/class';
                     }
                     toast.success('Chào mừng bạn trở lại');
-                })
+                });
 
                 // console.log('respone: ', roleUser);
-
             },
             onError(error) {
                 console.error('Lỗi khi đăng nhập:', error);
