@@ -164,7 +164,7 @@ const CreatePost: React.FC<any> = ({ class_id, refetchPosts }) => {
         const create = await tweetServices.createTweet(data);
         if (create && create.status === 200) {
             handleCancel();
-            message.success('Tạo bài viết thành công!');
+            message.success('Bài viết đang được kiểm duyệt');
             refetchPosts();
         }
     };
