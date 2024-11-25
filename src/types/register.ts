@@ -11,6 +11,7 @@ export interface RegisterForm {
     confirmPassword: string;
     date_of_birth: string;
     forgotPasswordToken: string;
+    verify: number
 }
 export interface RegisterResponse {
     data: object;
