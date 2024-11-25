@@ -2,6 +2,9 @@ import React, { ExoticComponent, Fragment, lazy, ReactNode } from 'react';
 
 import DefaultLayout from '~/layout/Default';
 
+const CensorLessonUI = lazy(() => import('~/pages/Admin/LessonManagementUI'));
+const CensorDocumentUI = lazy(() => import('~/pages/Admin/DocumentManagementUI'));
+
 const Chats = lazy(() => import('~/pages/Chats'));
 const WatchScore = lazy(() => import('~/pages/WatchScore'));
 const Home = lazy(() => import('~/pages/Home'));
@@ -33,10 +36,12 @@ const ForgotPassword = lazy(() => import('~/pages/ForgotPassword'));
 const ResetPassword = lazy(() => import('~/pages/ResetPassword'));
 const AdminLayout = lazy(() => import('~/pages/AdminLayout'));
 const CheckEmailNoti = lazy(() => import('~/pages/CheckEmailNoti'));
+const CensorPost = lazy(() => import('~/pages/CensorPost'));
 
 const NewMemberAccepted = lazy(() => import('~/components/NewMemberAccepted'));
 const NewMemberPending = lazy(() => import('~/components/NewMemberPending'));
 const Exam = lazy(() => import('~/pages/Exam'));
+const ManageAccount = lazy(() => import('~/pages/ManageAccount'));
 
 interface Route {
     path: string;
@@ -125,11 +130,11 @@ const routes: Route[] = [
         children: [
             {
                 path: 'censorPost',
-                component: Newsfeed,
+                component: CensorPost,
             },
             {
                 path: 'manageAccount',
-                component: Profile,
+                component: ManageAccount,
             },
             {
                 path: 'manageMember',
@@ -141,8 +146,20 @@ const routes: Route[] = [
             },
             {
                 path: 'manageLesson',
-                component: Lesson,
+                component: CensorLessonUI,
             },
+            {
+                path: 'manageDocument',
+                component: CensorDocumentUI,
+            },
+            // {
+            //     path: 'censorLesson',
+            //     component: Lesson,
+            // },
+            // {
+            //     path: 'censorDocument',
+            //     component: CensorDocumentUI,
+            // },
         ],
     },
     {

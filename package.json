@@ -48,6 +48,7 @@
     "react-dom": "^18.0.0",
     "react-hook-form": "^7.33.1",
     "react-infinite-scroll-component": "^6.1.0",
+    "react-paginate": "^8.2.0",
     "react-pdf": "^5.7.2",
     "react-query": "^3.39.1",
     "react-quill": "^2.0.0",

@@ -1,7 +1,7 @@
-import { Outlet } from "react-router-dom";
-import Header from "~/components/Header";
-import HeaderUser from "~/components/Header";
-import SidebarClassAdmin from "~/components/SidebarClassAdmin";
+import { Outlet } from 'react-router-dom';
+import Header from '~/components/Header';
+import HeaderUser from '~/components/Header';
+import SidebarClassAdmin from '~/components/SidebarClassAdmin';
 
 function AdminLayout() {
     return (
@@ -10,9 +10,10 @@ function AdminLayout() {
                 {/* <Header /> */}
                 <SidebarClassAdmin />
             </div>
-            {/* <div className={"tw-ml-[240px]"}>
-        <Outlet />
-      </div> */}
+
+            <div className={'tw-ml-[240px]'}>
+                <Outlet />
+            </div>
         </div>
     );
 }
