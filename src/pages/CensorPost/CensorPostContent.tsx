@@ -1,109 +1,71 @@
-import React, { useMemo, useEffect, useState } from 'react';
-import Post from '~/components/Post';
-import { useParams } from 'react-router-dom';
-import styles from './style.module.css';
-import CreatePost from '~/components/CreatePost';
-import { Spin } from 'antd';
-import { TweetType } from '~/enums/tweet';
-import { useQuery } from 'react-query';
-import tweetServices from '~/services/tweet';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import React from "react";
+import { Avatar, Button } from "antd";
+import { timeAgo } from "~/utils/common";
+import ReadMoreReadLess from "react-read-more-read-less";
+import MediaPost from "~/components/Post/MediaPost";
+import tweetServices from "~/services/tweet";
 
-function CensorPostContent({ listPost, setListPost }: any) {
-    const [pagination, setPagination] = useState({
-        page: 1,
-        total_page: 0,
-    });
-
-    const posts = useQuery({
-        queryKey: ['getListNotCensor', 10, 1],
-        queryFn: async () =>
-            await tweetServices.getListNotCensor({
+const CensorPostContent = ({ post, listPost, setListPost, refetchPosts }: any) => {
+    const fetchPosts = async () => {
+        try {
+            const response = await tweetServices.getListNotCensor({
                 page: 1,
                 limit: 10,
-            }),
-    });
-
-    useEffect(() => {
-        setListPost(posts.data?.result || []);
-        setPagination({
-            total_page: posts?.data?.total_page,
-            page: posts?.data?.page,
-        });
-    }, [posts.data, setListPost]);
-    console.log("data", listPost);
-    const fetchMorePosts = async () => {
-        if (pagination.page < pagination.total_page) {
-            const res = await tweetServices.getListNotCensor({
-
-                page: pagination.page + 1,
-                limit: 10,
             });
-            setListPost(res.result);
-            setPagination({
-                total_page: res.total_page,
-                page: res.page,
-            });
+            setListPost(response.result);
+
+        } catch (error) {
+            console.error("Error fetching posts:", error);
         }
     };
-    const refetchPosts = async () => {
-        const res = await tweetServices.getListNotCensor({
+    const handleApprove = async () => {
+        try {
+            // Gọi API duyệt bài
+            await tweetServices.postCensor(post._id);
+            await fetchPosts();
 
-            page: 1,
-            limit: 10,
-        });
-        setListPost(res.result);
-        setPagination({
-            total_page: res.total_page,
-            page: 1,
-        });
+            setListPost((prev: any) => prev.filter((item: any) => item._id !== post._id))
+        } catch (error) {
+            console.error("Error approving post:", error);
+        }
     };
 
-    if (posts.isLoading) {
-        return <Spin className="tw-w-full" spinning={true} />;
-    }
-
     return (
-        <div className={styles.wrap}>
-            <div className={styles.listPost}>
-                {listPost && listPost.length > 0 && (
-                    <InfiniteScroll
-                        height={'100%'}
-                        dataLength={listPost.length}
-                        next={fetchMorePosts}
-                        hasMore={pagination.page < pagination.total_page}
-                        loader={<Spin className="tw-w-full" spinning={true} />}
-
-                    >
-
-                        <div className={styles.scrollContent}>
-                            {listPost.map((post: any) => {
-
-                                return (
-                                    <Post
-                                        key={post._id}
-                                        post={post}
-                                        listPost={listPost}
-                                        setListPost={setListPost}
-                                    />
-                                );
-
-
-                            })}
-                        </div>
-                    </InfiniteScroll>
-                )}
-                {listPost.length === 0 && (
-                    <div
-                        className={styles.createPost}
-                        style={{ width: '720px', display: 'flex', justifyContent: 'center' }}
-                    >
-                        Không
+        <div className="tw-bg-white tw-p-4 tw-rounded-3xl tw-my-1 tw-w-[90%]">
+            <div className="tw-flex tw-items-start tw-justify-between">
+                <div className="tw-flex tw-items-center">
+                    <Avatar size={45} src={post?.user?.avatar} />
+                    <div className="tw-leading-none tw-ml-2">
+                        <p className="tw-text-[16px]">{post?.user?.name}</p>
+                        <p className="tw-text-[14px] tw-font-bold">
+                            {post?.class?.[0]?.name}
+                        </p>
                     </div>
-                )}
+                </div>
+                <div className="tw-text-[14px] tw-mt-1 tw-text-gray-500">
+                    {timeAgo(post?.created_at)}
+                </div>
+            </div>
+
+            <div className="content-post tw-my-3 tw-text-[16px] tw-px-5 tw-text-justify tw-leading-tight">
+                <ReadMoreReadLess
+                    charLimit={400}
+                    readMoreText={<span style={{ color: "#2881E2" }}>Xem thêm</span>}
+                    readLessText={<span style={{ color: "#2881E2" }}>Thu gọn</span>}
+                >
+                    {post?.content}
+                </ReadMoreReadLess>
+            </div>
+
+            <MediaPost post={post} />
+
+            <div className="tw-flex tw-justify-end tw-mt-4">
+                <Button type="primary" onClick={handleApprove}>
+                    Duyệt
+                </Button>
             </div>
         </div>
     );
-}
+};
 
 export default CensorPostContent;

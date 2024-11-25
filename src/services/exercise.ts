@@ -1,12 +1,10 @@
-import { FormMultipleChoiceInterface } from '~/types/exercise';
+import { FormMultipleChoiceInterface, ISubmit, ISubmitScore } from '~/types/exercise';
 import API from '~/network/API';
 import { identity } from 'lodash';
 
 export const fetchCreateMultipleChoiceExercise = (data: FormMultipleChoiceInterface) => {
     return API.post('/excirses/create', data);
 };
-
-
 
 export const fetchExercisesByClass = (classId: number) => {
     return API.get('/v1/exercises', {
@@ -25,7 +23,12 @@ export const fetchListExercisesTeacher = (classId: number) => {
     return API.get(`excirses/list-for-teacher/${classId}`);
 };
 
-
+export const fetchListNotMarkExercisesByTeacher = (execireId: number) => {
+    return API.get(`excirses/list-not-mark/${execireId}`);
+};
+export const fetchListNotMarkExercisesDetailByTeacher = (execireId: string) => {
+    return API.get(`excirses/detail-to-mark/${execireId}`);
+};
 export const fetchExercisesStudent = (exerciseId: string) => {
     return API.get(`excirses/for-student/${exerciseId}`);
 };
@@ -45,4 +48,10 @@ export const fetchDeleteMultipleChoice = (id: any) => {
 
 export const fetchUpdateMultipleChoice = (data: FormMultipleChoiceInterface) => {
     return API.put(`/excirses/update`, data);
+};
+export const fetchSubmitExecireByStudent = (data: ISubmit) => {
+    return API.post(`/excirses/submit`, data);
+};
+export const fetchScoreExecireByTeacher = (data: ISubmitScore) => {
+    return API.post(`/excirses/mark`, data);
 };

@@ -15,7 +15,7 @@ import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import SummarizeIcon from '@mui/icons-material/Summarize';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useLocation, useParams } from 'react-router-dom';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import useDetailClass from '~/hooks/useDetailClass';
 import useRoleInClass from '~/hooks/useRoleInClass';
 import { Role } from '~/enums/role';
@@ -23,7 +23,7 @@ import ClassModalAddEdit from '~/components/ClassModalAddEdit';
 import useModal from '~/hooks/useModal';
 function SidebarClass() {
     const location = useLocation();
-
+    const [idEx, setIdEx] = useState<string>('');
     const role = useRoleInClass();
 
     const menu = useMemo(() => {
@@ -93,8 +93,9 @@ function SidebarClass() {
 
     const active = useMemo(() => {
         const { pathname } = location;
-
         const result = menu.find((item) => pathname.includes(item.to));
+        setIdEx(pathname.split('/')[2]);
+        console.log('check result');
         return result?.to;
     }, [location]);
     const {
@@ -119,7 +120,7 @@ function SidebarClass() {
                                         active={item.to === active}
                                         key={index}
                                         Icon={item?.icon}
-                                        to={item?.to}
+                                        to={`/class/${idEx}/${item?.to}`}
                                         text={item?.text}
                                         footer={Boolean(item?.footer)}
                                     />

@@ -32,7 +32,11 @@ const actions = [
     },
 ];
 
-function SiderbarRightLesson({ onDeleteSuccess }: { onDeleteSuccess: (deletedLessonId: string) => void }) {
+function SiderbarRightLesson({
+    onDeleteSuccess,
+}: {
+    onDeleteSuccess: (deletedLessonId: string) => void;
+}) {
     const { lessons, selectedLessonId } = useLessonStore((state) => ({
         lessons: state.lessons,
         selectedLessonId: state.selectedLessonId,
@@ -41,10 +45,9 @@ function SiderbarRightLesson({ onDeleteSuccess }: { onDeleteSuccess: (deletedLes
     const { id: classId } = useParams();
     const navigate = useNavigate();
     const confirm = useConfirm();
-    
 
     const lesson = useMemo(() => {
-        return lessons?.find((item) => item.id === selectedLessonId);
+        return lessons?.find((item) => item.id === String(selectedLessonId));
     }, [lessons, selectedLessonId]);
 
     const handleClickView = () => {
@@ -63,21 +66,21 @@ function SiderbarRightLesson({ onDeleteSuccess }: { onDeleteSuccess: (deletedLes
             confirmationText: 'Xóa',
             cancellationText: 'Hủy',
         })
-        .then(async () => {
-            try {
-                // Gọi API xóa bài giảng
-                await deleteLesson(String(selectedLessonId));
+            .then(async () => {
+                try {
+                    // Gọi API xóa bài giảng
+                    await deleteLesson(String(selectedLessonId));
 
-                // Cập nhật danh sách sau khi xóa thành công
-                onDeleteSuccess(String(selectedLessonId));
-                navigate(`/class/${classId}/content/1`);
-            } catch (error) {
-                console.error('Error deleting lesson:', error);
-            }
-        })
-        .catch(() => {
-            console.log('Hủy xóa');
-        });
+                    // Cập nhật danh sách sau khi xóa thành công
+                    onDeleteSuccess(String(selectedLessonId));
+                    navigate(`/class/${classId}/content/1`);
+                } catch (error) {
+                    console.error('Error deleting lesson:', error);
+                }
+            })
+            .catch(() => {
+                console.log('Hủy xóa');
+            });
     };
 
     console.log('selectedLessonId: ', selectedLessonId);

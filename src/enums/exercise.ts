@@ -7,12 +7,15 @@ export enum ExerciseMode {
 export enum ExerciseType {
     MULTIPLE_CHOICE = 1,
 }
-
+export enum ExecireAnswerType {
+    MC,
+    SHORT,
+    ESSAY,
+}
 export enum ExerciseStudentRole {
     ONLY_VIEW_SCORE = 1,
     VIEW_MORE_ANSWER = 0,
     NOT_VIEW_SCORE = 2,
-
 }
 
 export const getTextExerciseMode = (mode: ExerciseMode | undefined): string => {
@@ -46,4 +49,3 @@ export const getExerciseStudentRole = (mode: ExerciseStudentRole | undefined): s
     }
     throw new Error('mode not valid');
 };
-

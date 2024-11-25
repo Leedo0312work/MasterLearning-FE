@@ -2,6 +2,8 @@ import React, { ExoticComponent, Fragment, lazy, ReactNode } from 'react';
 
 import DefaultLayout from '~/layout/Default';
 
+const CensorLessonUI = lazy(() => import('~/pages/Admin/LessonManagementUI'));
+const CensorDocumentUI = lazy(() => import('~/pages/Admin/DocumentManagementUI'));
 
 const Chats = lazy(() => import('~/pages/Chats'));
 const Home = lazy(() => import('~/pages/Home'));
@@ -13,6 +15,8 @@ const Resource = lazy(() => import('~/pages/Resource'));
 const DetailClass = lazy(() => import('~/pages/DetailClass'));
 const Newsfeed = lazy(() => import('~/pages/Newsfeed'));
 const AddHomework = lazy(() => import('~/pages/AddHomework'));
+const ScoreHomework = lazy(() => import('~/pages/ScoreHomework'));
+const ScoreExecireItem = lazy(() => import('~/components/ScoreExecireItem'));
 const Schedule = lazy(() => import('~/pages/Schedule'));
 const Profile = lazy(() => import('~/pages/Profile'));
 const Member = lazy(() => import('~/pages/Member'));
@@ -132,17 +136,29 @@ const routes: Route[] = [
             },
             {
                 path: 'manageMember',
-                component: Member
+                component: Member,
             },
             {
                 path: 'manageClass',
-                component: Class
+                component: Class,
             },
             {
                 path: 'manageLesson',
-                component: Lesson
-            }
-        ]
+                component: CensorLessonUI,
+            },
+            {
+                path: 'manageDocument',
+                component: CensorDocumentUI,
+            },
+            // {
+            //     path: 'censorLesson',
+            //     component: Lesson,
+            // },
+            // {
+            //     path: 'censorDocument',
+            //     component: CensorDocumentUI,
+            // },
+        ],
     },
     {
         path: '/class/:id',
@@ -180,6 +196,14 @@ const routes: Route[] = [
             {
                 path: 'homework',
                 component: HomeWork,
+            },
+            {
+                path: 'homework/:id/score',
+                component: ScoreHomework,
+            },
+            {
+                path: 'homework/:id/score/:itemId',
+                component: ScoreExecireItem,
             },
             {
                 path: 'meeting',
@@ -228,6 +252,12 @@ const routes: Route[] = [
         layout: Fragment,
         private: true,
     },
+    // {
+    //     path: '/class/:id/homework/:exerciseId/score',
+    //     component: ScoreHomework,
+    //     layout: DefaultLayout,
+    //     private: true,
+    // },
 
     {
         path: '/class/:id/isTest/exam/add',

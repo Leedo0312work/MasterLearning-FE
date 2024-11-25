@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 
 function Header() {
     const user = useAuthStore((state) => state.user);
+    console.log('check user', user);
 
     return (
         <div className={styles.container}>

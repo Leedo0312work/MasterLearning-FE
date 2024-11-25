@@ -33,8 +33,6 @@ function Class() {
         const filter = activeClass.filter((item) =>
             item.name.toLowerCase().includes(search.trim().toLowerCase()),
         );
-        console.log('giá trị sort', sort);
-        console.log('giá trị search', search);
         if (sort === 'A-Z') {
             filter.sort((a, b) => a?.name?.localeCompare(b?.name));
         } else if (sort === 'Z-A') {

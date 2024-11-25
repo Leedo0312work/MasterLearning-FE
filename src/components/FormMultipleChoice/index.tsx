@@ -1,6 +1,9 @@
 import TextField from '@mui/material/TextField';
 import { useFormContext, Controller, useFieldArray, useWatch } from 'react-hook-form';
-import { FormMultipleChoiceAnswerItemInterface, FormMultipleChoiceInterface } from '~/types/exercise';
+import {
+    FormMultipleChoiceAnswerItemInterface,
+    FormMultipleChoiceInterface,
+} from '~/types/exercise';
 import FormMultipleChoiceItem from '~/components/FormMultipleChoiceItem';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import uniqueId from 'lodash/uniqueId';
@@ -10,7 +13,8 @@ import { getExercisesTeacher, getMultipleChoiceExerciseDetail } from '~/reposito
 import { useParams } from 'react-router-dom';
 import styles from './styles.module.css';
 function FormMultipleChoice() {
-    const { control, watch, setValue, getValues, register } = useFormContext<FormMultipleChoiceInterface>();
+    const { control, watch, setValue, getValues, register } =
+        useFormContext<FormMultipleChoiceInterface>();
 
     const { fields, insert } = useFieldArray({
         control: control,

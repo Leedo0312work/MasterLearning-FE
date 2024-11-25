@@ -24,7 +24,6 @@ function HomeWorkContent() {
         },
         {
             onSuccess(response) {
-                console.log("list ex:", response);
                 setData(response);
             },
         },
