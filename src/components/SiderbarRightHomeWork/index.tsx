@@ -161,6 +161,13 @@ function SiderbarRightHomeWork() {
                             Icon={OndemandVideoIcon}
                         />
                     </PermissionWrapper>
+                    <PermissionWrapper role={RoleInClass.Teacher}>
+                        <SiderbarRightHomeWorkSettingItem
+                            to={`/class/${classId}/homework/${exercise?._id}/watchScore`}
+                            name="Xem điểm"
+                            Icon={OndemandVideoIcon}
+                        />
+                    </PermissionWrapper>
                     <PermissionWrapper role={RoleInClass.Student}>
                         <SiderbarRightHomeWorkSettingItem
                             disable={

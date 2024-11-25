@@ -2,8 +2,8 @@ import React, { ExoticComponent, Fragment, lazy, ReactNode } from 'react';
 
 import DefaultLayout from '~/layout/Default';
 
-
 const Chats = lazy(() => import('~/pages/Chats'));
+const WatchScore = lazy(() => import('~/pages/WatchScore'));
 const Home = lazy(() => import('~/pages/Home'));
 const Meeting = lazy(() => import('~/pages/Meeting'));
 const Login = lazy(() => import('~/pages/Login'));
@@ -133,17 +133,17 @@ const routes: Route[] = [
             },
             {
                 path: 'manageMember',
-                component: Member
+                component: Member,
             },
             {
                 path: 'manageClass',
-                component: Class
+                component: Class,
             },
             {
                 path: 'manageLesson',
-                component: Lesson
-            }
-        ]
+                component: Lesson,
+            },
+        ],
     },
     {
         path: '/class/:id',
@@ -185,6 +185,10 @@ const routes: Route[] = [
             {
                 path: 'homework/:id/score',
                 component: ScoreHomework,
+            },
+            {
+                path: 'homework/:id/watchScore',
+                component: WatchScore,
             },
             {
                 path: 'homework/:id/score/:itemId',

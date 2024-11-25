@@ -26,6 +26,10 @@ export const fetchListExercisesTeacher = (classId: number) => {
 export const fetchListNotMarkExercisesByTeacher = (execireId: number) => {
     return API.get(`excirses/list-not-mark/${execireId}`);
 };
+export const fetchMarkExercisesByTeacher = (execireId: string) => {
+    return API.get(`excirses/get-mark-execire-for-teacher/${execireId}`);
+};
+
 export const fetchListNotMarkExercisesDetailByTeacher = (execireId: string) => {
     return API.get(`excirses/detail-to-mark/${execireId}`);
 };

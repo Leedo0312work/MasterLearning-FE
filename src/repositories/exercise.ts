@@ -9,6 +9,7 @@ import {
     fetchUpdateMultipleChoice,
     fetchDeleteMultipleChoice,
     fetchListNotMarkExercisesByTeacher,
+    fetchMarkExercisesByTeacher,
 } from '~/services/exercise';
 import { FormMultipleChoiceInterface } from '~/types/exercise';
 import { ResponseAPI } from '~/app/response';
@@ -40,6 +41,10 @@ export const getListNotMarkExercisesByTeacher = async (
     execireId: number,
 ): Promise<MarkExcire[]> => {
     const response = await fetchListNotMarkExercisesByTeacher(execireId);
+    return response.data.result;
+};
+export const getMarkExercisesByTeacher = async (execireId: string): Promise<MarkExcire[]> => {
+    const response = await fetchMarkExercisesByTeacher(execireId);
     return response.data.result;
 };
 
