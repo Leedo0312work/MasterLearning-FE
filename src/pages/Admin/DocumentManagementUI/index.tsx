@@ -1,16 +1,8 @@
-import React, { useState } from 'react';
-import { CheckCircleOutlined } from '@mui/icons-material';
-import { Button } from 'antd';
+import React from 'react';
+
 import DocumentLessonManager from '../LessonDocumentManagement';
 
-import DetailModal from '../LessonDocumentSidebarRight/DetailModal';
-import { getClassById } from '~/repositories/class';
-
 const CensorDocumentUI: React.FC = () => {
-    const [selectedRecord, setSelectedRecord] = useState<any>(null);
-    const [classData, setClassData] = useState<any>(null);
-    const [isModalVisible, setIsModalVisible] = useState(false);
-
     const columns = [
         {
             title: 'Tên tài liệu',
@@ -36,57 +28,29 @@ const CensorDocumentUI: React.FC = () => {
             title: 'Trạng thái',
             dataIndex: 'censored',
             key: 'censored',
-            render: (censored: boolean) => (
-                <span style={{ color: censored ? 'green' : 'red' }}>
-                    {censored ? 'Đã kiểm duyệt' : 'Chưa kiểm duyệt'}
-                </span>
-            ),
-        },
-        {
-            title: 'Hành động',
-            key: 'action',
-            render: (text: string, record: any) => (
-                <Button
-                    type="primary"
-                    icon={<CheckCircleOutlined />}
-                    onClick={() => handleViewDetail(record)}
-                >
-                    Xem chi tiết
-                </Button>
-            ),
+            render: (censored: boolean | null) => {
+                let text = '';
+                let color = '';
+
+                if (censored === true) {
+                    text = 'Đã kiểm duyệt';
+                    color = 'green';
+                } else if (censored === false) {
+                    text = 'Chưa kiểm duyệt';
+                    color = 'red';
+                } else if (censored === null) {
+                    text = 'Từ chối';
+                    color = 'gray';
+                }
+
+                return <span style={{ color }}>{text}</span>;
+            },
         },
     ];
-
-    const handleViewDetail = async (record: any) => {
-        try {
-            const classInfo = await getClassById(record.class_id);
-
-            setSelectedRecord(record);
-            setClassData(classInfo);
-            setIsModalVisible(true);
-        } catch (error) {
-            console.error('Lỗi khi lấy thông tin lớp:', error);
-            alert('Không thể lấy thông tin lớp.');
-        }
-    };
-
-    const handleCloseModal = () => {
-        setIsModalVisible(false);
-        setSelectedRecord(null);
-        setClassData(null);
-    };
 
     return (
         <>
             <DocumentLessonManager title="Quản lý tài liệu" type={0} columns={columns} />
-
-            <DetailModal
-                visible={isModalVisible}
-                onClose={handleCloseModal}
-                censorData={selectedRecord}
-                classData={classData}
-                mode="view-only"
-            />
         </>
     );
 };

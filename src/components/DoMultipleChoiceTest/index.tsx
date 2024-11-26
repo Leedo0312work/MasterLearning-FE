@@ -95,7 +95,7 @@ function DoMultipleChoiceTest() {
         // if (!exerciseId) return;
         // init(Number(exerciseId), false);
     }, [exerciseId]);
-    console.log(execire);
+    console.log('checlssss', execire);
     useEffect(() => {
         // const id = setInterval(() => setTimeLeft(), 1000);
         // idInterval.current = id;
@@ -151,7 +151,11 @@ function DoMultipleChoiceTest() {
     return (
         <div className={'tw-grid tw-grid-cols-12 tw-h-screen'}>
             <div className={'tw-col-span-7'}>
-                <PreviewFileMultipleChoice name={execire.name} pdfUrl={execire.file} />
+                {!execire.file ? (
+                    <div style={{ textAlign: 'center', marginTop: 40 }}>Không tìm thấy file đề</div>
+                ) : (
+                    <PreviewFileMultipleChoice name={execire.name} pdfUrl={execire.file} />
+                )}
             </div>
             <div className="tw-col-span-5">
                 <div className={'tw-flex tw-flex-col tw-justify-between tw-h-full'}>
@@ -159,7 +163,7 @@ function DoMultipleChoiceTest() {
                         className={'tw-bg-blue-900 tw-py-5 tw-flex tw-justify-center tw-text-white'}
                     >
                         <div>
-                            <div>Thoi gian con lai</div>
+                            <div>Thời gian còn lại</div>
                             <div className={'tw-flex tw-justify-center'}>
                                 <TimeLeftMultipleChoice
                                     time={execire.time_limit || 1}
@@ -173,10 +177,10 @@ function DoMultipleChoiceTest() {
                             {/* Cau {active + 1} */}
                         </div>
                         <div className={'tw-flex tw-mt-10'}>
-                            <div className="tw-flex tw-flex-wrap">
+                            <div className="tw-flex tw-flex-wrap tw-w-full">
                                 {execire &&
                                     execire?.answers?.map((item, index) => (
-                                        <div style={{ width: '50%' }}>
+                                        <div style={{ width: '33.33%' }}>
                                             <FormMultipleChoiceItemDo
                                                 type={item.type}
                                                 no={item.no}

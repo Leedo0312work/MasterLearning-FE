@@ -77,10 +77,10 @@ function NewsfeedContent({ classId, listPost, setListPost }: any) {
                         next={fetchMorePosts}
                         hasMore={pagination.page < pagination.total_page}
                         loader={<Spin className="tw-w-full" spinning={true} />}
-                        // style={{
-                        //     scrollbarWidth: 'none',
-                        //     msOverflowStyle: 'none',
-                        // }}
+                    // style={{
+                    //     scrollbarWidth: 'none',
+                    //     msOverflowStyle: 'none',
+                    // }}
                     >
                         <div
                             className={styles.createPost}

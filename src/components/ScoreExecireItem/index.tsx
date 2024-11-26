@@ -136,7 +136,14 @@ function ScoreExecireItem() {
     return (
         <div className={'tw-grid tw-grid-cols-12 tw-h-screen'}>
             <div className={'tw-col-span-7'}>
-                <PreviewFileMultipleChoice name={'Kết quả phần tự luận'} pdfUrl={execire.file} />
+                {!execire.file ? (
+                    <div style={{ textAlign: 'center', marginTop: 40 }}>Không có file tự luận</div>
+                ) : (
+                    <PreviewFileMultipleChoice
+                        name={'Kết quả phần tự luận'}
+                        pdfUrl={execire.file}
+                    />
+                )}
             </div>
             <div className="tw-col-span-5">
                 <div className={'tw-flex tw-flex-col tw-justify-between tw-h-full'}>
@@ -185,7 +192,7 @@ function ScoreExecireItem() {
                         </div> */}
                     </div>
                     <div>{renderViewQuestion}</div>
-                    <div className={'tw-flex tw-justify-center tw-mb-10'}>
+                    <div className={'tw-flex tw-justify-center tw-mb-10'} style={{ marginTop: 16 }}>
                         <Button variant={'outlined'} onClick={handleLeave}>
                             Roi khoi
                         </Button>

@@ -9,6 +9,7 @@ import { IExercise, MarkExcire } from '~/models/IExercise';
 import { useQuery } from 'react-query';
 import ScoreHomeWorkItem from '../ScoreHomeWorkItem';
 import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
 function ScoreHomeWorkContent() {
     const { _id, setId } = useExercisesInClassStore((state) => state);
     const navigate = useNavigate();
@@ -52,8 +53,9 @@ function ScoreHomeWorkContent() {
                             <ScoreHomeWorkItem
                                 onClick={onClick}
                                 id={item._id}
+                                avatar={item.user_info[0].avatar}
                                 name={`Họ tên: ${item?.user_info[0]?.name}`}
-                                time={item.created_at}
+                                time={moment(item.created_at).format('DD/MM/YYYY HH:mm')}
                                 // key={item._id}
                                 // active={_id === item._id}
                                 // created={item.created_at}

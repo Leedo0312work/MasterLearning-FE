@@ -24,10 +24,11 @@ interface Prop {
     id: string;
     onClick: (id: string) => void;
     created?: string;
-    time: Date;
+    time: string;
+    avatar: string;
 }
 
-function ScoreHomeWorkItem({ active = true, name, id, onClick, created, time }: Prop) {
+function ScoreHomeWorkItem({ active = true, name, id, onClick, created, time, avatar }: Prop) {
     const type = 'pdf';
     const typeCurrent = types.find((item) => item.type === type);
 
@@ -45,10 +46,9 @@ function ScoreHomeWorkItem({ active = true, name, id, onClick, created, time }: 
             <div>
                 {
                     <img
-                        width={200}
-                        src={
-                            'https://st4.depositphotos.com/2219414/20715/v/1600/depositphotos_207156018-stock-illustration-flat-design-concept-people-education.jpg'
-                        }
+                        src={avatar}
+                        alt="avatar"
+                        style={{ width: 80, height: 80, borderRadius: '50%' }}
                     />
                 }
             </div>

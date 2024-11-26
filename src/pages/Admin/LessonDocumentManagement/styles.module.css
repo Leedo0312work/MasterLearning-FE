@@ -5,12 +5,15 @@
     position: fixed;
     height: calc(100vh - 64px);
     width: calc(100% - 240px);
+    /* width: calc(100%); */
 }
 .content {
     display: flex;
     box-sizing: border-box;
 }
 .table {
-    width: calc(100% - 350px);
+    width: calc(100%);
+    /* width: calc(100% - 350px); */
     box-sizing: border-box;
+    padding: 5px;
 }
