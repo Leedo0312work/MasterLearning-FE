@@ -7,6 +7,7 @@ import {
     fetchGetLessonByClass,
     fetchGetLessonById,
     fetchNotCensoredLessons,
+    fetchRejectCensorLesson,
     fetchUpdateLesson,
 } from '~/services/lesson';
 import { ILesson } from '~/models/ILesson';
@@ -85,6 +86,21 @@ export const censorLesson = async (lessonId: string): Promise<void> => {
         console.log('response: ', response);
         if (response?.status === 200) {
             console.log('Lesson censored successfully');
+        } else {
+            throw new Error('Failed to censor lesson');
+        }
+    } catch (error) {
+        console.error('Error censoring lesson:', error);
+        throw error;
+    }
+};
+
+export const rejectCensorLesson = async (lessonId: string): Promise<void> => {
+    try {
+        const response = await fetchRejectCensorLesson(lessonId);
+        console.log('response: ', response);
+        if (response?.status === 200) {
+            console.log('Lesson censor rejected successfully');
         } else {
             throw new Error('Failed to censor lesson');
         }
