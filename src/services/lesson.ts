@@ -36,3 +36,7 @@ export const fetchNotCensoredLessons = (type: number, isAll: boolean) => {
 export const fetchCensorLesson = (lessonId: string) => {
     return API.post('/lessons/censor', { lesson_id: lessonId });
 };
+
+export const fetchRejectCensorLesson = (lessonId: string) => {
+    return API.post('/lessons/reject', { lesson_id: lessonId });
+};
