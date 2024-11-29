@@ -48,3 +48,7 @@ export const fetchAcceptMember = (id: string) => {
 export const fetchGetClassById = (id: string) => {
     return API.get(`classes/get/${id}`);
 };
+
+export const fetchDeleteClass = (classes_id: any) => {
+    return API.post(`classes/delete`, classes_id);
+};

@@ -1,5 +1,5 @@
 import { ResponseAPI } from '~/app/response';
-import { fetchAcceptMember, fetchCreateClass, fetchDetailClass, fetchGetAcceptedMember, fetchGetClassById, fetchGetClassList, fetchGetPendingMember, fetchRole, fetchRoles, fetchSearchClass } from '~/services/class';
+import { fetchAcceptMember, fetchCreateClass, fetchDeleteClass, fetchDetailClass, fetchGetAcceptedMember, fetchGetClassById, fetchGetClassList, fetchGetPendingMember, fetchRole, fetchRoles, fetchSearchClass } from '~/services/class';
 import { CreateClassForm, GetRoleResponse } from '~/types/class';
 import { IClass } from '~/models/IClass';
 import { Role } from '~/enums/role';
@@ -53,4 +53,9 @@ export const getAccept = async (id: string) => {
 export const getClassById = async (id: string) => {
     const response = await fetchGetClassById(id)
     return response.data.result
+}
+
+export const getDeleteClass = async (classes_id: string) => {
+    const response = await fetchDeleteClass(classes_id)
+    return response.data
 }
