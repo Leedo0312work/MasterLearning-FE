@@ -1,41 +1,3 @@
-// import Card from "@mui/material/Card";
-// import CardActions from "@mui/material/CardActions";
-// import CardContent from "@mui/material/CardContent";
-// import CardMedia from "@mui/material/CardMedia";
-// import Button from "@mui/material/Button";
-// import Typography from "@mui/material/Typography";
-// import { Link } from "react-router-dom";
-
-// function CardCourse({ imageUrl, name, description, id }) {
-//   return (
-//     <Card>
-//       <CardMedia
-//         component="img"
-//         alt="green iguana"
-//         height="250"
-//         image={imageUrl}
-//       />
-//       <CardContent>
-//         <Typography gutterBottom variant="h5" component="div">
-//           {name}
-//         </Typography>
-//         <Typography variant="body2" color="text.secondary">
-//           {description}
-//         </Typography>
-//       </CardContent>
-//       <CardActions>
-//         <Link to={"#"} className={"tw-no-underline"}>
-//           <Button size="small" variant={"contained"}>
-//             Xem chi tiết
-//           </Button>
-//         </Link>
-//         <Button size="small">Xóa</Button>
-//       </CardActions>
-//     </Card>
-//   );
-// }
-
-// export default CardCourse;
 
 // @ts-ignore
 import styles from './style.module.scss';
@@ -44,10 +6,39 @@ import images from '~/assets/images/default_classes2.jpg';
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { IClass } from '~/models/IClass';
+import useAuthStore from '~/store/useAuthStore';
+import ClearIcon from '@mui/icons-material/Clear';
+import { Modal } from 'antd';
+import { toast } from 'react-toastify';
+import { useMutation } from 'react-query';
+import { getDeleteClass } from '~/repositories/class';
 
-type Prop = Pick<IClass, 'name' | '_id' | 'code' | 'teacher'>;
+type Prop = Pick<IClass, 'name' | '_id' | 'code' | 'teacher', 'handleDelete'>;
 
-function CardCourse({ name, _id, code, teacher }: Prop) {
+function CardCourse({ name, _id, code, teacher, handleDelete }: Prop) {
+
+    const { confirm } = Modal;
+    const user = useAuthStore((state) => state.user); 
+
+    const confirmDelete = (event: React.MouseEvent) => {
+        event.stopPropagation();
+        event.preventDefault();
+
+        confirm({
+            title: 'Bạn có chắc chắn muốn xóa lớp học này không?',
+            okText: 'Xóa',
+            okType: 'danger',
+            cancelText: 'Hủy',
+            onOk() {
+                handleDelete(_id);
+            },
+            onCancel() {
+                console.log('Hủy xóa');
+            },
+        });
+    };
+
+
     return (
         <Link to={`/class/${_id}/newsfeed`} className={styles.cover}>
             <div className={styles.course}>
@@ -80,6 +71,11 @@ function CardCourse({ name, _id, code, teacher }: Prop) {
                             );
                         })}
                     </div>
+                    {user?.role === 2 &&
+                        <div className={styles.btnDelete}  onClick={confirmDelete}>
+                            <ClearIcon /> Xóa lớp
+                        </div>
+                    }
                 </div>
             </div>
         </Link>
