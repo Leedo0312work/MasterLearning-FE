@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { getListExercisesStudent } from '~/repositories/exercise';
 import { IExercise } from '~/models/IExercise';
 import { useQuery } from 'react-query';
+import moment from 'moment';
 
 function HomeWorkContent() {
     const { _id, setId } = useExercisesInClassStore((state) => state);
@@ -43,7 +44,7 @@ function HomeWorkContent() {
                                 name={`Bài kiểm tra: ${item.name}`}
                                 key={item._id}
                                 active={_id === item._id}
-                                created={item.created_at}
+                                created={moment(item.created_at).format('DD/MM/YYYY HH:mm')}
                             />
                         );
                     }
@@ -57,7 +58,7 @@ function HomeWorkContent() {
                                 name={`Bài tập: ${item.name}`}
                                 key={item._id}
                                 active={_id === item._id}
-                                created={item.created_at}
+                                created={moment(item.created_at).format('DD/MM/YYYY HH:mm')}
                             />
                         );
                     }
