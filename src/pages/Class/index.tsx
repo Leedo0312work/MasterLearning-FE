@@ -13,6 +13,9 @@ import useManageJoinClasses from '~/hooks/useManageJoinClasses';
 import ClassModalJoin from '~/components/ClassModalJoin';
 import dayjs from 'dayjs';
 import Member from '../Member';
+import { useMutation } from 'react-query';
+import { getDeleteClass } from '~/repositories/class';
+import { toast } from 'react-toastify';
 
 function Class() {
     const {
@@ -64,6 +67,23 @@ function Class() {
         });
     }, [methods.watch('search'), methods.watch('sort'), activeClass]);
 
+    const handleDelete = async (_id: string) => {
+        try {
+            await getDeleteClass({
+                classes_id: _id,
+            });
+    
+            setFilteredClass((prevClasses: any) => 
+                prevClasses.filter((item: any) => item._id !== _id)
+            );
+            toast.success('Xoá lớp thành công')
+        } catch (error) {
+            console.error('Error deleting class:', error);
+            toast.error('Xóa lớp thất bại');
+        }
+    };
+    
+
     return (
         <div className={styles.wrap}>
             <div className={styles.header}>
@@ -80,6 +100,7 @@ function Class() {
                         name={item?.name}
                         code={item?.code}
                         teacher={item?.teacher}
+                        handleDelete = {handleDelete}
                     />
                 ))}
             </div>
