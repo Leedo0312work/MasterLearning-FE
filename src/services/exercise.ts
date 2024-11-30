@@ -29,7 +29,9 @@ export const fetchListNotMarkExercisesByTeacher = (execireId: number) => {
 export const fetchMarkExercisesByTeacher = (execireId: string) => {
     return API.get(`excirses/get-mark-execire-for-teacher/${execireId}`);
 };
-
+export const fetchMarkExercisesByStudent = (execireId: string) => {
+    return API.get(`excirses/get-mark-execire-for-student/${execireId}`);
+};
 export const fetchListNotMarkExercisesDetailByTeacher = (execireId: string) => {
     return API.get(`excirses/detail-to-mark/${execireId}`);
 };

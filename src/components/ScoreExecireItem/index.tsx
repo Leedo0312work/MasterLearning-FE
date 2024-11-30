@@ -134,7 +134,10 @@ function ScoreExecireItem() {
         );
     }, [questionUrl]);
     return (
-        <div className={'tw-grid tw-grid-cols-12 tw-h-screen'}>
+        <div
+            className={'tw-grid tw-grid-cols-12  tw-h-screen'}
+            style={{ height: 'calc(100vh - 64px)' }}
+        >
             <div className={'tw-col-span-7'}>
                 {!execire.file ? (
                     <div style={{ textAlign: 'center', marginTop: 40 }}>Không có file tự luận</div>
@@ -146,7 +149,7 @@ function ScoreExecireItem() {
                 )}
             </div>
             <div className="tw-col-span-5">
-                <div className={'tw-flex tw-flex-col tw-justify-between tw-h-full'}>
+                <div className={'tw-flex tw-flex-col tw-justify-between  tw-h-full'}>
                     {/* <div
                         className={'tw-bg-blue-900 tw-py-5 tw-flex tw-justify-center tw-text-white'}
                     >
@@ -165,10 +168,13 @@ function ScoreExecireItem() {
                             {/* Cau {active + 1} */}
                         </div>
                         <div className={'tw-flex tw-mt-10'}>
-                            <div className="tw-flex tw-flex-wrap">
+                            <div
+                                className="tw-flex tw-flex-wrap"
+                                style={{ maxHeight: 500, minHeight: 200, overflow: 'auto' }}
+                            >
                                 {execire &&
                                     execire?.answers?.map((item, index) => (
-                                        <div style={{ width: '50%' }}>
+                                        <div>
                                             <FormMultipleChoiceItemScore
                                                 type={item.type}
                                                 no={item.no}
@@ -191,15 +197,20 @@ function ScoreExecireItem() {
                             />
                         </div> */}
                     </div>
-                    <div>{renderViewQuestion}</div>
-                    <div className={'tw-flex tw-justify-center tw-mb-10'} style={{ marginTop: 16 }}>
-                        <Button variant={'outlined'} onClick={handleLeave}>
-                            Roi khoi
-                        </Button>
-                        <div className="tw-ml-4">
-                            <Button onClick={handleClickOpen} variant={'contained'}>
-                                Gửi kết quả
+                    <div>
+                        <div>{renderViewQuestion}</div>
+                        <div
+                            className={'tw-flex tw-justify-center tw-mb-10'}
+                            style={{ marginTop: 16 }}
+                        >
+                            <Button variant={'outlined'} onClick={handleLeave}>
+                                Roi khoi
                             </Button>
+                            <div className="tw-ml-4">
+                                <Button onClick={handleClickOpen} variant={'contained'}>
+                                    Gửi kết quả
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 </div>

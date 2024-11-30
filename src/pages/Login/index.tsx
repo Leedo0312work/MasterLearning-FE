@@ -50,7 +50,7 @@ export default function SignInSide() {
         formState: { errors },
     } = useForm<LoginForm>({
         defaultValues: {
-            email: 'datminiphi@gmail.com',
+            email: 'hocsinh1@gmail.com',
             password: '12345678',
         },
     });

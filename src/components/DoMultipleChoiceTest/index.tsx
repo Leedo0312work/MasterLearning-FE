@@ -129,9 +129,11 @@ function DoMultipleChoiceTest() {
         console.log('ress', res);
         console.log('chec', data);
     };
+
     const handleLeave = () => {
         // leave();
-        navigate(`/class/${id}/homework`);
+        navigate(`/class/${id}/newsfeed`);
+        // navigate(`/class/${id}/homework`);
     };
     const renderChooseFile = useMemo(() => {
         return (
@@ -149,7 +151,7 @@ function DoMultipleChoiceTest() {
         );
     }, [fileUrl, fileName]);
     return (
-        <div className={'tw-grid tw-grid-cols-12 tw-h-screen'}>
+        <div className={'tw-grid tw-grid-cols-12'}>
             <div className={'tw-col-span-7'}>
                 {!execire.file ? (
                     <div style={{ textAlign: 'center', marginTop: 40 }}>Không tìm thấy file đề</div>
@@ -158,7 +160,10 @@ function DoMultipleChoiceTest() {
                 )}
             </div>
             <div className="tw-col-span-5">
-                <div className={'tw-flex tw-flex-col tw-justify-between tw-h-full'}>
+                <div
+                    className={'tw-flex tw-flex-col tw-justify-between'}
+                    style={{ height: 'calc(100vh)' }}
+                >
                     <div
                         className={'tw-bg-blue-900 tw-py-5 tw-flex tw-justify-center tw-text-white'}
                     >
@@ -177,7 +182,10 @@ function DoMultipleChoiceTest() {
                             {/* Cau {active + 1} */}
                         </div>
                         <div className={'tw-flex tw-mt-10'}>
-                            <div className="tw-flex tw-flex-wrap tw-w-full">
+                            <div
+                                className="tw-flex tw-flex-wrap tw-w-full"
+                                style={{ maxHeight: 480, overflow: 'auto' }}
+                            >
                                 {execire &&
                                     execire?.answers?.map((item, index) => (
                                         <div style={{ width: '33.33%' }}>
@@ -199,15 +207,17 @@ function DoMultipleChoiceTest() {
                             />
                         </div> */}
                     </div>
-                    <div>{renderChooseFile}</div>
-                    <div className={'tw-flex tw-justify-center tw-mb-10'}>
-                        <Button variant={'outlined'} onClick={handleLeave}>
-                            Roi khoi
-                        </Button>
-                        <div className="tw-ml-4">
-                            <Button onClick={handleClickOpen} variant={'contained'}>
-                                Nop bai
+                    <div style={{ paddingTop: 20 }}>
+                        <div style={{ paddingBottom: 12 }}>{renderChooseFile}</div>
+                        <div className={'tw-flex tw-justify-center tw-mb-10'}>
+                            <Button variant={'outlined'} onClick={handleLeave}>
+                                Roi khoi
                             </Button>
+                            <div className="tw-ml-4">
+                                <Button onClick={handleClickOpen} variant={'contained'}>
+                                    Nop bai
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 </div>
