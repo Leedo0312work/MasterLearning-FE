@@ -167,15 +167,19 @@ function DoMultipleChoiceTest() {
                     <div
                         className={'tw-bg-blue-900 tw-py-5 tw-flex tw-justify-center tw-text-white'}
                     >
-                        <div>
-                            <div>Thời gian còn lại</div>
-                            <div className={'tw-flex tw-justify-center'}>
-                                <TimeLeftMultipleChoice
-                                    time={execire.time_limit || 1}
-                                    onEnd={handleSubmit}
-                                />
+                        {execire?.time_limit ? (
+                            <div>
+                                <div>Thời gian còn lại</div>
+                                <div className={'tw-flex tw-justify-center'}>
+                                    <TimeLeftMultipleChoice
+                                        time={execire?.time_limit || 1}
+                                        onEnd={handleSubmit}
+                                    />
+                                </div>
                             </div>
-                        </div>
+                        ) : (
+                            'Không giới hạn thời gian'
+                        )}
                     </div>
                     <div>
                         <div className={'tw-w-full tw-text-center tw-font-bold'}>

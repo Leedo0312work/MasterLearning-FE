@@ -10,22 +10,22 @@ import ModalAddFolder from '~/components/ModalAddFolder';
 import { useParams } from 'react-router-dom';
 
 function HomeWork() {
-    const {
-        handleCloseModalAddFolder,
-        handleOpenModalAddFolder,
-        isOpenModalAddFolder,
-        mutateCreateFolder,
-        allFolder,
-    } = UseFolder();
+    // const {
+    //     handleCloseModalAddFolder,
+    //     handleOpenModalAddFolder,
+    //     isOpenModalAddFolder,
+    //     mutateCreateFolder,
+    //     allFolder,
+    // } = UseFolder();
 
-    const { id } = useParams();
+    // const { id } = useParams();
 
-    const handleCreate = (name: string) => {
-        mutateCreateFolder({
-            classId: Number(id),
-            name,
-        });
-    };
+    // const handleCreate = (name: string) => {
+    //     mutateCreateFolder({
+    //         classId: Number(id),
+    //         name,
+    //     });
+    // };
     return (
         <div className={styles.wrap}>
             <LessonHeader name="Bài tập" />
@@ -34,11 +34,11 @@ function HomeWork() {
                 <SiderbarRightHomeWork />
             </div>
 
-            <ModalAddFolder
+            {/* <ModalAddFolder
                 handleCreate={handleCreate}
                 open={isOpenModalAddFolder}
                 handleClose={handleCloseModalAddFolder}
-            />
+            /> */}
         </div>
     );
 }

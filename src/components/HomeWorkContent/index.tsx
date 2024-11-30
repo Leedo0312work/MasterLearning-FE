@@ -3,7 +3,7 @@ import styles from './styles.module.css';
 import HomeWorkItem from '~/components/HomeWorkItem';
 import useExercisesInClassStore from '~/store/useExercisesInClassStore';
 import { useParams, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getListExercisesStudent } from '~/repositories/exercise';
 import { IExercise } from '~/models/IExercise';
 import { useQuery } from 'react-query';
@@ -30,6 +30,9 @@ function HomeWorkContent() {
         },
     );
 
+    useEffect(() => {
+        fetchData.refetch(); // Gọi lại API khi pathname thay đổi
+    }, [location.key]); // `
     return (
         <div className={styles.wrap}>
             <HomeWorkContentHeader />

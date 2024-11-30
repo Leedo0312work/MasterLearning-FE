@@ -13,18 +13,19 @@ import moment from 'moment';
 function ScoreHomeWorkContent() {
     const { _id, setId } = useExercisesInClassStore((state) => state);
     const navigate = useNavigate();
-    const { id }: any = useParams();
-    console.log('check', id);
+    console.log('check use aa', useParams());
+    const { idEE }: any = useParams();
+    console.log('check', idEE);
     const [data, setData] = useState<MarkExcire[]>([]);
     const location = useLocation();
 
     const isExam = location.pathname.includes('exam');
 
     const fetchData = useQuery(
-        ['scoreExercise', id],
+        ['scoreExercise', idEE],
         async () => {
             console.log('vo day');
-            const scoreExercise = await getListNotMarkExercisesByTeacher(id);
+            const scoreExercise = await getListNotMarkExercisesByTeacher(idEE);
             console.log('check ex', scoreExercise);
             return scoreExercise;
         },

@@ -13,7 +13,7 @@ interface Props {
     Icon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>> & {
         muiName: string;
     };
-    disable?: boolean;
+    disable?: boolean | 0;
     password?: string | undefined;
     showModal?: any;
     handleOk?: any;

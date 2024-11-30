@@ -10,23 +10,30 @@ import { getMarkExercisesByTeacher } from '~/repositories/exercise';
 import { MarkExcire } from '~/models/IExercise';
 import { avatar } from '@material-tailwind/react';
 import moment from 'moment';
+
 interface DataCol {
     point: number;
     name: string;
     time: Date;
     avatar: string;
 }
+export enum PointType {
+    First,
+    Last,
+    Highest,
+}
 function WatchScore() {
     const [dataSource, setDataSource] = useState<DataCol[] | undefined>([]);
     const { id }: any = useParams();
     console.log('check', id);
-    const renderData = (result: MarkExcire[]) => {
+    const renderData = (result: any[]) => {
         const data = result.map((item, index) => {
             return {
                 point: parseFloat(item.point.toFixed(2)),
-                name: item.user_info[0].name,
+                name: item.user_info.name,
                 time: moment(item.created_at).format('DD/MM/YYYY HH:mm'),
-                avatar: item.user_info[0].avatar,
+                avatar: item.user_info.avatar,
+                type: item.point_type,
             };
         });
         return data;
@@ -65,6 +72,7 @@ function WatchScore() {
                     style={{ padding: 20 }}
                     dataSource={dataSource}
                     columns={columnsWatchScore}
+                    pagination={{ pageSize: 5 }}
                 />
             </div>
         </div>
