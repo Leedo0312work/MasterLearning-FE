@@ -26,8 +26,10 @@ import { fetchScoreExecireByTeacher, fetchSubmitExecireByStudent } from '~/servi
 import { useMutation } from 'react-query';
 import { toast } from 'react-toastify';
 import FormMultipleChoiceItemScore from '../FormMultipleChoiceItemScore';
+import { useQueryClient } from 'react-query';
 
 function ScoreExecireItem() {
+    const queryClient = useQueryClient();
     const { id, itemId } = useParams();
     const [execire, setExecire] = useState<IExerciseDetail>({});
     const [answers, setAnswers] = useState<any>([]);
@@ -52,7 +54,8 @@ function ScoreExecireItem() {
             }
         });
     };
-
+    console.log('id', id);
+    console.log('check user param', useParams());
     useEffect(() => {
         // if (execire.answers) {
         //     const data = execire.answers.map((item, index) => {
@@ -107,6 +110,7 @@ function ScoreExecireItem() {
         const res = await fetchScoreExecireByTeacher(data);
         if (res.status == 200) {
             toast.success('Gửi kết quả thành công');
+            queryClient.invalidateQueries(['exercises']);
             navigate(`/class/${id}/homework`);
         } else {
             toast.error('Gửi kết quả không thành công');

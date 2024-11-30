@@ -1,23 +1,18 @@
-
-import { Avatar, Image, Input } from "antd";
+import { Avatar, Image, Input } from 'antd';
 const { TextArea } = Input;
-import React, { useEffect } from "react";
-import { useState } from "react";
-import MediaPost from "~/components/Post/MediaPost";
-import ModalComment from "~/components/Post/ModalComment";
-import tweetServices from "~/services/tweet";
+import React, { useEffect } from 'react';
+import { useState } from 'react';
+import MediaPost from '~/components/Post/MediaPost';
+import ModalComment from '~/components/Post/ModalComment';
+import tweetServices from '~/services/tweet';
 import { IPost } from '~/models/IPost';
-import { formatDateTime, formatNumber, timeAgo } from "~/utils/common";
-import ReadMoreReadLess from "react-read-more-read-less";
-import Comments from "./Comments";
-import ModalOption from "./ModalOption";
-import { useParams } from "react-router-dom";
-import { useMemo } from "react";
-import { useQuery } from "react-query";
-
-
-
-
+import { formatDateTime, formatNumber, timeAgo } from '~/utils/common';
+import ReadMoreReadLess from 'react-read-more-read-less';
+import Comments from './Comments';
+import ModalOption from './ModalOption';
+import { useParams } from 'react-router-dom';
+import { useMemo } from 'react';
+import { useQuery } from 'react-query';
 
 const Post: React.FC<any> = ({ post, isShowGroupName = true, listPost, setListPost }) => {
     const [tym, setTym] = React.useState<boolean>(false);
@@ -34,7 +29,7 @@ const Post: React.FC<any> = ({ post, isShowGroupName = true, listPost, setListPo
     const class_id = useMemo(() => id?.substring(0), [id]);
 
     const posts = useQuery({
-        queryKey: ["getNewsfeed", class_id, 10, 1],
+        queryKey: ['getNewsfeed', class_id, 10, 1],
         queryFn: async () =>
             await tweetServices.getNewFeeds({
                 class_id: class_id,
@@ -71,7 +66,7 @@ const Post: React.FC<any> = ({ post, isShowGroupName = true, listPost, setListPo
                 post.likes++;
             }
         } catch (error) {
-            console.error("Có lỗi xảy ra:", error);
+            console.error('Có lỗi xảy ra:', error);
         } finally {
             setTyming(false);
         }
@@ -109,42 +104,30 @@ const Post: React.FC<any> = ({ post, isShowGroupName = true, listPost, setListPo
                                     {post?.user?.name}
                                 </p>
                             </div>
-
-                        )
-                        }
-
+                        )}
                     </div>
-
-
                 </div>
                 <div className="tw-flex tw-mt-2 tw-leading-none">
                     <div className="tw-text-[14px] tw-mt-1 tw-text-gray-500">
                         {timeAgo(post?.created_at)}
                     </div>
                     <ModalOption post={post} postId={post._id} refetchPosts={refetchPosts} />
-
-
                 </div>
             </div>
 
             <div className="content-post tw-my-3 tw-text-[16px] tw-px-5 tw-text-justify tw-leading-tight">
                 <ReadMoreReadLess
                     charLimit={400}
-                    readMoreText={
-                        <span style={{ color: "#2881E2" }}>Xem thêm</span>
-                    }
-                    readLessText={
-                        <span style={{ color: "#2881E2" }}>Thu gọn</span>
-                    }
+                    readMoreText={<span style={{ color: '#2881E2' }}>Xem thêm</span>}
+                    readLessText={<span style={{ color: '#2881E2' }}>Thu gọn</span>}
                 >
                     {post?.content}
                 </ReadMoreReadLess>
             </div>
             <MediaPost post={post} />
-            <div className="tw-text-gray-700 tw-text-[15px] tw-flex tw-justify-between">
-                <p>
-                    {Number(post?.likes)} thích,{" "}
-                    {Number(post?.views)} lượt xem
+            <div className="tw-text-gray-700 tw-text-[15px] tw-flex tw-justify-between tw-my-4">
+                <p style={{ color: 'blue' }}>
+                    {Number(post?.likes)} thích, {Number(post?.views)} lượt xem
                 </p>
                 <p>
                     {Number(post?.comment)} bình luận
@@ -153,19 +136,20 @@ const Post: React.FC<any> = ({ post, isShowGroupName = true, listPost, setListPo
             </div>
             <hr className="tw-mt-1" />
             <div className="tw-flex tw-mt-2 tw-justify-around">
-                <div
-                    className=" tw-flex tw-items-center tw-cursor-pointer"
-                    onClick={handleTym}
-                >
+                <div className=" tw-flex tw-items-center tw-cursor-pointer" onClick={handleTym}>
                     <i
-                        className={`${tym ? "fa-solid tw-text-[red]" : "fa-regular"
-                            } fa-heart tw-text-[25px] tw-mr-2`}
+                        style={{ color: 'red' }}
+                        className={`${
+                            tym ? 'fa-solid tw-text-[red]' : 'fa-regular'
+                        } fa-heart tw-text-[25px] tw-mr-2`}
                     ></i>
-                    <p className={`${tym ? " tw-text-[red]" : ""} `}>Thích</p>
+                    <p className={`${tym ? ' tw-text-[red]' : ''} `}>
+                        <span style={{ color: 'blue' }}>Thích</span>
+                    </p>
                 </div>
                 <div
                     onClick={() => setShowComments(true)}
-                    className="tw-flex tw-cursor-pointer"
+                    className="tw-flex tw-items-center tw-cursor-pointer"
                 >
                     <i className="tw-text-[25px] tw-mr-2 fa-regular fa-comment"></i>
                     <p>Bình luận</p>
@@ -176,13 +160,8 @@ const Post: React.FC<any> = ({ post, isShowGroupName = true, listPost, setListPo
                 </div> */}
             </div>
             {showComments && (
-                <ModalComment
-                    open={showComments}
-                    setOpen={setShowComments}
-                    post={post}
-                />
+                <ModalComment open={showComments} setOpen={setShowComments} post={post} />
             )}
-
         </div>
     );
 };

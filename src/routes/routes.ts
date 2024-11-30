@@ -200,7 +200,7 @@ const routes: Route[] = [
                 component: HomeWork,
             },
             {
-                path: 'homework/:id/score',
+                path: 'homework/:idEE/score',
                 component: ScoreHomework,
             },
             {
@@ -208,7 +208,7 @@ const routes: Route[] = [
                 component: WatchScore,
             },
             {
-                path: 'homework/:id/score/:itemId',
+                path: 'homework/:idE/score/:itemId',
                 component: ScoreExecireItem,
             },
             {

@@ -169,7 +169,7 @@ function SiderbarRightHomeWork() {
 
                     <SiderbarRightHomeWorkTitleItem
                         name="Thời lượng"
-                        value={exercise?.time_limit.toString()}
+                        value={exercise?.time_limit ? exercise?.time_limit.toString() : 'không có'}
                     />
                     <SiderbarRightHomeWorkTitleItem
                         name="Đã làm"
@@ -223,6 +223,7 @@ function SiderbarRightHomeWork() {
             </div>
         );
     }, [dataPotnt]);
+    console.log(exercise?.done_count, exercise?.times_to_do);
     console.log('check exercise', exercise);
     return (
         <div className={styles.wrap}>
@@ -240,7 +241,7 @@ function SiderbarRightHomeWork() {
                     onChange={handleOnchange}
                 />
             </Modal>
-            {renderSiderRight}
+            {id && renderSiderRight}
             {dataPotnt && dataPotnt.length > 0 && renderSiderPoint}
             {id && (
                 <div className={styles.bottom}>
@@ -269,9 +270,9 @@ function SiderbarRightHomeWork() {
                         <SiderbarRightHomeWorkSettingItem
                             password={exercise?.password}
                             disable={
-                                typeof exercise?.done_count === 'number' &&
-                                typeof exercise?.times_to_do === 'number' &&
-                                exercise.done_count >= exercise.times_to_do
+                                exercise?.done_count &&
+                                exercise?.times_to_do &&
+                                Number(exercise?.done_count) >= Number(exercise?.times_to_do)
                             }
                             to={`/class/${classId}/homework/${exercise?._id}/do`}
                             name="Vào thi"
