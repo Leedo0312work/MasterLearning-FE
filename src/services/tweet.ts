@@ -57,6 +57,12 @@ class TweetServices {
         });
         return response?.data;
     }
+    async rejectPost(postId: string) {
+        const response = await axiosIns.postAuth(`/tweets/reject`, {
+            tweet_id: postId,
+        });
+        return response?.data;
+    }
 }
 
 const tweetServices = new TweetServices();

@@ -44,13 +44,13 @@ function SidebarClassAdmin() {
                 show: true,
             },
 
-            {
-                icon: PersonOutlineIcon,
-                text: 'Quản lý thành viên',
-                to: 'manageMember',
-                // show: role == Role.ADMIN,
-                show: true,
-            },
+            // {
+            //     icon: PersonOutlineIcon,
+            //     text: 'Quản lý thành viên',
+            //     to: 'manageMember',
+            //     // show: role == Role.ADMIN,
+            //     show: true,
+            // },
 
             {
                 icon: PersonOutlineIcon,
@@ -104,7 +104,7 @@ function SidebarClassAdmin() {
                                     Icon={item?.icon}
                                     to={item?.to}
                                     text={item?.text}
-                                    // footer={Boolean(item?.footer)}
+                                // footer={Boolean(item?.footer)}
                                 />
                             )}
                         </div>
