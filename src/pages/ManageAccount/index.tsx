@@ -13,6 +13,7 @@ import { RegisterForm, RegisterResponse } from '~/types/register';
 import { ResponseAPI } from '~/app/response';
 import ModalEditAccount from '~/components/ModalEditAccount';
 import { Input, Modal } from 'antd';
+import { getTextRole, getTextVerify } from '~/enums/account';
 
 const { confirm } = Modal;
 
@@ -135,8 +136,8 @@ function ManageAccount() {
                                 <td>{acc.name}</td>
                                 <td>{acc.email}</td>
                                 <td>{new Date(acc.date_of_birth).toLocaleDateString()}</td>
-                                <td>{acc.role}</td>
-                                <td>{acc.verify}</td>
+                                <td>{getTextRole(acc.role)}</td>
+                                <td>{getTextVerify(acc.verify)}</td>
                                 {/* <td>
                                     <img src={acc.avatar} alt={acc.name} className={styles.avatar} />
                                 </td> */}
