@@ -1,6 +1,6 @@
 .wrap {
     padding: 20px;
-    width: 70%;
+    width: 80%;
 }
 
 .header {
@@ -77,15 +77,57 @@
 }
 
 .buttonAccept {
-    background-color: #4b80e3; 
-    color: white; 
-    padding: 8px 20px; 
-    border: none; 
+    background-color: #4b80e3;
+    color: white;
+    padding: 8px 20px;
+    border: none;
     border-radius: 5px;
-    font-size: 16px; 
-    cursor: pointer; 
+    font-size: 16px;
+    cursor: pointer;
 }
 
 .buttonAccept:hover {
     background-color: #4677d1;
+}
+
+.membersTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.membersTable th,
+.membersTable td {
+    text-align: center;
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+.membersTable th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+    text-align: center;
+}
+
+.avatarCell {
+    text-align: center;
+}
+
+.avatar img,
+.avatarPlaceholder {
+    margin: auto;
+    display: block;
+}
+
+.buttonAccept {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.buttonAccept:hover {
+    background-color: #218838;
 }

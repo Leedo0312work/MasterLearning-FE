@@ -1,14 +1,18 @@
 .btnAdd {
-    background-color: rgb(74, 128, 252);
-    color: white;
+    background-color: #fff;
+    width: 150px;
+    color: rgb(74, 128, 252);
     padding: 10px 20px;
-    border-radius: 10px;
-    border: none;
+    border-radius: 6px;
+    border: 1px solid #1677ff;
     display: flex;
     align-items: center;
+    font-size: 14px;
+    font-weight: 500;
 }
 
 .btnAdd:hover {
     cursor: pointer;
     background-color: rgb(71, 120, 235);
+    color: white;
 }
