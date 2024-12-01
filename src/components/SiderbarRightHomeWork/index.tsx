@@ -171,14 +171,16 @@ function SiderbarRightHomeWork() {
                         name="Thời lượng"
                         value={exercise?.time_limit ? exercise?.time_limit.toString() : 'không có'}
                     />
-                    <SiderbarRightHomeWorkTitleItem
-                        name="Đã làm"
-                        value={
-                            exercise?.done_count != undefined
-                                ? `${exercise?.done_count}/${exercise?.times_to_do}`
-                                : ''
-                        }
-                    />
+                    <PermissionWrapper role={RoleInClass.Student}>
+                        <SiderbarRightHomeWorkTitleItem
+                            name="Đã làm"
+                            value={
+                                exercise?.done_count != undefined
+                                    ? `${exercise?.done_count}/${exercise?.times_to_do}`
+                                    : ''
+                            }
+                        />
+                    </PermissionWrapper>
                     <SiderbarRightHomeWorkTitleItem
                         name="Cho phép"
                         value={getExerciseStudentRole(exercise?.student_role)}
