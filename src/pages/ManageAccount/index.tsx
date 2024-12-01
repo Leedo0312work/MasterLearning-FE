@@ -12,7 +12,7 @@ import { toast } from 'react-toastify';
 import { RegisterForm, RegisterResponse } from '~/types/register';
 import { ResponseAPI } from '~/app/response';
 import ModalEditAccount from '~/components/ModalEditAccount';
-import { Modal } from 'antd';
+import { Input, Modal } from 'antd';
 
 const { confirm } = Modal;
 
@@ -22,6 +22,8 @@ function ManageAccount() {
     const [totalPages, setTotalPages] = useState(0);
     const [openModal, setOpenModal] = useState(false);
     const [selectedAccount, setSelectedAccount] = useState<IUser | null>(null);
+
+    const [nameSearch, setNameSearch] = useState('')
 
     useEffect(() => {
         fetchAccounts(1);
@@ -92,25 +94,42 @@ function ManageAccount() {
         });
     };
 
+    const handleInputSearch = (e) => {
+        setNameSearch(e.target.value)
+    }
+
+    const filteredData = data.filter((acc) =>
+        acc.name.toLowerCase().includes(nameSearch.toLowerCase())
+    );
+
     return (
         <div className={styles.container}>
-            <CreateAccount />
+            <div className={styles.header}>
+                <CreateAccount />
+                <Input
+                    placeholder={`Nhập tên tài khoản để tìm kiếm`}
+                    allowClear
+                    size="large"
+                    value={nameSearch}
+                    onChange={handleInputSearch}
+                />
+            </div>
             <div>
                 <table className={styles.table}>
                     <thead>
                         <tr className={styles.tableHeader}>
                             <th>ID</th>
-                            <th>TÊN TÀI KHOẢN</th>
+                            <th>Tên tài khoản</th>
                             <th>Email</th>
-                            <th>NGÀY SINH</th>
-                            <th>ROLE</th>
+                            <th>Ngày sinh</th>
+                            <th>Role</th>
                             {/* <th>Avatar</th> */}
-                            <th>TRẠNG THÁI</th>
-                            <th>HÀNH ĐỘNG</th>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map((acc) => (
+                        {filteredData.map((acc) => (
                             <tr key={acc._id}>
                                 <td>{acc._id}</td>
                                 <td>{acc.name}</td>
@@ -144,11 +163,11 @@ function ManageAccount() {
 
                 <ReactPaginate
                     className={styles.pagination}              
-                    nextLabel="next >"
+                    nextLabel=">"
                     onPageChange={handlePageClick}
                     pageRangeDisplayed={5}
                     pageCount={totalPages}
-                    previousLabel="< previous"
+                    previousLabel="<"
                     pageClassName={styles.pageItem}             
                     pageLinkClassName={styles.pageLink}        
                     previousClassName={styles.pageItem}         

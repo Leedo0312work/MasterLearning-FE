@@ -1,6 +1,6 @@
 .wrap {
     padding: 20px;
-    width: 70%;
+    width: 80%;
 }
 
 .header {
@@ -68,4 +68,33 @@
 .userEmail {
     color: #666;
     font-size: 14px;
+}
+
+.membersTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.membersTable th,
+.membersTable td {
+    text-align: center;
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+.membersTable th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+    text-align: center;
+}
+
+.avatarCell {
+    text-align: center;
+}
+
+.avatar img,
+.avatarPlaceholder {
+    margin: auto;
+    display: block;
 }

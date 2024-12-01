@@ -45,33 +45,40 @@ const NewMemberAccepted = () => {
     };
 
     return (
-        <div className={styles.wrap}>  
+        <div className={styles.wrap}>
             <div className={styles.header}>
                 <span className={styles.title}>Bạn học</span>
                 <span>{getSum()} thành viên</span>
             </div>
-
+    
             <hr />
-
-            <div className={styles.membersList}>
-                {acceptedMembers.map(member => (
-                    member.user.map(user => (
-                        <div key={user._id} className={styles.memberItem}>
-                            <div className={styles.avatarContainer}>
-                                {renderUserAvatar(user)}
-                            </div>
-                            <div className={styles.memberDetails}>
-                                <p className={styles.userName}>{user.name}</p>
-                                <p className={styles.userEmail}>{user.email}</p>
-                            </div>
-                        </div>
-                    ))
-                    
-                ))}
-
-            </div>
+    
+            <table className={styles.membersTable}>
+                <thead>
+                    <tr>
+                        <th>Avatar</th>
+                        <th>Họ tên</th>
+                        <th>Email</th>
+                        <th>Ngày sinh</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {acceptedMembers.map(member => (
+                        member.user.map(user => (
+                            <tr key={user._id}>
+                                <td className={styles.avatarCell}>
+                                    {renderUserAvatar(user)}
+                                </td>
+                                <td>{user.name}</td>
+                                <td>{user.email}</td>
+                                <td>{new Date(user.date_of_birth).toLocaleDateString('vi-VN')}</td>
+                            </tr>
+                        ))
+                    ))}
+                </tbody>
+            </table>
         </div>
     );
-};
+}
 
 export default NewMemberAccepted;
