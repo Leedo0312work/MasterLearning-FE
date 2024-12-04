@@ -4,13 +4,12 @@ import styles from './styles.module.css';
 import PropTypes from 'prop-types';
 import dayjs from '~/packages/dayjs';
 
-function CardVideo({ video, name, viewer, time, createdAt, thumbnail, active, id, onClick }: any) {
+function CardVideo({ video, name, viewer, time, created_at, thumbnail, active, id, onClick }: any) {
     const handleClick = () => {
         onClick(id);
     };
     return (
-        <div onClick={handleClick} className={styles.wrap}
-        >
+        <div onClick={handleClick} className={styles.wrap}>
             <div className={clsx(styles.card, { [styles.selected]: active })}>
                 <div style={{ display: 'flex', gap: '10px' }}>
                     <div className={styles.top}>
@@ -22,13 +21,8 @@ function CardVideo({ video, name, viewer, time, createdAt, thumbnail, active, id
                             className={styles.thumbnail}
                         />
                     </div>
-                    <div className={styles.bottom}>
-                        <div className={clsx(styles.header)}>{name}</div>
-                        <div className={styles.info}>
-                            {viewer ? `${viewer} lượt xem` : 'Chưa có lượt xem'}
-                            <br />
-                            {dayjs(createdAt).format('HH:mm:ss DD/MM/YYYY')}
-                        </div>
+                    <div className={styles.content}>
+                        <div className={styles.header}>{name}</div>
                     </div>
                 </div>
             </div>

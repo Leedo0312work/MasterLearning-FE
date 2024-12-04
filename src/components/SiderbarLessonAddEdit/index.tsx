@@ -47,8 +47,6 @@ function SiderbarLessonAddEdit({
         },
     );
 
-    console.log('attachedMedias upload: ', attachedMedias);
-
     const handleMediaUpload = async () => {
         if (attachedMedias.length !== 1) return null;
 

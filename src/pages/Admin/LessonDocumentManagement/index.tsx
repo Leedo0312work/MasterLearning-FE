@@ -71,7 +71,6 @@ const DocumentLessonManager: React.FC<DocumentLessonManagerProps> = ({ title, ty
             setIsModalVisible(true);
         } catch (error) {
             console.error('Lỗi khi lấy thông tin lớp:', error);
-            alert('Không thể lấy thông tin lớp.');
         }
     };
 
@@ -84,7 +83,6 @@ const DocumentLessonManager: React.FC<DocumentLessonManagerProps> = ({ title, ty
             setIsModalVisible(true);
         } catch (error) {
             console.error('Lỗi khi kiểm duyệt tài liệu:', error);
-            alert('Đã xảy ra lỗi khi kiểm duyệt tài liệu.');
         }
     };
 
@@ -92,13 +90,11 @@ const DocumentLessonManager: React.FC<DocumentLessonManagerProps> = ({ title, ty
         try {
             if (selectedRecord?._id) {
                 await censorLesson(selectedRecord._id); // Gọi API kiểm duyệt
-                alert(`Tài liệu với ID ${selectedRecord._id} đã được kiểm duyệt.`);
                 handleCloseModal();
                 await fetchDataAsync(); // Làm mới danh sách
             }
         } catch (error) {
             console.error('Lỗi khi kiểm duyệt tài liệu:', error);
-            alert('Đã xảy ra lỗi khi kiểm duyệt tài liệu.');
         }
     };
 
@@ -130,7 +126,6 @@ const DocumentLessonManager: React.FC<DocumentLessonManagerProps> = ({ title, ty
                     cancelText: 'Hủy',
                     onOk: async () => {
                         await rejectCensorLesson(selectedRecord._id);
-                        alert(`Tài liệu với ID ${selectedRecord._id} đã bị từ chối.`);
                         handleCloseModal();
                         await fetchDataAsync();
                     },
@@ -141,7 +136,6 @@ const DocumentLessonManager: React.FC<DocumentLessonManagerProps> = ({ title, ty
             }
         } catch (error) {
             console.error('Lỗi khi từ chối tài liệu:', error);
-            alert('Đã xảy ra lỗi khi từ chối tài liệu.');
         }
     };
 
