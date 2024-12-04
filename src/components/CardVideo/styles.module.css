@@ -23,10 +23,15 @@
 }
 
 .header {
-    font-size: 18px;
+    font-size: 20px;
     color: #202227;
-    margin-bottom: 10px;
     font-weight: 500;
+}
+.content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
 }
 .header.active {
     color: #1e88e5;

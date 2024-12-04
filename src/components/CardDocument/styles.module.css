@@ -23,7 +23,7 @@
 }
 
 .header {
-    font-size: 18px;
+    font-size: 20px;
     color: #202227;
     margin-bottom: 10px;
     font-weight: 500;
@@ -43,6 +43,11 @@
     height: 100px;
     object-fit: cover;
     overflow: hidden;
+}
+
+.content {
+    margin-top: 20px;
+    margin-left: 10px;
 }
 
 .selected {

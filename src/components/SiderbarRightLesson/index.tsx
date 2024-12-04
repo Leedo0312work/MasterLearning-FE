@@ -13,6 +13,7 @@ import { useMemo } from 'react';
 import { ILesson } from '~/models/ILesson';
 import dayjs from '~/packages/dayjs';
 import { useConfirm } from 'material-ui-confirm';
+import useAuthStore from '~/store/useAuthStore';
 
 const actions = [
     // {
@@ -45,6 +46,7 @@ function SiderbarRightLesson({
     const { id: classId } = useParams();
     const navigate = useNavigate();
     const confirm = useConfirm();
+    const user = useAuthStore((state) => state.user);
 
     const lesson = useMemo(() => {
         return lessons?.find((item) => item.id === String(selectedLessonId));
@@ -83,46 +85,79 @@ function SiderbarRightLesson({
             });
     };
 
-    console.log('selectedLessonId: ', selectedLessonId);
-
     return (
-        <div className={styles.wrap}>
-            <div className={styles.top}>
-                <h3 className={styles.header_top}>{lesson?.name}</h3>
-                <div className={styles.top_content}>
-                    <h4 className={styles.top_item}>
-                        <h5 className={styles.top_name}>Đã xem</h5>
-                        <span className={styles.title}>100</span>
-                    </h4>
-                    <h4 className={styles.top_item}>
-                        <h5 className={styles.top_name}>Ngày tạo</h5>
-                        <span className={styles.title}>
-                            {dayjs(lesson?.createdAt).format('HH:mm:ss DD/MM/YYYY')}
-                        </span>
-                    </h4>
+        <>
+            {user?.role === 2 && (
+                <div className={styles.wrap}>
+                    <div className={styles.top}>
+                        <h3 className={styles.header_top}>{lesson?.name}</h3>
+                        <div className={styles.top_content}>
+                            <h4 className={styles.top_item}>
+                                <h5 className={styles.top_name}>Đã xem</h5>
+                                <span className={styles.title}>100</span>
+                            </h4>
+                            <h4 className={styles.top_item}>
+                                <h5 className={styles.top_name}>Mô tả</h5>
+                                <span className={styles.title}>{lessons[0]?.description}</span>
+                            </h4>
+                            <h4 className={styles.top_item}>
+                                <h5 className={styles.top_name}>Ngày tạo</h5>
+                                <span className={styles.title}>
+                                    {dayjs(lessons[0]?.created_at).format('HH:mm:ss DD/MM/YYYY')}
+                                </span>
+                            </h4>
+                        </div>
+                    </div>
+                    <div className={styles.bottom}>
+                        <div onClick={handleClickView} className={styles.bottom_item}>
+                            <h4 className={styles.name}>Xem bài giảng</h4>
+                            <h5 className={styles.icon}>
+                                <OndemandVideoIcon />
+                            </h5>
+                        </div>
+                        <div onClick={handleEdit} className={styles.bottom_item}>
+                            <h4 className={styles.name}>Sửa</h4>
+                            <h5 className={styles.icon}>
+                                <BorderColorIcon />
+                            </h5>
+                        </div>
+                        <div onClick={handleDelete} className={styles.bottom_item}>
+                            <h4 className={styles.name}>Xóa</h4>
+                            <h5 className={styles.icon}>
+                                <DeleteOutlineIcon />
+                            </h5>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div className={styles.bottom}>
-                <div onClick={handleClickView} className={styles.bottom_item}>
-                    <h4 className={styles.name}>Xem bài giảng</h4>
-                    <h5 className={styles.icon}>
-                        <OndemandVideoIcon />
-                    </h5>
+            )}
+            {user?.role === 1 && (
+                <div className={styles.wrap}>
+                    <div className={styles.top}>
+                        <h3 className={styles.header_top}>{lesson?.name}</h3>
+                        <div className={styles.top_content}>
+                            <h4 className={styles.top_item}>
+                                <h5 className={styles.top_name}>Mô tả</h5>
+                                <span className={styles.title}>{lessons[0]?.description}</span>
+                            </h4>
+                            <h4 className={styles.top_item}>
+                                <h5 className={styles.top_name}>Ngày tạo</h5>
+                                <span className={styles.title}>
+                                    {dayjs(lessons[0]?.created_at).format('HH:mm:ss DD/MM/YYYY')}
+                                </span>
+                            </h4>
+                        </div>
+                    </div>
+                    <div className={styles.bottom}>
+                        <div onClick={handleClickView} className={styles.bottom_item}>
+                            <h4 className={styles.name}>Xem bài giảng</h4>
+                            <h5 className={styles.icon}>
+                                <OndemandVideoIcon />
+                            </h5>
+                        </div>
+                    </div>
                 </div>
-                <div onClick={handleEdit} className={styles.bottom_item}>
-                    <h4 className={styles.name}>Sửa</h4>
-                    <h5 className={styles.icon}>
-                        <BorderColorIcon />
-                    </h5>
-                </div>
-                <div onClick={handleDelete} className={styles.bottom_item}>
-                    <h4 className={styles.name}>Xóa</h4>
-                    <h5 className={styles.icon}>
-                        <DeleteOutlineIcon />
-                    </h5>
-                </div>
-            </div>
-        </div>
+            )}
+        </>
     );
 }
 
