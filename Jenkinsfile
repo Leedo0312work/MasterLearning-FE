@@ -7,8 +7,8 @@ pipeline {
         CI_PROJECT_NAME = ""
         IMAGE_VERSION = ""
 
-        REGISTRY_URL = "registry.leedowork.id.vn"  // Địa chỉ registry của Harbor
-        REGISTRY_CREDENTIALS = "harbor-registry-user"  // Jenkins credentials ID chứa thông tin đăng nhập vào Harbor
+        REGISTRY_URL = "registry.leedowork.id.vn"  
+        REGISTRY_CREDENTIALS = "harbor-registry-user"  
         
     }
     stages {
@@ -58,11 +58,8 @@ pipeline {
                     //     sh "docker push ${REGISTRY_URL}/${DOCKER_IMAGE_NAME}:${IMAGE_VERSION}"
                     // }
 
-                    // Đăng nhập vào Harbor registry sử dụng `withDockerRegistry`
                     withDockerRegistry([credentialsId: "${REGISTRY_CREDENTIALS}", url: "https://${REGISTRY_URL}"]) {
-                        // Push image lên Harbor registry
                         sh "docker tag ${USER_PROJECT}/${CI_PROJECT_NAME}:${IMAGE_VERSION}"
-
                         sh "docker push ${USER_PROJECT}/${CI_PROJECT_NAME}:${IMAGE_VERSION}"
                     }
                 }
@@ -75,10 +72,9 @@ pipeline {
             }
             steps {
                 script {
-                    // Pull image từ Harbor registry về và chạy container
                     sh(script: """ 
                         docker pull ${USER_PROJECT}/${CI_PROJECT_NAME}:${IMAGE_VERSION}
-                        sudo su ${USER_PROJECT} -c "docker rm -f $CI_PROJECT_NAME; docker run --name $CI_PROJECT_NAME -dp 5214:5214 ${REGISTRY_URL}/${DOCKER_IMAGE_NAME}:${IMAGE_VERSION}"
+                        sudo su ${USER_PROJECT} -c "docker rm -f $CI_PROJECT_NAME; docker run --name $CI_PROJECT_NAME -dp 80:80 ${REGISTRY_URL}/${DOCKER_IMAGE_NAME}:${IMAGE_VERSION}"
                     """, label: "")
                 }
             }
