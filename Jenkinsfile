@@ -4,7 +4,6 @@ pipeline {
         USER_PROJECT = "masterlearning"
         PROJECT_NAME = "masterlearning-fe"
         CI_CIMMIT_SHORT_SHA = ""
-        CI_COMMIT_TAG = ""
         CI_PROJECT_NAME = ""
         IMAGE_VERSION = ""
 
@@ -24,11 +23,7 @@ pipeline {
                     def CI_COMMIT_HASH = sh(script: "git rev-parse HEAD", returnStdout: true).trim()
                     CI_COMMIT_SHORT_SHA = CI_COMMIT_HASH.take(8)
 
-                    CI_COMMIT_TAG = sh(script: "git describe --tags --exact-match ${CI_COMMIT_HASH}", returnStdout: true).trim()
-
-                    IMAGE_VERSION = "${PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}_${CI_COMMIT_HASH}"
-
-                    
+                    IMAGE_VERSION = "${PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}_${CI_COMMIT_SHORT_SHA}"
                 }
             }
         }
