@@ -23,7 +23,7 @@ pipeline {
                     def CI_COMMIT_HASH = sh(script: "git rev-parse HEAD", returnStdout: true).trim()
                     CI_COMMIT_SHORT_SHA = CI_COMMIT_HASH.take(8)
 
-                    IMAGE_VERSION = "${PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}_${CI_COMMIT_SHORT_SHA}"
+                    IMAGE_VERSION = "${PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}"
                 }
             }
         }
