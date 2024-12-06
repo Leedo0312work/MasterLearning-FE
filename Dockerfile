@@ -2,7 +2,7 @@
 FROM node:18-alpine AS build-stage
 WORKDIR /app
 COPY package.json yarn.lock ./
-RUN yarn install 
+RUN yarn install --ignore-optional
 COPY . .
 RUN yarn build 
 
