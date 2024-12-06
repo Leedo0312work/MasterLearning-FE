@@ -1,10 +1,15 @@
 # build stage
-FROM node:18-alpine AS build-stage
+FROM node:21-alpine3.19 AS build-stage
+
 WORKDIR /app
-COPY package.json yarn.lock ./
-RUN npm install --force
+
+COPY yarn.lock package.json ./
+
+RUN yarn install
+
 COPY . .
-RUN npm run build
+
+RUN yarn build 
 
 # production stage
 FROM nginx:1.27-alpine AS production-stage
