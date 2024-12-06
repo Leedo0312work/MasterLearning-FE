@@ -2,6 +2,7 @@ pipeline {
     agent none
     environment {
         USER_PROJECT = "masterlearning"
+        PROJECT_NAME = "masterlearning-fe"
         CI_CIMMIT_SHORT_SHA = ""
         CI_COMMIT_TAG = ""
         CI_PROJECT_NAME = ""
@@ -25,7 +26,7 @@ pipeline {
 
                     CI_COMMIT_TAG = sh(script: "git describe --tags --exact-match ${CI_COMMIT_HASH}", returnStdout: true).trim()
 
-                    IMAGE_VERSION = "${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}_${CI_COMMIT_TAG}"
+                    IMAGE_VERSION = "${PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}_${CI_COMMIT_HASH}"
 
                     
                 }
@@ -59,8 +60,8 @@ pipeline {
                     // }
 
                     withDockerRegistry([credentialsId: "${REGISTRY_CREDENTIALS}", url: "https://${REGISTRY_URL}"]) {
-                        sh "docker tag ${USER_PROJECT}/${CI_PROJECT_NAME}:${IMAGE_VERSION}"
-                        sh "docker push ${USER_PROJECT}/${CI_PROJECT_NAME}:${IMAGE_VERSION}"
+                        sh "docker tag ${USER_PROJECT}/${PROJECT_NAME}:${IMAGE_VERSION}"
+                        sh "docker push ${USER_PROJECT}/${PROJECT_NAME}:${IMAGE_VERSION}"
                     }
                 }
             }   
@@ -73,8 +74,8 @@ pipeline {
             steps {
                 script {
                     sh(script: """ 
-                        docker pull ${USER_PROJECT}/${CI_PROJECT_NAME}:${IMAGE_VERSION}
-                        sudo su ${USER_PROJECT} -c "docker rm -f $CI_PROJECT_NAME; docker run --name $CI_PROJECT_NAME -dp 80:80 ${REGISTRY_URL}/${DOCKER_IMAGE_NAME}:${IMAGE_VERSION}"
+                        docker pull ${USER_PROJECT}/${PROJECT_NAME}:${IMAGE_VERSION}
+                        sudo su ${USER_PROJECT} -c "docker rm -f $PROJECT_NAME; docker run --name $PROJECT_NAME -dp 80:80 ${REGISTRY_URL}/${DOCKER_IMAGE_NAME}:${IMAGE_VERSION}"
                     """, label: "")
                 }
             }
