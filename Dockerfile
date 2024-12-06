@@ -2,9 +2,9 @@
 FROM node:22-alpine as build-stage
 WORKDIR /app
 COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+RUN yarn install 
 COPY . .
-RUN yarn build && rm -rf node_modules
+RUN yarn build 
 
 # production stage
 FROM nginx:1.27-alpine as production-stage
