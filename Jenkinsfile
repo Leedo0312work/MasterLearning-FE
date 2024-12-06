@@ -15,7 +15,7 @@ pipeline {
     stages {
         stage('get information project') {
             agent {
-                label '192.168.237.103'
+                label '192.168.237.105'
             }
             steps {
                 script {
@@ -33,7 +33,7 @@ pipeline {
 
         stage('build') {
             agent {
-                label '192.168.237.103'
+                label '192.168.237.105'
             }
             steps {
                 script {
@@ -44,7 +44,7 @@ pipeline {
 
         stage('push to registry') {
             agent {
-                label '192.168.237.103'
+                label '192.168.237.105'
             }
             steps {
                 script {
@@ -67,7 +67,7 @@ pipeline {
 
         stage('deploy') {
             agent {
-                label '192.168.237.103'
+                label '192.168.237.105'
             }
             steps {
                 script {
