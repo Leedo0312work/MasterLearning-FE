@@ -55,8 +55,8 @@ pipeline {
                     // }
 
                     withDockerRegistry([credentialsId: "${REGISTRY_CREDENTIALS}", url: "https://${REGISTRY_URL}"]) {
-                        sh "docker tag ${USER_PROJECT}/${PROJECT_NAME}:${IMAGE_VERSION}"
-                        sh "docker push ${USER_PROJECT}/${PROJECT_NAME}:${IMAGE_VERSION}"
+                        sh "docker tag ${USER_PROJECT}/:${IMAGE_VERSION}"
+                        sh "docker push ${USER_PROJECT}/:${IMAGE_VERSION}"
                     }
                 }
             }   
@@ -64,13 +64,13 @@ pipeline {
 
         stage('deploy') {
             agent {
-                label '54.169.240.176'
+                label '192.168.237.105'
             }
             steps {
                 script {
                     sh(script: """ 
-                        docker pull ${USER_PROJECT}/${PROJECT_NAME}:${IMAGE_VERSION}
-                        sudo su ${USER_PROJECT} -c "docker rm -f $PROJECT_NAME; docker run --name $PROJECT_NAME -dp 80:80 ${REGISTRY_URL}/${DOCKER_IMAGE_NAME}:${IMAGE_VERSION}"
+                        docker pull ${USER_PROJECT}/:${IMAGE_VERSION}
+                        sudo su ${USER_PROJECT} -c "docker rm -f $PROJECT_NAME; docker run --name $PROJECT_NAME -dp 80:80 ${USER_PROJECT}/:${IMAGE_VERSION}"
                     """, label: "")
                 }
             }
