@@ -1,5 +1,5 @@
 node_modules
-build
-dist
 .git
 ./server/.env
+Dockerfile
+README.md

@@ -14,7 +14,7 @@ pipeline {
     stages {
         stage('get information project') {
             agent {
-                label '54.169.240.176'
+                label '192.168.237.105'
             }
             steps {
                 script {
@@ -30,7 +30,7 @@ pipeline {
 
         stage('build') {
             agent {
-                label '54.169.240.176'
+                label '192.168.237.105'
             }
             steps {
                 script {
