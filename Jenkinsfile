@@ -55,8 +55,8 @@ pipeline {
                     // }
 
                     withDockerRegistry([credentialsId: "${REGISTRY_CREDENTIALS}", url: "https://${REGISTRY_URL}"]) {
-                        sh "docker tag ${IMAGE_VERSION} ${USER_PROJECT}/:${IMAGE_VERSION}"
-                        sh "docker push ${USER_PROJECT}/:${IMAGE_VERSION}"
+                        sh "docker tag ${IMAGE_VERSION} ${USER_PROJECT}/${IMAGE_VERSION}"
+                        sh "docker push ${USER_PROJECT}/${IMAGE_VERSION}"
                     }
                 }
             }   
@@ -69,8 +69,8 @@ pipeline {
             steps {
                 script {
                     sh(script: """ 
-                        docker pull ${USER_PROJECT}/:${IMAGE_VERSION}
-                        sudo su ${USER_PROJECT} -c "docker rm -f $PROJECT_NAME; docker run --name $PROJECT_NAME -dp 80:80 ${USER_PROJECT}/:${IMAGE_VERSION}"
+                        docker pull ${USER_PROJECT}/${IMAGE_VERSION}
+                        sudo su ${USER_PROJECT} -c "docker rm -f $PROJECT_NAME; docker run --name $PROJECT_NAME -dp 80:80 ${USER_PROJECT}/${IMAGE_VERSION}"
                     """, label: "")
                 }
             }
