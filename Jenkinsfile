@@ -14,7 +14,7 @@ pipeline {
     stages {
         stage('get information project') {
             agent {
-                label '192.168.237.105'
+                label '54.169.240.176'
             }
             steps {
                 script {
@@ -30,7 +30,7 @@ pipeline {
 
         stage('build') {
             agent {
-                label '192.168.237.105'
+                label '54.169.240.176'
             }
             steps {
                 script {
@@ -60,20 +60,6 @@ pipeline {
                     }
                 }
             }   
-        }
-
-        stage('deploy') {
-            agent {
-                label '192.168.237.105'
-            }
-            steps {
-                script {
-                    sh(script: """ 
-                        docker pull ${USER_PROJECT}/${PROJECT_NAME}:${IMAGE_VERSION}
-                        sudo su ${USER_PROJECT} -c "docker rm -f $PROJECT_NAME; docker run --name $PROJECT_NAME -dp 80:80 ${REGISTRY_URL}/${DOCKER_IMAGE_NAME}:${IMAGE_VERSION}"
-                    """, label: "")
-                }
-            }
         }
     }
 }
