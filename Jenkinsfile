@@ -23,7 +23,13 @@ pipeline {
                     def CI_COMMIT_HASH = sh(script: "git rev-parse HEAD", returnStdout: true).trim()
                     CI_COMMIT_SHORT_SHA = CI_COMMIT_HASH.take(8)
 
+<<<<<<< HEAD
                     IMAGE_VERSION = "${PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}"
+=======
+                    IMAGE_VERSION = "${PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}_${CI_COMMIT_HASH}"
+
+                    
+>>>>>>> c0ae691b6431605d4545deafc821d8c4cf840142
                 }
             }
         }
@@ -45,8 +51,23 @@ pipeline {
             }
             steps {
                 script {
+<<<<<<< HEAD
                     withCredentials([usernamePassword(credentialsId: 'harbor-registry-user', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh "docker login ${REGISTRY_URL} -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
+=======
+                    // // Đăng nhập vào Harbor registry sử dụng credentials của Jenkins
+                    // withCredentials([usernamePassword(credentialsId: "${REGISTRY_CREDENTIALS}", passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                    //     // Đăng nhập vào Harbor
+                    //     sh "docker login ${REGISTRY_URL} -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
+
+                    //     // Push image lên Harbor registry
+                    //     sh "docker push ${REGISTRY_URL}/${DOCKER_IMAGE_NAME}:${IMAGE_VERSION}"
+                    // }
+
+                    withDockerRegistry([credentialsId: "${REGISTRY_CREDENTIALS}", url: "https://${REGISTRY_URL}"]) {
+                        sh "docker tag ${USER_PROJECT}/${PROJECT_NAME}:${IMAGE_VERSION}"
+                        sh "docker push ${USER_PROJECT}/${PROJECT_NAME}:${IMAGE_VERSION}"
+>>>>>>> c0ae691b6431605d4545deafc821d8c4cf840142
                     }
                 }
             }
@@ -80,6 +101,7 @@ pipeline {
             }
             steps {
                 script {
+<<<<<<< HEAD
                     withCredentials([usernamePassword(credentialsId: "${REGISTRY_CREDENTIALS}", passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
                         sh "docker login ${REGISTRY_URL} -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
                         
@@ -89,6 +111,12 @@ pipeline {
                             docker logout ${REGISTRY_URL} 
                         """, label: "")
                     }
+=======
+                    sh(script: """ 
+                        docker pull ${USER_PROJECT}/${PROJECT_NAME}:${IMAGE_VERSION}
+                        sudo su ${USER_PROJECT} -c "docker rm -f $PROJECT_NAME; docker run --name $PROJECT_NAME -dp 80:80 ${REGISTRY_URL}/${DOCKER_IMAGE_NAME}:${IMAGE_VERSION}"
+                    """, label: "")
+>>>>>>> c0ae691b6431605d4545deafc821d8c4cf840142
                 }
             }
         }
