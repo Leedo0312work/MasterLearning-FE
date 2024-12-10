@@ -67,8 +67,8 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: "${REGISTRY_CREDENTIALS}", passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
                             sh "docker login ${REGISTRY_URL} -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
     
-                            sh "docker tag ${IMAGE_VERSION} ${USER_PROJECT}/${IMAGE_VERSION}"
-                            sh "docker push ${USER_PROJECT}/${IMAGE_VERSION}"
+                            sh "docker tag ${IMAGE_VERSION} ${REGISTRY_URL}/${USER_PROJECT}/${IMAGE_VERSION}"
+                            sh "docker push ${REGISTRY_URL}/${USER_PROJECT}/${IMAGE_VERSION}"
                         } 
                 }
             }   
