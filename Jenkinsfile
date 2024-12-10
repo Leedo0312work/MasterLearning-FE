@@ -7,7 +7,7 @@ pipeline {
         CI_PROJECT_NAME = ""
         IMAGE_VERSION = ""
 
-        REGISTRY_URL = "registry.leedowork.id.vn"  
+        REGISTRY_URL = "registry.leedowork.id.vn"
         REGISTRY_CREDENTIALS = "harbor-registry-user"  
         
     }
@@ -53,11 +53,10 @@ pipeline {
                     //     // Push image lên Harbor registry
                     //     sh "docker push ${REGISTRY_URL}/${DOCKER_IMAGE_NAME}:${IMAGE_VERSION}"
                     // }
-
-                    withDockerRegistry([credentialsId: "${REGISTRY_CREDENTIALS}", url: "https://${REGISTRY_URL}"]) {
-                        sh "docker tag ${IMAGE_VERSION} ${USER_PROJECT}/${IMAGE_VERSION}"
-                        sh "docker push ${USER_PROJECT}/${IMAGE_VERSION}"
-                    }
+                    withDockerRegistry(credentialsId: "${REGISTRY_CREDENTIALS}", url: "${REGISTRY_URL}") {
+                        sh "docker tag ${IMAGE_VERSION} ${REGISTRY_URL}/${USER_PROJECT}/${IMAGE_VERSION}"
+                        sh "docker push ${REGISTRY_URL}/${USER_PROJECT}/${IMAGE_VERSION}"
+                    } 
                 }
             }   
         }
@@ -69,8 +68,8 @@ pipeline {
             steps {
                 script {
                     sh(script: """ 
-                        docker pull ${USER_PROJECT}/${IMAGE_VERSION}
-                        sudo su ${USER_PROJECT} -c "docker rm -f $PROJECT_NAME; docker run --name $PROJECT_NAME -dp 80:80 ${USER_PROJECT}/${IMAGE_VERSION}"
+                        docker pull ${REGISTRY_URL}/${USER_PROJECT}/${IMAGE_VERSION}
+                        sudo su ${USER_PROJECT} -c "docker rm -f $PROJECT_NAME; docker run --name $PROJECT_NAME -dp 80:80 ${REGISTRY_URL}/${USER_PROJECT}/${IMAGE_VERSION}"
                     """, label: "")
                 }
             }
