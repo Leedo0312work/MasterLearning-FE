@@ -63,12 +63,14 @@ pipeline {
                 //         sh "docker push ${REGISTRY_URL}/${USER_PROJECT}/${IMAGE_VERSION}"
                 //     } 
                 // }
-                withCredentials([usernamePassword(credentialsId: "${REGISTRY_CREDENTIALS}", passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                        sh "docker login ${REGISTRY_URL} -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
-
-                        sh "docker tag ${IMAGE_VERSION} ${USER_PROJECT}/${IMAGE_VERSION}"
-                        sh "docker push ${USER_PROJECT}/${IMAGE_VERSION}"
-                    } 
+                script {
+                    withCredentials([usernamePassword(credentialsId: "${REGISTRY_CREDENTIALS}", passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                            sh "docker login ${REGISTRY_URL} -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
+    
+                            sh "docker tag ${IMAGE_VERSION} ${USER_PROJECT}/${IMAGE_VERSION}"
+                            sh "docker push ${USER_PROJECT}/${IMAGE_VERSION}"
+                        } 
+                }
             }   
         }
 
@@ -78,11 +80,15 @@ pipeline {
             }
             steps {
                 script {
-                    sh(script: """ 
-                        docker pull ${REGISTRY_URL}/${USER_PROJECT}/${IMAGE_VERSION}
-                        sudo su ${USER_PROJECT} -c "docker rm -f $PROJECT_NAME; docker run --name $PROJECT_NAME -dp 80:80 ${REGISTRY_URL}/${USER_PROJECT}/${IMAGE_VERSION}"
-                        docker logout ${REGISTRY_URL}
-                    """, label: "")
+                    withCredentials([usernamePassword(credentialsId: "${REGISTRY_CREDENTIALS}", passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                        sh "docker login ${REGISTRY_URL} -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
+                        
+                        sh(script: """ 
+                            docker pull ${REGISTRY_URL}/${USER_PROJECT}/${IMAGE_VERSION}
+                            sudo su ${USER_PROJECT} -c "docker rm -f $PROJECT_NAME; docker run --name $PROJECT_NAME -dp 80:80 ${REGISTRY_URL}/${USER_PROJECT}/${IMAGE_VERSION}"
+                            docker logout ${REGISTRY_URL} 
+                        """, label: "")
+                    }
                 }
             }
         }
