@@ -7,7 +7,6 @@ pipeline {
         CI_PROJECT_NAME = ""
         IMAGE_VERSION = ""
 
-        FULL_REGISTRY_URL = "https://registry.leedowork.id.vn/"
         REGISTRY_URL = "registry.leedowork.id.vn"
         REGISTRY_CREDENTIALS = "harbor-registry-user"  
         
@@ -54,7 +53,7 @@ pipeline {
                     //     // Push image lên Harbor registry
                     //     sh "docker push ${REGISTRY_URL}/${DOCKER_IMAGE_NAME}:${IMAGE_VERSION}"
                     // }
-                    withDockerRegistry(credentialsId: "${REGISTRY_CREDENTIALS}", url: "${FULL-REGISTRY_URL}") {
+                    withDockerRegistry(credentialsId: 'harbor-registry-user', url: 'https://registry.leedowork.id.vn/') {
                         sh "docker tag ${IMAGE_VERSION} ${REGISTRY_URL}/${USER_PROJECT}/${IMAGE_VERSION}"
                         sh "docker push ${REGISTRY_URL}/${USER_PROJECT}/${IMAGE_VERSION}"
                     } 
