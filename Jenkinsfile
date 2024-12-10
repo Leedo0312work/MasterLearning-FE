@@ -7,7 +7,7 @@ pipeline {
         CI_PROJECT_NAME = ""
         IMAGE_VERSION = ""
 
-        FULL-REGISTRY_URL = "https://registry.leedowork.id.vn/"
+        FULL_REGISTRY_URL = "https://registry.leedowork.id.vn/"
         REGISTRY_URL = "registry.leedowork.id.vn"
         REGISTRY_CREDENTIALS = "harbor-registry-user"  
         
