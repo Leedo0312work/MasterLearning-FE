@@ -61,5 +61,20 @@ pipeline {
                 }
             }   
         }
+
+        stage('deploy') {
+            agent {
+                label '54.169.240.176'
+            }
+            steps {
+                script {
+                    sh(script: """ 
+                        docker pull ${USER_PROJECT}/${PROJECT_NAME}:${IMAGE_VERSION}
+                        sudo su ${USER_PROJECT} -c "docker rm -f $PROJECT_NAME; docker run --name $PROJECT_NAME -dp 80:80 ${REGISTRY_URL}/${DOCKER_IMAGE_NAME}:${IMAGE_VERSION}"
+                    """, label: "")
+                }
+            }
+        }
+
     }
 }
