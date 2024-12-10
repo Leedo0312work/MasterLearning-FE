@@ -55,7 +55,7 @@ pipeline {
                     // }
 
                     withDockerRegistry([credentialsId: "${REGISTRY_CREDENTIALS}", url: "https://${REGISTRY_URL}"]) {
-                        sh "docker tag ${USER_PROJECT}/:${IMAGE_VERSION}"
+                        sh "docker tag ${IMAGE_VERSION} ${USER_PROJECT}/:${IMAGE_VERSION}"
                         sh "docker push ${USER_PROJECT}/:${IMAGE_VERSION}"
                     }
                 }
