@@ -8,6 +8,7 @@ const CensorDocumentUI: React.FC = () => {
             title: 'Tên tài liệu',
             dataIndex: 'name',
             key: 'name',
+            render: (text: string) => <a>{text}</a>,
         },
         {
             title: 'Thời gian tạo',

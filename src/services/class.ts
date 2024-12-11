@@ -1,6 +1,10 @@
 import { CreateClassForm } from '~/types/class';
 import API from '~/network/API';
 
+export const fetchGetAllClassList = () => {
+    return API.get('/classes/get-all-class');
+};
+
 export const fetchGetClassList = () => {
     return API.get('/classes');
 };
@@ -51,4 +55,10 @@ export const fetchGetClassById = (id: string) => {
 
 export const fetchDeleteClass = (classes_id: any) => {
     return API.post(`classes/delete`, classes_id);
+};
+
+export const fetchAdminDeleteClass = (classes_id: any) => {
+    return API.post('/classes/delete-admin', {
+        classes_id: classes_id,
+    });
 };
