@@ -1,7 +1,7 @@
 import React from 'react';
 import HeaderContent from '~/components/HeaderContent';
 import HeaderRight from '~/components/HeaderRight';
-
+import logo from '~/assets/images/logo.png';
 import styles from './Header.module.css';
 import useAuthStore from '~/store/useAuthStore';
 import Button from '@mui/material/Button';
@@ -15,7 +15,7 @@ function Header() {
         <div className={styles.container}>
             <div className={styles.wrap}>
                 <div className={styles.logo}>
-                    <img src="/src/assets/images/logo.svg" alt="logo" />
+                    <img src={logo} alt="logo" />
                 </div>
 
                 {Boolean(user) && (

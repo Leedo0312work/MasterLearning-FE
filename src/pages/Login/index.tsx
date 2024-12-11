@@ -69,7 +69,7 @@ export default function SignInSide() {
                     const roleUser = response?.data.result.role;
                     console.log('data: ', data);
                     if (roleUser == 3) {
-                        window.location.href = '/admin';
+                        window.location.href = '/admin/manageAccount';
                     } else {
                         setUser(data.result.user);
                         window.location.href = '/class';

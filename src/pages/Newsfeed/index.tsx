@@ -3,7 +3,6 @@ import Post from '~/components/Post';
 import { useQuery } from 'react-query';
 import { useEffect, useMemo, useState } from 'react';
 import NewsfeedHeader from '~/components/NewsfeedHeader';
-import NewsfeedSiderBarRight from '~/components/NewsfeedSiderBarRight';
 import NewsfeedContent from '~/components/NewsfeedContent';
 
 import { useCallback } from 'react';

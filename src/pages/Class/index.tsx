@@ -69,20 +69,17 @@ function Class() {
 
     const handleDelete = async (_id: string) => {
         try {
-            await getDeleteClass({
-                classes_id: _id,
-            });
-    
-            setFilteredClass((prevClasses: any) => 
-                prevClasses.filter((item: any) => item._id !== _id)
+            await getDeleteClass(_id);
+
+            setFilteredClass((prevClasses: any) =>
+                prevClasses.filter((item: any) => item._id !== _id),
             );
-            toast.success('Xoá lớp thành công')
+            toast.success('Xoá lớp thành công');
         } catch (error) {
             console.error('Error deleting class:', error);
             toast.error('Xóa lớp thất bại');
         }
     };
-    
 
     return (
         <div className={styles.wrap}>
@@ -100,7 +97,7 @@ function Class() {
                         name={item?.name}
                         code={item?.code}
                         teacher={item?.teacher}
-                        handleDelete = {handleDelete}
+                        handleDelete={handleDelete}
                     />
                 ))}
             </div>

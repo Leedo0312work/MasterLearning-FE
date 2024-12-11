@@ -1,16 +1,12 @@
 import OndemandVideoIcon from '@mui/icons-material/OndemandVideo';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
-import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-
 import styles from './styles.module.css';
-import useFolderStore from '~/store/useFolderStore';
-import { useQuery } from 'react-query';
+
 import { deleteLesson, getLessonByClassId } from '~/repositories/lesson';
 import useLessonStore from '~/store/useLessonStore';
 import { useMemo } from 'react';
-import { ILesson } from '~/models/ILesson';
 import dayjs from '~/packages/dayjs';
 import { useConfirm } from 'material-ui-confirm';
 import useAuthStore from '~/store/useAuthStore';

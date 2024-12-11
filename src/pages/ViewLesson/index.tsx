@@ -1,18 +1,8 @@
-import SidebarLeftLesson from '~/components/SidebarLeftLesson';
-import LesssonContent from '~/components/LesssonContent';
-import SiderbarRightLesson from '~/components/SiderbarRightLesson';
-import LessonHeader from '~/components/LessonHeader';
-import useModal from '~/hooks/useModal';
-import ModalAddFolder from '~/components/ModalAddFolder';
-
-import styles from './styles.module.css';
 import { useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
-import { getLessonByClassId, getLessonById } from '~/repositories/lesson';
-import useLessonStore from '~/store/useLessonStore';
+import { getLessonById } from '~/repositories/lesson';
 import VideoHLS from '~/utils/media/videoHLS';
 import { Spin } from 'antd';
-import { Worker, Viewer } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 
 function ViewLesson() {
@@ -45,7 +35,8 @@ function ViewLesson() {
                         width: '80%',
                     }}
                 >
-                    <VideoHLS src={data?.data?.result?.media?.url} />
+                    <div>video: </div>
+                    <VideoHLS src={data?.data?.result?.media[0]?.url} />
                 </div>
             </div>
         );
