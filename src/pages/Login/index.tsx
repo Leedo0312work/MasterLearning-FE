@@ -69,10 +69,12 @@ export default function SignInSide() {
                     const roleUser = response?.data.result.role;
                     console.log('data: ', data);
                     if (roleUser == 3) {
-                        window.location.href = '/admin';
+                        navigate('/admin');
+                        // window.location.href = '/admin';
                     } else {
                         setUser(data.result.user);
-                        window.location.href = '/class';
+                        navigate('/class');
+                        // window.location.href = '/class';
                     }
                     toast.success('Chào mừng bạn trở lại');
                 });
@@ -90,115 +92,6 @@ export default function SignInSide() {
         mutate(data);
     };
 
-    // return (
-    //     <ThemeProvider theme={theme}>
-    //         <Grid container component="main" sx={{ height: '100vh' }}>
-    //             <CssBaseline />
-    //             <Grid
-    //                 item
-    //                 xs={false}
-    //                 sm={4}
-    //                 md={7}
-    //                 sx={{
-    //                     backgroundImage: 'url(https://source.unsplash.com/random)',
-    //                     backgroundRepeat: 'no-repeat',
-    //                     backgroundColor: (t) =>
-    //                         t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-    //                     backgroundSize: 'cover',
-    //                     backgroundPosition: 'center',
-    //                 }}
-    //             />
-    //             <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-    //                 <Box
-    //                     sx={{
-    //                         my: 8,
-    //                         mx: 4,
-    //                         display: 'flex',
-    //                         flexDirection: 'column',
-    //                         alignItems: 'center',
-    //                     }}
-    //                 >
-    //                     <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-    //                         <LockOutlinedIcon />
-    //                     </Avatar>
-    //                     <Typography component="h1" variant="h5">
-    //                         Đăng nhập
-    //                     </Typography>
-    //                     <Box
-    //                         component="form"
-    //                         noValidate
-    //                         onSubmit={handleSubmit(submit)}
-    //                         sx={{ mt: 1, width: '100%' }}
-    //                     >
-    //                         <TextField
-    //                             margin="normal"
-    //                             required
-    //                             fullWidth
-    //                             id="email"
-    //                             type="email"
-    //                             label="Email "
-    //                             autoComplete="email"
-    //                             autoFocus
-    //                             {...register('email', {
-    //                                 required: 'Please enter your email.',
-    //                                 pattern: {
-    //                                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-    //                                     message: 'invalid email address',
-    //                                 },
-    //                             })}
-    //                         />
-    //                         {errors.email && (
-    //                             <p style={{ color: 'red', margin: 3 }}>{errors.email.message}</p>
-    //                         )}
-
-    //                         <TextField
-    //                             margin="normal"
-    //                             required
-    //                             fullWidth
-    //                             label="Mật khẩu"
-    //                             type="password"
-    //                             id="password"
-    //                             autoComplete="current-password"
-    //                             {...register('password', {
-    //                                 required: 'Please enter your password.',
-    //                             })}
-    //                         />
-    //                         {errors.password && (
-    //                             <p style={{ color: 'red', margin: 3 }}>{errors.password.message}</p>
-    //                         )}
-
-    //                         <FormControlLabel
-    //                             control={<Checkbox value="remember" color="primary" />}
-    //                             label="Ghi nhớ đăng nhập"
-    //                         />
-    //                         <Button
-    //                             type="submit"
-    //                             fullWidth
-    //                             variant="contained"
-    //                             sx={{ mt: 3, mb: 2 }}
-    //                         >
-    //                             Đăng nhập
-    //                         </Button>
-    //                         <Grid container>
-    //                             <Grid item xs>
-    //                                 <Link href="/forgot-password" variant="body2">
-    //                                     {'Quên mật khẩu ?'}
-    //                                 </Link>
-    //                             </Grid>
-    //                             <Grid item>
-    //                             Chưa có tài khoản?
-    //                                 <Link href="/register" variant="body2">
-    //                                     {' Đăng ký ngay'}
-    //                                 </Link>
-    //                             </Grid>
-    //                         </Grid>
-    //                         {/*<Copyright sx={{ mt: 5 }} />*/}
-    //                     </Box>
-    //                 </Box>
-    //             </Grid>
-    //         </Grid>
-    //     </ThemeProvider>
-    // );
     return (
         <ThemeProvider theme={theme}>
             <Grid container component="main" sx={{ height: '100vh', backgroundColor: '#F9FAFC' }}>

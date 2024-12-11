@@ -45,7 +45,8 @@ function ViewLesson() {
                         width: '80%',
                     }}
                 >
-                    <VideoHLS src={data?.data?.result?.media?.url} />
+                    <div>video: </div>
+                    <VideoHLS src={data?.data?.result?.media[0]?.url} />
                 </div>
             </div>
         );

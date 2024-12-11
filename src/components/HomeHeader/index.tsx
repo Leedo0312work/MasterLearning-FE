@@ -13,7 +13,7 @@ function HomeHeader() {
                 <li className={styles.leftItem}>Liên hệ</li>
             </ul>
             <div className={styles.logo}>
-                <img style={{ height: '60px' }} src="/src//assets//images//logo.svg" alt="logo" />
+                <img style={{ height: '60px' }} src="/src//assets//images//logo.png" alt="logo" />
             </div>
             <div className={styles.right}>
                 <Link className={styles.link} to="/login">

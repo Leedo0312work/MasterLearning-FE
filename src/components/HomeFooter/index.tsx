@@ -9,7 +9,7 @@ function HomeFooter() {
     return (
         <div className={styles.wrap}>
             <div className={styles.left}>
-                <img className={styles.logo} src="/src//assets//images//logo.svg" alt="logo" />
+                <img className={styles.logo} src="/src//assets//images//logo.png" alt="logo" />
                 <h3 className={styles.left_header}>CÔNG TY CỔ PHẦN CÔNG NGHỆ MASTER LEARNING</h3>
                 <p className={styles.left_title}>
                     ©Copyright 2022 Master Learning. All Rights Reserved
