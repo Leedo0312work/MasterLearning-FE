@@ -1,10 +1,6 @@
-import SidebarLeftLesson from '~/components/SidebarLeftLesson';
 import LesssonContent from '~/components/LesssonContent';
 import SiderbarRightLesson from '~/components/SiderbarRightLesson';
 import LessonHeader from '~/components/LessonHeader';
-import useModal from '~/hooks/useModal';
-import ModalAddFolder from '~/components/ModalAddFolder';
-
 import styles from './styles.module.css';
 import { useParams } from 'react-router-dom';
 import { useQuery, useQueryClient } from 'react-query';
@@ -13,7 +9,7 @@ import useLessonStore from '~/store/useLessonStore';
 
 function Lesson() {
     const { id: classId, type } = useParams();
-    const { lessons, setLessons } = useLessonStore((state) => state); // lấy `lessons` từ `useLessonStore`
+    const { lessons, setLessons } = useLessonStore((state) => state);
     const queryClient = useQueryClient();
 
     const {

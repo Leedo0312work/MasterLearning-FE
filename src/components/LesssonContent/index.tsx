@@ -1,13 +1,8 @@
 import LesssonContentHeader from '~/components/LesssonContentHeader';
 import CardVideo from '~/components/CardVideo';
-
 import styles from './styles.module.css';
-import useFolderStore from '~/store/useFolderStore';
-import { useQuery } from 'react-query';
-import { getLessonByClassId } from '~/repositories/lesson';
 import useLessonStore from '~/store/useLessonStore';
 import CardDocument from '../CardDocument';
-import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 function LesssonContent({ lessons, onDeleteSuccess }: any) {
