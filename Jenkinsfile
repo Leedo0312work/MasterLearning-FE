@@ -71,7 +71,9 @@ pipeline {
             steps {
                 script {
                     sh(script: """
-                        cd ../
+                        cd /home/masterlearning/workspace/masterlearning
+                        docker compose down
+                        sleep 5
                         docker-compose up -d
                     """, label: "Deploy with Docker Compose")
                 }
