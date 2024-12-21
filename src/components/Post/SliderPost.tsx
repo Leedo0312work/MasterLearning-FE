@@ -1,47 +1,43 @@
 import React from "react";
 import { Modal, Image, Carousel } from "antd";
-import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import VideoHLS from "~/utils/media/videoHLS";
 
-const SliderPost = ({ open, setOpen, media }: any) => {
-    const isLgScreen = useSelector((state: any) => state.screen.isLgScreen);
+interface SliderPostProps {
+    open: boolean;
+    setOpen: (open: boolean) => void;
+    media: Array<{ type: number; url: string }>;
+}
+
+const SliderPost: React.FC<SliderPostProps> = ({ open, setOpen, media }) => {
     return (
-        <div>
-            <Modal
-                width={isLgScreen ? "70%" : "95%"}
-                style={{ top: 0 }}
-                open={open}
-                onCancel={() => setOpen(false)}
-                centered
-                footer={null}
-            >
-                <Carousel arrows infinite={true}>
-                    {media.map((item: any, index: any) => {
-                        if (item.type === 0) {
-                            return (
-                                <div key={index} className="max-h-[80vh]">
-                                    <Image
-                                        width={"100%"}
-                                        height={"100%"}
-                                        src={item.url}
-                                    />
-                                </div>
-                            );
-                        } else {
-                            return <VideoHLS key={index} src={item.url} />;
-                        }
-                    })}
-                </Carousel>
-            </Modal>
-        </div>
+        <Modal
+            width="70%"
+            style={{ top: 0 }}
+            open={open}
+            onCancel={() => setOpen(false)}
+            centered
+            footer={null}
+        >
+            <Carousel arrows infinite>
+                {media.map((item, index) => (
+                    <div key={index} className="max-h-[80vh]">
+                        {item.type === 0 ? (
+                            <Image width="100%" height="100%" src={item.url} />
+                        ) : (
+                            <VideoHLS src={item.url} />
+                        )}
+                    </div>
+                ))}
+            </Carousel>
+        </Modal>
     );
 };
 
 SliderPost.propTypes = {
     open: PropTypes.bool.isRequired,
     setOpen: PropTypes.func.isRequired,
-    media: PropTypes.array,
+    media: PropTypes.array.isRequired,
 };
 
 export default SliderPost;
