@@ -5,8 +5,12 @@ import { ConfirmProvider } from 'material-ui-confirm';
 import styles from './styles.module.css';
 import PropTypes from 'prop-types';
 import DocumentTableHeader from '~/components/DocumentTableHeader';
-import { censorLesson, getNotCensoredLessons, rejectCensorLesson } from '~/repositories/lesson';
-import SiderbarRight from '~/pages/Admin/LessonDocumentSidebarRight/SideBarRight';
+import {
+    censorLesson,
+    getNotCensoredLessons,
+    rejectCensorLesson,
+    deleteLesson,
+} from '~/repositories/lesson';
 import { getClassById } from '~/repositories/class';
 import DetailModal from '../LessonDocumentSidebarRight/DetailModal';
 import { isNull } from 'lodash';
@@ -50,7 +54,7 @@ const DocumentLessonManager: React.FC<DocumentLessonManagerProps> = ({ title, ty
             setLoading(false);
         }
     };
-    console.log('textType: ', textType);
+
     useEffect(() => {
         type === 1 ? setTextType('bài giảng') : setTextType('tài liệu');
 
@@ -123,6 +127,23 @@ const DocumentLessonManager: React.FC<DocumentLessonManagerProps> = ({ title, ty
         });
     };
 
+    // const handleDelete = async (lessonId: string) => {
+    //     Modal.confirm({
+    //         title: 'Xác nhận xóa',
+    //         content: `Bạn có chắc chắn muốn xóa ${textType} này?`,
+    //         okText: 'Xác nhận',
+    //         cancelText: 'Hủy',
+    //         onOk: async () => {
+    //             await deleteLesson(String(lessonId));
+    //             handleCloseModal();
+    //             await fetchDataAsync();
+    //         },
+    //         onCancel: () => {
+    //             console.log('Từ chối hủy bỏ');
+    //         },
+    //     });
+    // };
+
     const handleConfirmReject = async () => {
         try {
             if (selectedRecord?._id) {
@@ -168,7 +189,7 @@ const DocumentLessonManager: React.FC<DocumentLessonManagerProps> = ({ title, ty
                         Xem chi tiết
                     </Button>
                     {record.censored !== null && (
-                        <Button type="dashed" onClick={() => handleReject(record._id)}>
+                        <Button danger onClick={() => handleReject(record._id)}>
                             Từ chối
                         </Button>
                     )}
@@ -177,6 +198,15 @@ const DocumentLessonManager: React.FC<DocumentLessonManagerProps> = ({ title, ty
                             Kiểm duyệt
                         </Button>
                     )}
+                    {/* {record.censored === null && (
+                        <Button
+                            type="primary"
+                            danger
+                            onClick={() => handleDelete(String(record._id))}
+                        >
+                            Xóa
+                        </Button>
+                    )} */}
                 </Space>
             ),
         },

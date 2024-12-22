@@ -32,6 +32,7 @@ function CardDocument({
     onDeleteSuccess,
     classId,
     lessonId,
+    censored,
 }: any) {
     const navigate = useNavigate();
     const confirm = useConfirm();
@@ -108,7 +109,18 @@ function CardDocument({
                         />
                     </div>
                     <div className={styles.content}>
-                        <div className={styles.header}>{name}</div>
+                        <div className={styles.name}>
+                            <div className={styles.header}>{name}</div>
+                            {censored === null && (
+                                <div className={styles.reject}>- từ chối kiểm duyệt</div>
+                            )}
+                            {censored === true && (
+                                <div className={styles.censored}>- đã kiểm duyệt</div>
+                            )}
+                            {censored === false && (
+                                <div className={styles.pending}>- đợi kiểm duyệt</div>
+                            )}
+                        </div>
                         <div className={styles.info}>
                             <div>Mô tả: {description}</div>
                         </div>
