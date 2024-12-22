@@ -139,9 +139,8 @@ const Post: React.FC<any> = ({ post, isShowGroupName = true, listPost, setListPo
                 <div className=" tw-flex tw-items-center tw-cursor-pointer" onClick={handleTym}>
                     <i
                         style={{ color: 'red' }}
-                        className={`${
-                            tym ? 'fa-solid tw-text-[red]' : 'fa-regular'
-                        } fa-heart tw-text-[25px] tw-mr-2`}
+                        className={`${tym ? 'fa-solid tw-text-[red]' : 'fa-regular'
+                            } fa-heart tw-text-[25px] tw-mr-2`}
                     ></i>
                     <p className={`${tym ? ' tw-text-[red]' : ''} `}>
                         <span style={{ color: 'blue' }}>Thích</span>
