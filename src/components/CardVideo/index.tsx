@@ -4,7 +4,18 @@ import styles from './styles.module.css';
 import PropTypes from 'prop-types';
 import dayjs from '~/packages/dayjs';
 
-function CardVideo({ video, name, viewer, time, created_at, thumbnail, active, id, onClick }: any) {
+function CardVideo({
+    video,
+    name,
+    viewer,
+    time,
+    created_at,
+    thumbnail,
+    active,
+    id,
+    onClick,
+    censored,
+}: any) {
     const handleClick = () => {
         onClick(id);
     };
@@ -22,7 +33,16 @@ function CardVideo({ video, name, viewer, time, created_at, thumbnail, active, i
                         />
                     </div>
                     <div className={styles.content}>
-                        <div className={styles.header}>{name}</div>
+                        <div className={styles.header}>{name} </div>
+                        {censored === null && (
+                            <div className={styles.reject}>- từ chối kiểm duyệt</div>
+                        )}
+                        {censored === true && (
+                            <div className={styles.censored}>- đã kiểm duyệt</div>
+                        )}
+                        {censored === false && (
+                            <div className={styles.pending}>- đợi kiểm duyệt</div>
+                        )}
                     </div>
                 </div>
             </div>

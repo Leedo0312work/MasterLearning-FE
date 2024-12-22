@@ -25,7 +25,6 @@
 .header {
     font-size: 20px;
     color: #202227;
-    margin-bottom: 10px;
     font-weight: 500;
 }
 .header.active {
@@ -55,4 +54,42 @@
     background-color: #f0f8ff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: border 0.3s ease, background-color 0.3s ease;
+}
+
+.name {
+    display: flex;
+    align-items: center;
+}
+
+.reject {
+    background-color: #ff4747; /* Red background */
+    color: white; /* White text */
+    padding: 5px 5px;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-left: 10px;
+    display: inline-block;
+    font-size: small;
+}
+
+.censored {
+    background-color: #55b813b9; /* Red background */
+    color: white; /* White text */
+    padding: 5px 5px;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-left: 10px;
+    display: inline-block;
+    font-size: small;
+}
+
+.pending {
+    background-color: #6347ff; /* Red background */
+    color: white; /* White text */
+    padding: 5px 5px;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-left: 10px;
+    display: inline-block;
+    font-size: small;
 }
