@@ -1,15 +1,12 @@
 import OndemandVideoIcon from '@mui/icons-material/OndemandVideo';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
-import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import MouseIcon from '@mui/icons-material/Mouse';
 import { useLocation, useParams } from 'react-router-dom';
 import { useMutation, useQueryClient } from 'react-query';
 import styles from './styles.module.css';
 import React, { useEffect, useMemo, useState } from 'react';
 import SiderbarRightHomeWorkTitleItem from '~/components/SiderbarRightHomeWorkTitleItem';
 import SiderbarRightHomeWorkSettingItem from '~/components/SiderbarRightHomeWorkSettingItem';
-import useGetExerciseInClass from '~/hooks/useGetExercisesInClass';
 import useExercisesInClassStore from '~/store/useExercisesInClassStore';
 import dayjs from '~/packages/dayjs';
 import { IExercise } from '~/models/IExercise';

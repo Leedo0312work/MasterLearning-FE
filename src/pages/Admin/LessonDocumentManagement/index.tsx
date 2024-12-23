@@ -5,19 +5,20 @@ import { ConfirmProvider } from 'material-ui-confirm';
 import styles from './styles.module.css';
 import PropTypes from 'prop-types';
 import DocumentTableHeader from '~/components/DocumentTableHeader';
-import { censorLesson, getNotCensoredLessons, rejectCensorLesson } from '~/repositories/lesson';
-import SiderbarRight from '~/pages/Admin/LessonDocumentSidebarRight/SideBarRight';
+import {
+    censorLesson,
+    getNotCensoredLessons,
+    rejectCensorLesson,
+    deleteLesson,
+} from '~/repositories/lesson';
 import { getClassById } from '~/repositories/class';
 import DetailModal from '../LessonDocumentSidebarRight/DetailModal';
 import { isNull } from 'lodash';
 
 interface DocumentLessonManagerProps {
     title: string;
-    type: number; // 0: tài liệu, 1: bài giảng
+    type: number;
     columns: any[];
-    // onApprove: (lessonId: string) => void;
-    // onReject: (lessonId: string) => void;
-    // onViewDetail: (record: any) => void;
 }
 
 const DocumentLessonManager: React.FC<DocumentLessonManagerProps> = ({ title, type, columns }) => {
@@ -31,6 +32,15 @@ const DocumentLessonManager: React.FC<DocumentLessonManagerProps> = ({ title, ty
         'all' | 'notReviewed' | 'reviewed' | 'rejected'
     >('all');
     const [modeVisible, setModeVisible] = useState<'approval' | 'view-only'>('view-only');
+    const [textType, setTextType] = useState<string>('');
+
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [totalItems, setTotalItems] = useState<number>(0);
+    const pageSize = 5;
+
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+    };
 
     const fetchDataAsync = async () => {
         setLoading(true);
@@ -46,6 +56,8 @@ const DocumentLessonManager: React.FC<DocumentLessonManagerProps> = ({ title, ty
     };
 
     useEffect(() => {
+        type === 1 ? setTextType('bài giảng') : setTextType('tài liệu');
+
         fetchDataAsync();
     }, [type]);
 
@@ -71,7 +83,6 @@ const DocumentLessonManager: React.FC<DocumentLessonManagerProps> = ({ title, ty
             setIsModalVisible(true);
         } catch (error) {
             console.error('Lỗi khi lấy thông tin lớp:', error);
-            alert('Không thể lấy thông tin lớp.');
         }
     };
 
@@ -83,30 +94,26 @@ const DocumentLessonManager: React.FC<DocumentLessonManagerProps> = ({ title, ty
             setModeVisible('approval');
             setIsModalVisible(true);
         } catch (error) {
-            console.error('Lỗi khi kiểm duyệt tài liệu:', error);
-            alert('Đã xảy ra lỗi khi kiểm duyệt tài liệu.');
+            console.error(`Lỗi khi kiểm duyệt ${textType}:`, error);
         }
     };
 
     const handleConfirmApprove = async () => {
         try {
             if (selectedRecord?._id) {
-                await censorLesson(selectedRecord._id); // Gọi API kiểm duyệt
-                alert(`Tài liệu với ID ${selectedRecord._id} đã được kiểm duyệt.`);
+                await censorLesson(selectedRecord._id);
                 handleCloseModal();
-                await fetchDataAsync(); // Làm mới danh sách
+                await fetchDataAsync();
             }
         } catch (error) {
             console.error('Lỗi khi kiểm duyệt tài liệu:', error);
-            alert('Đã xảy ra lỗi khi kiểm duyệt tài liệu.');
         }
     };
 
     const handleReject = async (lessonId: string) => {
-        // Hiển thị thông báo xác nhận khi nhấn Từ chối
         Modal.confirm({
             title: 'Xác nhận từ chối',
-            content: 'Bạn có chắc chắn muốn từ chối phê duyệt tài liệu này?',
+            content: `Bạn có chắc chắn muốn từ chối phê duyệt ${textType} này?`,
             okText: 'Xác nhận',
             cancelText: 'Hủy',
             onOk: async () => {
@@ -120,17 +127,33 @@ const DocumentLessonManager: React.FC<DocumentLessonManagerProps> = ({ title, ty
         });
     };
 
+    // const handleDelete = async (lessonId: string) => {
+    //     Modal.confirm({
+    //         title: 'Xác nhận xóa',
+    //         content: `Bạn có chắc chắn muốn xóa ${textType} này?`,
+    //         okText: 'Xác nhận',
+    //         cancelText: 'Hủy',
+    //         onOk: async () => {
+    //             await deleteLesson(String(lessonId));
+    //             handleCloseModal();
+    //             await fetchDataAsync();
+    //         },
+    //         onCancel: () => {
+    //             console.log('Từ chối hủy bỏ');
+    //         },
+    //     });
+    // };
+
     const handleConfirmReject = async () => {
         try {
             if (selectedRecord?._id) {
                 Modal.confirm({
                     title: 'Xác nhận từ chối',
-                    content: 'Bạn có chắc chắn muốn từ chối phê duyệt tài liệu này?',
+                    content: `Bạn có chắc chắn muốn từ chối phê duyệt ${textType} này?`,
                     okText: 'Xác nhận',
                     cancelText: 'Hủy',
                     onOk: async () => {
                         await rejectCensorLesson(selectedRecord._id);
-                        alert(`Tài liệu với ID ${selectedRecord._id} đã bị từ chối.`);
                         handleCloseModal();
                         await fetchDataAsync();
                     },
@@ -140,8 +163,7 @@ const DocumentLessonManager: React.FC<DocumentLessonManagerProps> = ({ title, ty
                 });
             }
         } catch (error) {
-            console.error('Lỗi khi từ chối tài liệu:', error);
-            alert('Đã xảy ra lỗi khi từ chối tài liệu.');
+            console.error(`Lỗi khi từ chối ${textType}:`, error);
         }
     };
 
@@ -167,7 +189,7 @@ const DocumentLessonManager: React.FC<DocumentLessonManagerProps> = ({ title, ty
                         Xem chi tiết
                     </Button>
                     {record.censored !== null && (
-                        <Button type="dashed" onClick={() => handleReject(record._id)}>
+                        <Button danger onClick={() => handleReject(record._id)}>
                             Từ chối
                         </Button>
                     )}
@@ -176,6 +198,15 @@ const DocumentLessonManager: React.FC<DocumentLessonManagerProps> = ({ title, ty
                             Kiểm duyệt
                         </Button>
                     )}
+                    {/* {record.censored === null && (
+                        <Button
+                            type="primary"
+                            danger
+                            onClick={() => handleDelete(String(record._id))}
+                        >
+                            Xóa
+                        </Button>
+                    )} */}
                 </Space>
             ),
         },
@@ -199,7 +230,14 @@ const DocumentLessonManager: React.FC<DocumentLessonManagerProps> = ({ title, ty
                             dataSource={filteredLesson}
                             rowKey="_id"
                             loading={loading}
-                            pagination={false}
+                            pagination={{
+                                current: currentPage,
+                                pageSize,
+                                total: totalItems,
+                                onChange: handlePageChange,
+                                showSizeChanger: false,
+                                showTotal: (total) => `Tổng cộng ${total} ${textType}`,
+                            }}
                             bordered
                         />
                     </ConfirmProvider>

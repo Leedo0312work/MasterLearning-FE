@@ -1,14 +1,34 @@
 import { ResponseAPI } from '~/app/response';
-import { fetchAcceptMember, fetchCreateClass, fetchDeleteClass, fetchDetailClass, fetchGetAcceptedMember, fetchGetClassById, fetchGetClassList, fetchGetPendingMember, fetchRole, fetchRoles, fetchSearchClass } from '~/services/class';
+import {
+    fetchAcceptMember,
+    fetchAdminDeleteClass,
+    fetchCreateClass,
+    fetchDeleteClass,
+    fetchDetailClass,
+    fetchGetAcceptedMember,
+    fetchGetAllClassList,
+    fetchGetClassById,
+    fetchGetClassList,
+    fetchGetPendingMember,
+    fetchRole,
+    fetchRoles,
+    fetchSearchClass,
+} from '~/services/class';
 import { CreateClassForm, GetRoleResponse } from '~/types/class';
 import { IClass } from '~/models/IClass';
 import { Role } from '~/enums/role';
 
 export const getClassList = async () => {
-    const response = await fetchGetClassList()
-    console.log("Danh sách lớp:" , response)
-    return response.data.result
-}
+    const response = await fetchGetClassList();
+    console.log('Danh sách lớp:', response);
+    return response.data.result;
+};
+
+export const getAllClassList = async () => {
+    const response = await fetchGetAllClassList();
+    console.log('Danh sách tất cả các lớp:', response);
+    return response.data.result;
+};
 
 export const getCreate = async (data: CreateClassForm): Promise<ResponseAPI> => {
     const response = await fetchCreateClass(data);
@@ -31,31 +51,36 @@ export const getRole = async (classId: number): Promise<Role> => {
 };
 
 export const getSearch = async (code: string) => {
-    const response = await fetchSearchClass(code)
-    return response.data
-}
+    const response = await fetchSearchClass(code);
+    return response.data;
+};
 
 export const getAcceptedMember = async (classId: string) => {
-    const response = await fetchGetAcceptedMember(classId)
-    return response.data.result
-}
+    const response = await fetchGetAcceptedMember(classId);
+    return response.data.result;
+};
 
 export const getPendingMember = async (classId: string) => {
-    const response = await fetchGetPendingMember(classId)
-    return response.data.result
-}
+    const response = await fetchGetPendingMember(classId);
+    return response.data.result;
+};
 
 export const getAccept = async (id: string) => {
-    const response = await fetchAcceptMember(id)
-    return response.data
-}
+    const response = await fetchAcceptMember(id);
+    return response.data;
+};
 
 export const getClassById = async (id: string) => {
-    const response = await fetchGetClassById(id)
-    return response.data.result
-}
+    const response = await fetchGetClassById(id);
+    return response.data.result;
+};
 
 export const getDeleteClass = async (classes_id: string) => {
-    const response = await fetchDeleteClass(classes_id)
-    return response.data
-}
+    const response = await fetchDeleteClass(classes_id);
+    return response.data;
+};
+
+export const getAdminDeleteClass = async (classes_id: string) => {
+    const response = await fetchAdminDeleteClass(classes_id);
+    return response.data;
+};

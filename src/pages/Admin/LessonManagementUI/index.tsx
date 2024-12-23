@@ -6,6 +6,7 @@ const CensorLessonUI: React.FC = () => {
             title: 'Tên bài giảng',
             dataIndex: 'name',
             key: 'name',
+            render: (text: string) => <a>{text}</a>,
         },
         {
             title: 'Thời gian tạo',

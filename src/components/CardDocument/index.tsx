@@ -8,9 +8,10 @@ import { useState } from 'react';
 import styles from './styles.module.css';
 import { deleteLesson } from '~/repositories/lesson';
 import { useNavigate } from 'react-router-dom';
-import saveAs from 'file-saver'
+import saveAs from 'file-saver';
 import { useConfirm } from 'material-ui-confirm';
 import { Menu, MenuItem, IconButton, styled } from '@mui/material';
+import useAuthStore from '~/store/useAuthStore';
 
 const CustomMenuItem = styled(MenuItem)({
     fontSize: '16px',
@@ -24,18 +25,20 @@ const CustomMenuItem = styled(MenuItem)({
 function CardDocument({
     name,
     viewer,
-    createdAt,
-    thumbnail,
+    created_at,
+    description,
     active,
     media,
     onDeleteSuccess,
-    classId, 
-    lessonId, 
+    classId,
+    lessonId,
+    censored,
 }: any) {
     const navigate = useNavigate();
     const confirm = useConfirm();
-    
+
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const user = useAuthStore((state) => state.user);
 
     const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -46,9 +49,9 @@ function CardDocument({
     };
 
     const handleView = () => {
-            if (lessonId) {
-                navigate(`/class/${classId}/content/0/view/${lessonId}`);
-            }
+        if (lessonId) {
+            navigate(`/class/${classId}/content/0/view/${lessonId}`);
+        }
         handleMenuClose();
     };
 
@@ -70,22 +73,21 @@ function CardDocument({
             confirmationText: 'Xóa',
             cancellationText: 'Hủy',
         })
-        .then(async () => {
-
-            try {
-                await deleteLesson(lessonId);
-                if (onDeleteSuccess) {
-                    onDeleteSuccess(lessonId);
+            .then(async () => {
+                try {
+                    await deleteLesson(lessonId);
+                    if (onDeleteSuccess) {
+                        onDeleteSuccess(lessonId);
+                    }
+                } catch (error) {
+                    console.error('Xóa lesson thất bại:', error);
+                } finally {
+                    handleMenuClose();
                 }
-            } catch (error) {
-                console.error('Xóa lesson thất bại:', error);
-            } finally {
+            })
+            .catch(() => {
                 handleMenuClose();
-            }
-        })
-        .catch(() => {
-            handleMenuClose();
-        });
+            });
     };
 
     const handleEdit = () => {
@@ -94,7 +96,7 @@ function CardDocument({
     };
 
     return (
-        <div  className={styles.wrap}>
+        <div className={styles.wrap}>
             <div className={clsx(styles.card, { [styles.selected]: active })}>
                 <div style={{ display: 'flex', gap: '10px' }}>
                     <div className={styles.top}>
@@ -106,12 +108,21 @@ function CardDocument({
                             className={styles.thumbnail}
                         />
                     </div>
-                    <div className={styles.bottom}>
-                        <div className={clsx(styles.header)}>{name}</div>
+                    <div className={styles.content}>
+                        <div className={styles.name}>
+                            <div className={styles.header}>{name}</div>
+                            {censored === null && (
+                                <div className={styles.reject}>- từ chối kiểm duyệt</div>
+                            )}
+                            {censored === true && (
+                                <div className={styles.censored}>- đã kiểm duyệt</div>
+                            )}
+                            {censored === false && (
+                                <div className={styles.pending}>- đợi kiểm duyệt</div>
+                            )}
+                        </div>
                         <div className={styles.info}>
-                            {viewer ? `${viewer} lượt xem` : 'Chưa có lượt xem'}
-                            <br />
-                            {dayjs(createdAt).format('HH:mm:ss DD/MM/YYYY')}
+                            <div>Mô tả: {description}</div>
                         </div>
                     </div>
                 </div>
@@ -122,12 +133,14 @@ function CardDocument({
                 <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
                     <CustomMenuItem onClick={handleView}>Xem</CustomMenuItem>
                     <CustomMenuItem onClick={handleDownload}>Tải về</CustomMenuItem>
-                    <CustomMenuItem onClick={handleDelete}>Xóa</CustomMenuItem>
-                    <CustomMenuItem onClick={handleEdit}>Sửa</CustomMenuItem>
+                    {user?.role === 2 && (
+                        <div>
+                            <CustomMenuItem onClick={handleDelete}>Xóa</CustomMenuItem>
+                            <CustomMenuItem onClick={handleEdit}>Sửa</CustomMenuItem>
+                        </div>
+                    )}
                 </Menu>
             </div>
-
-            
         </div>
     );
 }

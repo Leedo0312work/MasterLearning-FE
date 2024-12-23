@@ -48,18 +48,6 @@
     position: relative;
     margin-right: 10px;
 }
-.numberNotification {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background-color: red;
-    color: #fff;
-    font-size: 11px;
-    display: flex;
-    position: absolute;
-    top: 4px;
-    right: 0;
-}
 .number {
     margin: auto;
 }

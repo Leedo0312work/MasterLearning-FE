@@ -4,6 +4,7 @@ import DefaultLayout from '~/layout/Default';
 
 const CensorLessonUI = lazy(() => import('~/pages/Admin/LessonManagementUI'));
 const CensorDocumentUI = lazy(() => import('~/pages/Admin/DocumentManagementUI'));
+const AdminClass = lazy(() => import('~/pages/Admin/ClassManagement'));
 
 const Chats = lazy(() => import('~/pages/Chats'));
 const WatchScore = lazy(() => import('~/pages/WatchScore'));
@@ -142,7 +143,7 @@ const routes: Route[] = [
             },
             {
                 path: 'manageClass',
-                component: Class,
+                component: AdminClass,
             },
             {
                 path: 'manageLesson',

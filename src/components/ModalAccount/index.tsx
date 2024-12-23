@@ -102,8 +102,8 @@ export default function ModalAccount({ open, onClose, submitForm, title }: Modal
                         rules={{ required: 'Vui lòng chọn một vai trò' }}
                         render={({ field }) => (
                             <Select {...field}>
-                                <MenuItem value={1}>Student</MenuItem>
-                                <MenuItem value={2}>Teacher</MenuItem>
+                                <MenuItem value={1}>Học sinh</MenuItem>
+                                <MenuItem value={2}>Giáo viên</MenuItem>
                                 <MenuItem value={3}>Admin</MenuItem>
                             </Select>
                         )}

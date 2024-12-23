@@ -64,34 +64,47 @@ const NewMemberPending = () => {
     };
 
     return (
-        <div className={styles.wrap}>  
+        <div className={styles.wrap}>
             <div className={styles.header}>
                 <span className={styles.title}>Chờ xét duyệt</span>
                 <span>{getSum()} thành viên</span>
             </div>
-
+    
             <hr />
-
-            <div className={styles.membersList}>
-                {pendingMembers.map(member => (
-                    member.user.map(user => (
-                        <div className={styles.itemWrap}>
-                            <div key={user._id} className={styles.memberItem}>
-                                <div className={styles.avatarContainer}>
+    
+            <table className={styles.membersTable}>
+                <thead>
+                    <tr>
+                        <th>Avatar</th>
+                        <th>Họ tên</th>
+                        <th>Email</th>
+                        <th>Ngày sinh</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {pendingMembers.map(member => (
+                        member.user.map(user => (
+                            <tr key={user._id}>
+                                <td className={styles.avatarCell}>
                                     {renderUserAvatar(user)}
-                                </div>
-                                <div className={styles.memberDetails}>
-                                    <p className={styles.userName}>{user.name}</p>
-                                    <p className={styles.userEmail}>{user.email}</p>
-                                </div>
-                            </div>
-                            <div>
-                            <button onClick={() => handleAccept(member._id)} className={styles.buttonAccept}>Chấp nhận</button>
-                            </div>
-                        </div>
-                    ))          
-                ))}
-            </div>
+                                </td>
+                                <td>{user.name}</td>
+                                <td>{user.email}</td>
+                                <td>{new Date(user.date_of_birth).toLocaleDateString('vi-VN')}</td>
+                                <td>
+                                    <button
+                                        onClick={() => handleAccept(member._id)}
+                                        className={styles.buttonAccept}
+                                    >
+                                        Chấp nhận
+                                    </button>
+                                </td>
+                            </tr>
+                        ))
+                    ))}
+                </tbody>
+            </table>
         </div>
     );
 };

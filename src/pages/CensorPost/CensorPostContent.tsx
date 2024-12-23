@@ -29,6 +29,16 @@ const CensorPostContent = ({ post, listPost, setListPost, refetchPosts }: any) =
             console.error("Error approving post:", error);
         }
     };
+    const handleReject = async () => {
+        try {
+            // Gọi API duyệt bài
+            await tweetServices.rejectPost(post._id);
+            await fetchPosts();
+            setListPost((prev: any) => prev.filter((item: any) => item._id !== post._id))
+        } catch (error) {
+            console.error("Error approving post:", error);
+        }
+    };
 
     return (
         <div className="tw-bg-white tw-p-4 tw-rounded-3xl tw-my-1 tw-w-[90%]">
@@ -60,11 +70,14 @@ const CensorPostContent = ({ post, listPost, setListPost, refetchPosts }: any) =
             <MediaPost post={post} />
 
             <div className="tw-flex tw-justify-end tw-mt-4">
-                <Button type="primary" onClick={handleApprove}>
+                <Button onClick={handleApprove} style={{ width: "50%", backgroundColor: "#1E88E5", borderRadius: "15px", color: "white" }}>
                     Duyệt
                 </Button>
+                <Button onClick={handleReject} style={{ width: "50%", backgroundColor: "#f75956", borderRadius: "15px", color: "white" }}>
+                    Từ chối
+                </Button>
             </div>
-        </div>
+        </div >
     );
 };
 

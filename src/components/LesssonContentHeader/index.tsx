@@ -4,9 +4,11 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Link, useParams } from 'react-router-dom';
 
 import styles from './styles.module.css';
+import useAuthStore from '~/store/useAuthStore';
 
 function LesssonContentHeader() {
     const { type } = useParams();
+    const user = useAuthStore((state) => state.user);
 
     return (
         <div className={styles.wrap}>
@@ -27,11 +29,11 @@ function LesssonContentHeader() {
                     <SearchIcon />
                 </div>
             </div>
-            <Link to={`add`} className={styles.link}>
+            {user?.role === 2 && <Link to={`add`} className={styles.link}>
                 <Button className={styles.button}>
                     {type === '1' ? 'Tạo bài giảng' : 'Tạo tài liệu'}
                 </Button>
-            </Link>
+            </Link>}
         </div>
     );
 }
