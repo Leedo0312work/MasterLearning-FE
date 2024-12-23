@@ -25,7 +25,7 @@ export const columnsWatchScore = [
         dataIndex: 'avatar',
         key: 'avatar',
         render: (text: string) => (
-            <img src={text} alt="avatar" style={{ width: 50, height: 50, borderRadius: '50%' }} />
+            <img src={text} alt="avatar" style={{ width: 40, height: 40, borderRadius: '50%' }} />
         ),
     },
     {

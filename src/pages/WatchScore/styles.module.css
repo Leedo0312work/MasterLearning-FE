@@ -11,3 +11,6 @@
 }
 .content_right {
 }
+.custom_label .ant-form-item-label > label {
+    font-size: 16px !important;
+}

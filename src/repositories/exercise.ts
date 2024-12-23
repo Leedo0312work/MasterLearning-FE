@@ -14,7 +14,7 @@ import {
 } from '~/services/exercise';
 import { FormMultipleChoiceInterface } from '~/types/exercise';
 import { ResponseAPI } from '~/app/response';
-import { IExercise, MarkExcire } from '~/models/IExercise';
+import { IExercise, MarkExcire, SearchMark } from '~/models/IExercise';
 
 export const getCreateMultipleChoice = async (
     data: FormMultipleChoiceInterface,
@@ -44,8 +44,11 @@ export const getListNotMarkExercisesByTeacher = async (
     const response = await fetchListNotMarkExercisesByTeacher(execireId);
     return response.data.result;
 };
-export const getMarkExercisesByTeacher = async (execireId: string): Promise<MarkExcire[]> => {
-    const response = await fetchMarkExercisesByTeacher(execireId);
+export const getMarkExercisesByTeacher = async (
+    execireId: string,
+    searchField?: SearchMark,
+): Promise<MarkExcire[]> => {
+    const response = await fetchMarkExercisesByTeacher(execireId, searchField);
     return response.data.result;
 };
 export const getMarkExercisesByStudent = async (execireId: string): Promise<MarkExcire[]> => {
