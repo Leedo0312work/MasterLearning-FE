@@ -14,6 +14,20 @@ interface DetailModalProps {
     onReject?: () => void;
 }
 
+const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleString('vi-VN', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        hour12: false,
+    });
+};
+
 const DetailModal: React.FC<DetailModalProps> = ({
     visible,
     onClose,
@@ -59,7 +73,7 @@ const DetailModal: React.FC<DetailModalProps> = ({
                     <Typography.Text strong>Mô tả: </Typography.Text> {censorData?.description}
                     <br />
                     <Typography.Text strong>Thời gian tạo: </Typography.Text>{' '}
-                    {censorData?.created_at}
+                    {censorData?.created_at ? formatDate(censorData?.created_at) : 'N/A'}
                     <br />
                     {censorData?.censored === true && (
                         <>
@@ -72,7 +86,7 @@ const DetailModal: React.FC<DetailModalProps> = ({
                     {censorData?.censored === true ? 'Đã phê duyệt' : 'Chưa phê duyệt'}
                     <br />
                     <div>
-                        <Typography.Text strong>Media:</Typography.Text>
+                        <Typography.Text strong>Dữ liệu:</Typography.Text>
                         <div style={{ width: '100%', height: '50vh' }}>
                             {censorData?.type == 0 ? (
                                 <iframe

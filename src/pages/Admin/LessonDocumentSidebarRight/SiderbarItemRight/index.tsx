@@ -4,7 +4,6 @@ import { Button, Modal, Avatar, Typography } from 'antd'; // Import các thành 
 import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
 import { getClassById } from '~/repositories/class';
 import styles from './styles.module.css';
-import { censorLesson } from '~/repositories/lesson';
 import DetailModal from '../DetailModal';
 
 interface RightSiderbarItemProps {
