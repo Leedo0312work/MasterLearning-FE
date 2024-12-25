@@ -3,11 +3,14 @@ import CheckIcon from '@mui/icons-material/Check';
 import styles from './styles.module.css';
 import { Link } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import useAuthStore from '~/store/useAuthStore';
 function ProfileHeader() {
+    const user = useAuthStore((state) => state.user); 
+
     return (
         <div className={styles.wrap}>
                 <div className={styles.back_icon}>
-                <Link to="/class" className={styles.back_link}>
+                <Link to={user.role === 3 ? '/admin' : '/class'} className={styles.back_link}>
                     <ArrowBackIcon className={styles.icon} />
                     <span>Quay lại</span>
                 </Link>

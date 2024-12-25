@@ -91,6 +91,12 @@ function MultipleChoiceForm() {
 
     const handleComplete = useCallback(
         (data: FormMultipleChoiceInterface) => {
+
+            if (!pdfUrl) {
+                toast.error('Vui lòng chọn file PDF');
+                return;
+            }
+
             const formattedData = {
                 excirse_id: exerciseId,
                 class_id: id,
