@@ -286,11 +286,11 @@ function SiderbarRightHomeWork() {
 
                     {user?.role === 2 && (
                         <>
-                            {/* <SiderbarRightHomeWorkSettingItem
+                            <SiderbarRightHomeWorkSettingItem
                                 to={`/class/${classId}/homework/${exercise?._id}/edit`}
                                 name="Chỉnh sửa"
                                 Icon={BorderColorIcon}
-                            /> */}
+                            />
                             <div className={styles.bottom_item} onClick={confirmDelete}>
                                 <h4 className={styles.name}>Xóa</h4>
                                 <DeleteOutlineIcon />

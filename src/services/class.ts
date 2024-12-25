@@ -1,5 +1,6 @@
 import { CreateClassForm } from '~/types/class';
 import API from '~/network/API';
+import axiosIns from './axios';
 
 export const fetchGetAllClassList = () => {
     return API.get('/classes/get-all-class');
@@ -54,11 +55,11 @@ export const fetchGetClassById = (id: string) => {
 };
 
 export const fetchDeleteClass = (classes_id: any) => {
-    return API.post(`classes/delete`, classes_id);
+    return API.post(`classes/delete`, {classes_id});
 };
 
 export const fetchAdminDeleteClass = (classes_id: any) => {
-    return API.post('/classes/delete-admin', {
+    return axiosIns.postAuth('/classes/delete-admin', {
         classes_id: classes_id,
     });
 };
