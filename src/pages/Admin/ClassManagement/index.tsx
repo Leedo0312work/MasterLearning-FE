@@ -104,7 +104,7 @@ const CensorDocumentUI: React.FC = () => {
             key: 'action',
             render: (text: string, record: any) => (
                 <Space>
-                    <Button type="default" onClick={() => handleDeleteClass(record)}>
+                    <Button type="primary" danger onClick={() => handleDeleteClass(record)}>
                         Xóa lớp học
                     </Button>
                 </Space>
@@ -116,6 +116,7 @@ const CensorDocumentUI: React.FC = () => {
         <>
             <div className={styles.table}>
                 <Table
+                    bordered
                     columns={columns}
                     dataSource={classes}
                     rowKey="_id"

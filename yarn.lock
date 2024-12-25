@@ -2832,7 +2832,7 @@ get-value@^2.0.3, get-value@^2.0.6:
     eslint-import-resolver-typescript "^3.6.3"
     file-save "^0.2.0"
     file-saver "^2.0.5"
-    ggclass_react_vite "file:C:/Users/ledo2/AppData/Local/Yarn/Cache/v6/npm-ggclass-react-vite-0.0.0-c9aeb2e8-c735-4298-90a3-b9b667d68e9f-1733811214114/node_modules/ggclass_react_vite"
+    ggclass_react_vite "file:C:/Users/ledo2/AppData/Local/Yarn/Cache/v6/npm-ggclass-react-vite-0.0.0-753bdd27-3cc0-4a88-b93e-30102bd07dff-1735096984780/node_modules/ggclass_react_vite"
     immer "^9.0.15"
     js-cookie "^3.0.5"
     jsonwebtoken "^9.0.2"
@@ -2857,6 +2857,7 @@ get-value@^2.0.3, get-value@^2.0.6:
     react-slick "^0.29.0"
     react-toastify "^9.0.5"
     socket.io-client "^4.5.1"
+    xlsx "^0.18.5"
     zustand "^4.0.0-rc.1"
 
 glob-parent@^3.1.0:
