@@ -14,7 +14,6 @@ interface Prop {
 }
 
 function FormMultipleChoiceItem({ active, order, emitChange, setActive }: Prop) {
-    console.log('check', active, order, emitChange, setActive);
     const { control, watch } = useFormContext<FormMultipleChoiceInterface>();
 
     // Sử dụng watch để lấy giá trị hiện tại của type
@@ -102,7 +101,7 @@ function FormMultipleChoiceItem({ active, order, emitChange, setActive }: Prop) 
                             fullWidth
                             size="small"
                             onChange={(event) => {
-                                emitChange(order, 'point', event.target.value);
+                                emitChange(order, 'point', Number(event.target.value));
                                 field.onChange(event);
                             }}
                             value={field.value}
