@@ -5,14 +5,18 @@ import {
     FormMultipleChoiceInterface,
 } from '~/types/exercise';
 import FormMultipleChoiceItem from '~/components/FormMultipleChoiceItem';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import uniqueId from 'lodash/uniqueId';
 import { memo } from 'react';
 import { useQuery } from 'react-query';
 import { getExercisesTeacher, getMultipleChoiceExerciseDetail } from '~/repositories/exercise';
 import { useParams } from 'react-router-dom';
 import styles from './styles.module.css';
-function FormMultipleChoice() {
+interface Props {
+    setMaxPoint?: any;
+    maxPoint?: number;
+}
+function FormMultipleChoice({ setMaxPoint, maxPoint }: Props) {
     const { control, watch, setValue, getValues, register } =
         useFormContext<FormMultipleChoiceInterface>();
 
@@ -52,53 +56,85 @@ function FormMultipleChoice() {
         }
     }, []);
 
-    const handleChangeNumberOfQuestion = useCallback((numberOfQuestion: number) => {
-        const number = Number(numberOfQuestion);
-        const mark = Number(getValues('multipleChoice.mark'));
-        const unit = mark / number;
+    const handleChangeNumberOfQuestion = useCallback(
+        (numberOfQuestion: number) => {
+            const number = Number(numberOfQuestion);
+            const mark = Number(maxPoint);
+            const unit = mark / number;
 
-        if (number > 50) return;
+            if (number > 50) return;
 
-        const result: FormMultipleChoiceAnswerItemInterface[] = [];
+            const result: FormMultipleChoiceAnswerItemInterface[] = [];
 
-        for (let i = 0; i < number; i++) {
-            const item: FormMultipleChoiceAnswerItemInterface = origin.current[i];
-            item.point = unit;
-            result.push(item);
-        }
+            for (let i = 0; i < number; i++) {
+                const item: FormMultipleChoiceAnswerItemInterface = origin.current[i];
+                item.point = unit;
+                result.push(item);
+            }
 
-        setValue('answers', result);
-    }, []);
+            setValue('answers', result);
+        },
+        [Number(getValues('multipleChoice.mark'))],
+    );
 
-    const handleChangeTotalMark = useCallback((totalMark: number) => {
-        const numberOfQuestion = Number(getValues('multipleChoice.numberOfQuestions'));
-        const unit = totalMark / numberOfQuestion;
+    const handleChangeTotalMark = useCallback(
+        (maxPointInput: number) => {
+            const numberOfQuestion = Number(getValues('multipleChoice.numberOfQuestions'));
+            const unit = maxPointInput / numberOfQuestion;
+            console.log('check', unit);
+            console.log('check aa', numberOfQuestion, maxPointInput);
+            const current = getValues('answers').map((item) => ({
+                ...item,
+                mark: unit,
+                point: unit,
+            }));
 
-        const current = getValues('answers').map((item) => ({
-            ...item,
-            mark: unit,
-        }));
+            setValue('answers', current);
+            console.log('check get anset', getValues('answers'));
+        },
+        [maxPoint],
+    );
 
-        setValue('answers', current);
-    }, []);
+    const handleEmitChange = useCallback(
+        (index: number, key: 'answer' | 'point' | 'type', value: string | number) => {
+            origin.current[index] = {
+                ...origin.current[index],
+                [key]: value,
+            };
 
-    const handleEmitChange = useCallback((index: number, key: 'answer' | 'mark', value: string) => {
-        origin.current[index] = {
-            ...origin.current[index],
-            [key]: value,
-        };
+            let sum = 0;
 
-        let sum = 0;
+            const numberOfQuestion = Number(getValues('multipleChoice.numberOfQuestions'));
 
-        const numberOfQuestion = Number(getValues('multipleChoice.numberOfQuestions'));
+            for (let i = 0; i < Number(numberOfQuestion); i++) {
+                sum += Number(origin.current[i].point);
+            }
 
-        for (let i = 0; i < Number(numberOfQuestion); i++) {
-            sum += Number(origin.current[i].mark);
-        }
-
-        setValue('multipleChoice.mark', `${sum}`);
-    }, []);
-
+            // setValue('multipleChoice.mark', `${sum}`);
+        },
+        [],
+    );
+    const renderList = useMemo(() => {
+        return (
+            <div>
+                <div className={'tw-mt-2'}>
+                    <div className={styles.listForm}>
+                        <div className={'tw-grid tw-grid-cols-3 tw-gap-4'}>
+                            {fields.map((item, index) => (
+                                <FormMultipleChoiceItem
+                                    setActive={setActive}
+                                    emitChange={handleEmitChange}
+                                    key={item.id}
+                                    active={index === active}
+                                    order={index}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }, [fields]);
     return (
         <div>
             <div className={'tw-mt-4 tw-flex tw-shadow tw-pb-4'}>
@@ -121,6 +157,7 @@ function FormMultipleChoice() {
                                 value={field.value}
                                 onChange={(event) => {
                                     handleChangeNumberOfQuestion(Number(event.target.value));
+                                    setValue('multipleChoice.mark', Number(event.target.value));
                                     field.onChange(event.target.value);
                                 }}
                                 // onChange={field.onChange}
@@ -137,9 +174,11 @@ function FormMultipleChoice() {
                             <TextField
                                 label={'Tổng điểm'}
                                 {...field}
-                                value="10"
+                                value={maxPoint}
                                 onChange={(event) => {
                                     handleChangeTotalMark(Number(event.target.value));
+                                    setValue('multipleChoice.mark', event.target.value);
+                                    setMaxPoint(Number(event.target.value));
                                     field.onChange(event);
                                 }}
                                 type={'number'}
