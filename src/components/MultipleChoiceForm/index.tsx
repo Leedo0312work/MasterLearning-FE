@@ -96,6 +96,13 @@ function MultipleChoiceForm() {
                 return;
             }
 
+            const startTime = new Date(data.time_to_enable || '');
+            const endTime = new Date(data.deadline || '');
+            if (endTime <= startTime) {
+                toast.error('Thời gian kết thúc phải sau thời gian bắt đầu.');
+                return;
+            }
+
             const formattedData = {
                 excirse_id: exerciseId,
                 class_id: id,
