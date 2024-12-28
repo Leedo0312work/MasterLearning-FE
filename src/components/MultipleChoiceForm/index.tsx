@@ -21,7 +21,7 @@ import { toast } from 'react-toastify';
 
 function MultipleChoiceForm() {
     const { step, previous, next } = useStep();
-
+    const [maxPoint, setMaxPoint] = useState<number>(10);
     const location = useLocation();
 
     const isExam = location.pathname.includes('exam');
@@ -91,7 +91,6 @@ function MultipleChoiceForm() {
 
     const handleComplete = useCallback(
         (data: FormMultipleChoiceInterface) => {
-
             if (!pdfUrl) {
                 toast.error('Vui lòng chọn file PDF');
                 return;
@@ -124,7 +123,7 @@ function MultipleChoiceForm() {
                     no: item.no || index + 1,
                     type: item.type,
                     answer: item.answer || '',
-                    point: item.point || 0,
+                    point: Number(item.point) || 0,
                 })),
             };
 
@@ -158,10 +157,16 @@ function MultipleChoiceForm() {
         reValidateMode: 'onChange',
         mode: 'onChange',
     });
-    const { getValues } = methods;
+    const { getValues, setValue } = methods;
+    // console.log('check tu ben ngoai', maxPoint);
     const numberOfQuestions = getValues('answers').length;
     const totalMark = Number(getValues('multipleChoice.mark') || 10);
-
+    useEffect(() => {
+        setValue('multipleChoice.mark', maxPoint);
+    }, [maxPoint]);
+    useEffect(() => {
+        setMaxPoint(Number(getValues('multipleChoice.mark')));
+    }, [getValues('multipleChoice.mark')]);
     const handleNext = useCallback(async () => {
         if (step === 1) {
             const { trigger } = methods;
@@ -173,8 +178,16 @@ function MultipleChoiceForm() {
                         trigger('answers'),
                     ])
                 ).filter((item) => !item).length > 0;
-
+            const result = getValues('answers');
+            const total = result.reduce((sum, item) => sum + Number(item.point), 0);
+            const pointReal = Number(getValues('multipleChoice.mark'));
             if (hasError) return;
+            if (total != pointReal) {
+                toast.error(
+                    'Tổng điểm các câu hỏi khác với số điểm tối đa bạn vui lòng kiểm tra lại',
+                );
+                return;
+            }
         }
 
         next();
@@ -202,6 +215,8 @@ function MultipleChoiceForm() {
                         <div>
                             {step === 1 && (
                                 <FormMultipleChoice
+                                    setMaxPoint={setMaxPoint}
+                                    maxPoint={maxPoint}
                                     numberOfQuestions={numberOfQuestions}
                                     totalMark={totalMark}
                                 />

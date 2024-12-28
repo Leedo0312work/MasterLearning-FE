@@ -93,9 +93,21 @@ function WatchScore() {
     useEffect(() => {
         fetchData(id);
     }, [id]);
-
+    function removeVietnameseAccents(str: string): string {
+        return str
+            .normalize('NFD') // Tách các ký tự gốc và dấu
+            .replace(/[\u0300-\u036f]/g, '') // Loại bỏ tất cả các dấu
+            .replace(/đ/g, 'd') // Thay thế 'đ' thành 'd'
+            .replace(/Đ/g, 'D') // Thay thế 'Đ' thành 'D'
+            .toLowerCase(); // Chuyển thành chữ thường
+    }
     const handleSubmit = async () => {
         const dataForm = await form.validateFields();
+        console.log('data form', dataForm);
+        if (dataForm.name) {
+            dataForm.name = removeVietnameseAccents(dataForm.name);
+        }
+        console.log('data form2', dataForm);
         fetchData(id, dataForm);
     };
 

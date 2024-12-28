@@ -188,6 +188,7 @@ function SiderbarRightHomeWork() {
             </div>
         );
     }, [exercise]);
+    console.log('check dataPotnt', dataPotnt);
     const renderSiderPoint = useMemo(() => {
         return (
             <div className={styles.top} style={{ paddingBottom: 24 }}>

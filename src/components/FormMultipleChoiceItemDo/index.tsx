@@ -30,7 +30,7 @@ function FormMultipleChoiceItemDo({ type, no, onUpdate, point }: Props) {
             no: no,
             type: type,
             answer: event.target.value,
-            point: point,
+            point: Number(point),
         };
         console.log('data', data);
         onUpdate(data);
