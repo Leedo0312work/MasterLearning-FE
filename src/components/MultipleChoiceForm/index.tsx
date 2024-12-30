@@ -174,6 +174,7 @@ function MultipleChoiceForm() {
             const result = getValues('answers');
             const total = result.reduce((sum, item) => sum + Number(item.point), 0);
             const pointReal = Number(getValues('multipleChoice.mark'));
+            console.log('check total', total, pointReal);
             if (hasError) return;
             if (total != pointReal) {
                 toast.error(

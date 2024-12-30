@@ -157,7 +157,6 @@ function FormMultipleChoice({ setMaxPoint, maxPoint }: Props) {
                                 value={field.value}
                                 onChange={(event) => {
                                     handleChangeNumberOfQuestion(Number(event.target.value));
-                                    setValue('multipleChoice.mark', Number(event.target.value));
                                     field.onChange(event.target.value);
                                 }}
                                 // onChange={field.onChange}
