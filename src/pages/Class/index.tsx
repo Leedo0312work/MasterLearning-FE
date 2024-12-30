@@ -33,8 +33,18 @@ function Class() {
     const [filteredClass, setFilteredClass] = useState<any>(activeClass);
 
     const handleSearch = ({ search, sort }: { search: string; sort: string }) => {
+        function removeVietnameseDiacritics(str: string) {
+            return str
+                .normalize('NFD') // Tách các ký tự gốc và dấu
+                .replace(/[\u0300-\u036f]/g, '') // Xóa dấu
+                .replace(/đ/g, 'd') // Thay đ thành d
+                .replace(/Đ/g, 'D'); // Thay Đ thành D
+        }
+
         const filter = activeClass.filter((item) =>
-            item.name.toLowerCase().includes(search.trim().toLowerCase()),
+            removeVietnameseDiacritics(item.name.toLowerCase()).includes(
+                removeVietnameseDiacritics(search.trim().toLowerCase()),
+            ),
         );
         if (sort === 'A-Z') {
             filter.sort((a, b) => a?.name?.localeCompare(b?.name));
