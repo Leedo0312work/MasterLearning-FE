@@ -37,8 +37,6 @@ const DetailModal: React.FC<DetailModalProps> = ({
     onApprove,
     onReject,
 }) => {
-    console.log('censorData: ', censorData);
-    console.log('classData: ', classData);
     return (
         <Modal
             centered
@@ -86,16 +84,9 @@ const DetailModal: React.FC<DetailModalProps> = ({
                     {censorData?.censored === true ? 'Đã phê duyệt' : 'Chưa phê duyệt'}
                     <br />
                     <div>
-                        <Typography.Text strong>Dữ liệu:</Typography.Text>
                         <div style={{ width: '100%', height: '50vh' }}>
                             {censorData?.type == 0 ? (
-                                <iframe
-                                    src={censorData?.media?.[0]?.url}
-                                    width="100%"
-                                    height="100%"
-                                    style={{ border: 'none' }}
-                                    title="PDF Viewer"
-                                />
+                                <iframe src={censorData?.media?.[0]?.url} title="PDF Viewer" />
                             ) : (
                                 <VideoHLS src={censorData?.media?.[0]?.url} />
                             )}
