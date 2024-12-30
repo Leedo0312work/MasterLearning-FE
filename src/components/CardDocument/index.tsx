@@ -114,9 +114,9 @@ function CardDocument({
                             {censored === null && (
                                 <div className={styles.reject}>- từ chối kiểm duyệt</div>
                             )}
-                            {censored === true && (
+                            {/* {censored === true && (
                                 <div className={styles.censored}>- đã kiểm duyệt</div>
-                            )}
+                            )} */}
                             {censored === false && (
                                 <div className={styles.pending}>- đợi kiểm duyệt</div>
                             )}

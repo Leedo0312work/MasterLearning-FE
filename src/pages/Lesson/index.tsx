@@ -8,6 +8,7 @@ import { getLessonByClassId } from '~/repositories/lesson';
 import useLessonStore from '~/store/useLessonStore';
 import { isNull } from 'lodash';
 import useAuthStore from '~/store/useAuthStore';
+import { Spin } from 'antd';
 
 function Lesson() {
     const { id: classId, type } = useParams();
@@ -36,7 +37,11 @@ function Lesson() {
     };
 
     if (isLoading) {
-        return <div>Loading lessons...</div>;
+        return (
+            <div className={styles.wrap}>
+                <Spin size="large" tip="Đang tải dữ liệu..." />
+            </div>
+        );
     }
 
     if (isError) {
