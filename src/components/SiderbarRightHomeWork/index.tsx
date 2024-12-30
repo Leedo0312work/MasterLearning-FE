@@ -188,6 +188,7 @@ function SiderbarRightHomeWork() {
             </div>
         );
     }, [exercise]);
+    console.log('check dataPotnt', dataPotnt);
     const renderSiderPoint = useMemo(() => {
         return (
             <div className={styles.top} style={{ paddingBottom: 24 }}>
@@ -246,13 +247,13 @@ function SiderbarRightHomeWork() {
             {dataPotnt && dataPotnt.length > 0 && renderSiderPoint}
             {id && (
                 <div className={styles.bottom}>
-                    <PermissionWrapper role={RoleInClass.Teacher}>
+                    {/* <PermissionWrapper role={RoleInClass.Teacher}>
                         <SiderbarRightHomeWorkSettingItem
                             to=""
                             name="Làm thử"
                             Icon={OndemandVideoIcon}
                         />
-                    </PermissionWrapper>
+                    </PermissionWrapper> */}
                     <PermissionWrapper role={RoleInClass.Teacher}>
                         <SiderbarRightHomeWorkSettingItem
                             to={`/class/${classId}/homework/${exercise?._id}/score`}

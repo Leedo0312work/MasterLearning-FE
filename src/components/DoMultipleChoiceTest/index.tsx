@@ -39,6 +39,11 @@ function DoMultipleChoiceTest() {
         setAnswers((prevAnswers: any) => {
             const existingIndex = prevAnswers.findIndex((item: Ianswer) => item.no === data.no);
 
+            // Kiểm tra và chuyển đổi `point` nếu cần
+            if (typeof data.point === 'string') {
+                data.point = parseFloat(data.point); // Chuyển thành số
+            }
+
             if (existingIndex !== -1) {
                 // Nếu đã có, cập nhật phần tử tại vị trí đó
                 const updatedAnswers = [...prevAnswers];
@@ -215,11 +220,11 @@ function DoMultipleChoiceTest() {
                         <div style={{ paddingBottom: 12 }}>{renderChooseFile}</div>
                         <div className={'tw-flex tw-justify-center tw-mb-10'}>
                             <Button variant={'outlined'} onClick={handleLeave}>
-                                Roi khoi
+                                Rời khỏi
                             </Button>
                             <div className="tw-ml-4">
                                 <Button onClick={handleClickOpen} variant={'contained'}>
-                                    Nop bai
+                                    Nộp bài
                                 </Button>
                             </div>
                         </div>

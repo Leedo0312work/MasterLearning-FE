@@ -11,7 +11,6 @@ function CardSearch({ findedClass, closeCard }: any) {
     const [error, setError] = useState(''); 
 
     const handleJoinClass = (data: any) => {
-        console.log(data);
         mutateJoin(data);
     };
 

@@ -1,6 +1,7 @@
 import { FormMultipleChoiceInterface, ISubmit, ISubmitScore } from '~/types/exercise';
 import API from '~/network/API';
 import { identity } from 'lodash';
+import { SearchMark } from '~/models/IExercise';
 
 export const fetchCreateMultipleChoiceExercise = (data: FormMultipleChoiceInterface) => {
     return API.post('/excirses/create', data);
@@ -26,8 +27,18 @@ export const fetchListExercisesTeacher = (classId: number) => {
 export const fetchListNotMarkExercisesByTeacher = (execireId: number) => {
     return API.get(`excirses/list-not-mark/${execireId}`);
 };
-export const fetchMarkExercisesByTeacher = (execireId: string) => {
-    return API.get(`excirses/get-mark-execire-for-teacher/${execireId}`);
+export const fetchMarkExercisesByTeacher = (execireId: string, searchField?: SearchMark) => {
+    const params = new URLSearchParams();
+    if (searchField) {
+        Object.entries(searchField).forEach(([key, value]) => {
+            if (value !== undefined && value !== null) {
+                params.append(key, value.toString());
+            }
+        });
+    }
+
+    // Gửi request với query string
+    return API.get(`excirses/get-mark-execire-for-teacher/${execireId}?${params.toString()}`);
 };
 export const fetchMarkExercisesByStudent = (execireId: string) => {
     return API.get(`excirses/get-mark-execire-for-student/${execireId}`);

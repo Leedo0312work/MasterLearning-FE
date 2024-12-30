@@ -43,6 +43,11 @@ interface UserInfo {
     verify: number;
     avatar: string;
 }
+export interface SearchMark {
+    point: number;
+    name: string;
+    date: Date;
+}
 export declare interface MarkExcire {
     _id: string;
     user_id: string;

@@ -18,10 +18,10 @@ function TimeLeftMultipleChoice({ time, onEnd }: Props) {
 
         if (!timeLeftSecond) return '';
 
-        const hour = Math.floor(timeLeftSecond / 3600);
-        const minute = Math.floor((timeLeftSecond - hour * 3600) / 60);
-        const second = timeLeftSecond - hour * 3600 - minute * 60;
-        return `${hour}h:${minute}:${second}`;
+        const hour = String(Math.floor(timeLeftSecond / 3600)).padStart(2, '0');
+        const minute = String(Math.floor((timeLeftSecond % 3600) / 60)).padStart(2, '0');
+        const second = String(timeLeftSecond % 60).padStart(2, '0');
+        return `${hour}:${minute}:${second}`;
     }, [timeLeftSecond]);
     useEffect(() => {
         if (timeLeftSecond <= 0) {

@@ -36,6 +36,7 @@ function LesssonContent({ lessons, onDeleteSuccess }: any) {
                                 time={item.time}
                                 created_at={item.created_at}
                                 thumbnail={item.thumbnail}
+                                censored={item.censored}
                             />
                         ) : (
                             <CardDocument
@@ -50,6 +51,7 @@ function LesssonContent({ lessons, onDeleteSuccess }: any) {
                                 created_at={item.created_at}
                                 thumbnail={item.thumbnail || 'default-thumbnail-url'}
                                 onDeleteSuccess={onDeleteSuccess}
+                                censored={item.censored}
                             />
                         ),
                     )

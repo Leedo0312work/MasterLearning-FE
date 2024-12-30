@@ -1,7 +1,7 @@
 import OndemandVideoIcon from '@mui/icons-material/OndemandVideo';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styles from './styles.module.css';
 
 import { deleteLesson, getLessonByClassId } from '~/repositories/lesson';
@@ -10,24 +10,6 @@ import { useMemo } from 'react';
 import dayjs from '~/packages/dayjs';
 import { useConfirm } from 'material-ui-confirm';
 import useAuthStore from '~/store/useAuthStore';
-
-const actions = [
-    // {
-    //     name: 'Xem bài giảng',
-    //     Icon: OndemandVideoIcon,
-    //     to: '',
-    // },
-    // {
-    //     name: 'Chỉnh sửa',
-    //     Icon: BorderColorIcon,
-    //     to: 'alo/edit',
-    // },
-    {
-        name: 'Xóa bài giảng',
-        Icon: DeleteOutlineIcon,
-        to: '',
-    },
-];
 
 function SiderbarRightLesson({
     onDeleteSuccess,
@@ -48,11 +30,15 @@ function SiderbarRightLesson({
         return lessons?.find((item) => item.id === String(selectedLessonId));
     }, [lessons, selectedLessonId]);
 
+    console.log('lessons: ', lessons);
     const handleClickView = () => {
+        if (!selectedLessonId) return;
+
         navigate(`/class/${classId}/content/1/view/${selectedLessonId}`);
     };
 
     const handleEdit = () => {
+        if (!selectedLessonId) return;
         navigate(`/class/${classId}/content/1/edit/${selectedLessonId}`);
     };
 
