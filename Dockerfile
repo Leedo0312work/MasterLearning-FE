@@ -7,6 +7,8 @@ COPY yarn.lock package*.json tsconfig.json ./
 
 RUN yarn install 
 
+ENV NODE_OPTIONS=--max-old-space-size=2048
+
 COPY . .
 
 RUN yarn build
