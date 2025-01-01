@@ -6,11 +6,12 @@ body {
 }
 
 .join-room {
-    max-width: 380px;
-    margin: 0 auto;
-    border-radius: 4px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-    padding: 15px;
+    /* //max-width: 380px; */
+    margin-top: 25%;
+    margin-left: 45%;
+    /* // border-radius: 4px; */
+    /* box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); */
+    /* padding: 15px; */
 }
 .join-room .logo {
     width: 70px;
