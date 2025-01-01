@@ -98,3 +98,20 @@
     margin: auto;
     display: block;
 }
+
+.exportButton {
+    background-color: green;
+    padding: 10px 10px;
+    border: none;
+    color: white;
+    border-radius: 10px;
+    width: 110px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    cursor: pointer;
+}
+
+.exportText {
+    margin-top: 5px;
+}
