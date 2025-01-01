@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import styles from './styles.module.css';
 import { getAcceptedMember } from '~/repositories/class';
 import { useParams } from 'react-router-dom';
+import * as XLSX from 'xlsx';
+import useAuthStore from '~/store/useAuthStore';
+import IosShareIcon from '@mui/icons-material/IosShare';
 
 type User = any;
 type Member = {
@@ -13,6 +16,8 @@ const NewMemberAccepted = () => {
     const [acceptedMembers, setAcceptedMembers] = useState<Member[]>([]);
 
     const { id: classId } = useParams();
+
+    const user = useAuthStore((state) => state.user);
 
     useEffect(() => {
         const fetchAcceptedMember = async () => {
@@ -44,14 +49,44 @@ const NewMemberAccepted = () => {
         return sum;
     };
 
+    const exportToExcel = () => {
+        // Chuẩn bị dữ liệu
+        const data: any[] = [];
+        acceptedMembers.forEach(member => {
+            member.user.forEach(user => {
+                data.push({
+                    Avatar: user.avatar || user.name.charAt(0).toUpperCase(),
+                    Name: user.name,
+                    Email: user.email,
+                    Birthdate: new Date(user.date_of_birth).toLocaleDateString('vi-VN'),
+                });
+            });
+        });
+
+        // Tạo worksheet và workbook
+        const worksheet = XLSX.utils.json_to_sheet(data);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Members');
+
+        // Xuất file Excel
+        XLSX.writeFile(workbook, `AcceptedMembers_${classId}.xlsx`);
+    };
+
     return (
         <div className={styles.wrap}>
             <div className={styles.header}>
                 <span className={styles.title}>Bạn học</span>
                 <span>{getSum()} thành viên</span>
+
             </div>
     
             <hr />
+
+            {user?.role === 2 &&
+                <div onClick={exportToExcel} className={styles.exportButton}>
+                    <p className={styles.exportText}>Xuất Excel</p> <IosShareIcon />
+                </div>
+            }
     
             <table className={styles.membersTable}>
                 <thead>
