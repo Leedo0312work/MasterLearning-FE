@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-    baseURL: import.meta.env?.VITE_API || 'http://localhost:3030',
+    baseURL: import.meta.env?.VITE_API || 'https://masterlearning.leedowork.id.vn/api',
     headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
     },
